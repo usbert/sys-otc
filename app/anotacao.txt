@@ -1,0 +1,16 @@
+docker build -t meuphp .
+
+
+Ver e Limpar cache do docker
+- docker system df
+- docker buildx prune -f
+
+Problemas com permissões de acesso seguir conforme abaixo:
+
+Criar pastas
+    \nginx
+        nginx.conf  (criar na mão e por conteúdo do sge)
+        nginx.crt   (copiar do sge)
+        nginx.key   (copiar do sge)
+Criar arquivo dentro da pasta app
+    \app\limits.ini (criar na mão e por conteúdo do sge)
