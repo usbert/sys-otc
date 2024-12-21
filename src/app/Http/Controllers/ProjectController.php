@@ -70,6 +70,7 @@ class ProjectController extends Controller
             $result = $this->projectService->store( $request->all());
             return response()->json($result);
         } catch (\Exception $e) {
+            // dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
 

@@ -17,11 +17,21 @@ class Project extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
-        'short_name',
+        'code',
         'name',
-        'prefix_code',
-        'cost_center',
+        'contract_number',
+        'client_id',
+        'project_manager',
+        'trade_id',
+        'signature_date',
+        'start_date',
+        'finish_date',
+        'contract_value',
+        'street',
+        'city',
+        'state',
+        'country',
+        'zip_code',
     ];
 
     /**

@@ -46,71 +46,36 @@ class ProjectService
     {
 
         // MAIN TABLE
+
+        if(!empty($data['contract_value'])) {
+            $contract_value = Parse_money_database_br($data['contract_value']);
+        } else {
+            $contract_value = null;
+        }
+
         $project = array(
-            'short_name'    => $data['short_name'],
-            'name'          => $data['name'],
-            'prefix_code'   => $data['prefix_code'],
-            'cost_center'   => $data['cost_center'],
+            'code'              => $data['code'],
+            'name'              => $data['name'],
+            'contract_number'   => $data['contract_number'],
+            'client_id'         => $data['client_id'],
+            'project_manager'   => $data['project_manager'],
+            'trade_id'          => $data['trade_id'],
+            'signature_date'    => $data['signature_date'],
+            'start_date'        => $data['start_date'],
+            'finish_date'       => $data['finish_date'],
+            'contract_value'    => $contract_value,
+
+            'street'            => $data['street'],
+            'city'              => $data['city'],
+            'state'             => $data['state'],
+            'country'           => $data['country'],
+            'zip_code'          => $data['zip_code'],
+
         );
         $project_id = $this->projectRepository->store($project);
+
+
         // end MAIN TABLE
-
-
-        // PIVOT TABLES
-
-        // ATIVIDADES DO PROJETO (field_activities)
-        if(!empty($data['field_activity'])) {
-
-            $arrayFieldActivities = [];
-
-            foreach ($data['field_activity'] as $rows =>$key) {
-
-                $arrayFieldActivities['project_id'] = $project_id;
-                $arrayFieldActivities['field_activity_id'] = $key;
-
-                //  SALVAR EM project_ativities JUNTO COM O CÓDIGO DO PROJETO
-                $this->projectActivityRepository->store($arrayFieldActivities);
-
-            }
-        }
-
-         // SALVAR CÓDIGOS DO PROJETO + CÓDIGO DOS SUPERVISORES
-         // project_supervisors (tbl_supervisor_projeto)
-         if(!empty($data['supervisor'])) {
-
-            $arrayProjectSupervisors = [];
-
-            foreach ($data['supervisor'] as $rows =>$key) {
-
-                $arrayProjectSupervisors['project_id'] = $project_id;
-                $arrayProjectSupervisors['supervisor_id'] = $key;
-
-            //  SALVAR EM project_supervisors JUNTO COM O CÓDIGO DO PROJETO
-                $this->projectSupervisorRepository->store($arrayProjectSupervisors);
-
-            }
-
-        }
-
-
-        if(!empty($data['multipleClients'])) {
-
-            $arrayClientProjects = [];
-
-            foreach ($data['multipleClients'] as $rows =>$key) {
-
-                $arrayClientProjects['project_id'] = $project_id;
-                $arrayClientProjects['client_id'] = $key;
-
-            //  SALVAR EM project_clients JUNTO COM O CÓDIGO DO PROJETO
-                $this->projectClientRepository->store($arrayClientProjects);
-
-            }
-
-        }
-
-        // end PIVOT TABLES
-
 
     }
 
@@ -118,82 +83,34 @@ class ProjectService
     public function update(array $data)
     {
 
-        $projects = array(
-            'id'          => $data['id'],
-            'short_name'  => $data['short_name'],
-            'name'        => $data['name'],
-            'prefix_code' => $data['prefix_code'],
-            'cost_center' => $data['cost_center'],
+        // if(!empty($data['contract_value'])) {
+        //     $contract_value = Parse_money_database_br($data['contract_value']);
+        // } else {
+        //     $contract_value = null;
+        // }
+
+        $project = array(
+            'id'                => $data['id'],
+            'code'              => $data['code'],
+            'name'              => $data['name'],
+            'contract_number'   => $data['contract_number'],
+            'client_id'         => $data['client_id'],
+            'project_manager'   => $data['project_manager'],
+            'trade_id'          => $data['trade_id'],
+            'signature_date'    => $data['signature_date'],
+            'start_date'        => $data['start_date'],
+            'finish_date'       => $data['finish_date'],
+            // 'contract_value'    => $contract_value,
+
+            'street'            => $data['street'],
+            'city'              => $data['city'],
+            'state'             => $data['state'],
+            'country'           => $data['country'],
+            'zip_code'          => $data['zip_code'],
 
         );
 
-        $updateProject = $this->projectRepository->update($projects);
-
-        // EXCLUIR AS ATIVIDADES DO PROJETO
-        $projectActivity = $this->projectActivityRepository->deleteByProjectActivityId($data['id']);
-
-        // SALVAR NOVAMENTE ATIVIDADES DO PROJETO
-        if(!empty($data['field_activity'])) {
-
-            $arrayFieldActivities = [];
-
-            foreach ($data['field_activity'] as $rows =>$key) {
-
-                $arrayFieldActivities['project_id'] = $data['id'];
-                $arrayFieldActivities['field_activity_id'] = $key;
-
-                //  SALVAR EM project_ativities JUNTO COM O CÓDIGO DO PROJETO
-                $this->projectActivityRepository->store($arrayFieldActivities);
-
-            }
-        }
-
-
-        // EXCLUIR E SALVAR SUPERVISORES
-        $projectSupervisor = $this->projectActivityRepository->deleteByProjectSupervisorById($data['id']);
-
-        // SALVAR NOVAMENTE SUPERVISORES
-         if(!empty($data['supervisor'])) {
-
-            $arrayProjectSupervisors = [];
-
-            foreach ($data['supervisor'] as $rows =>$key) {
-
-                $arrayProjectSupervisors['project_id'] = $data['id'];
-                $arrayProjectSupervisors['supervisor_id'] = $key;
-
-            //  SALVAR EM project_ativities JUNTO COM O CÓDIGO DO PROJETO
-                $this->projectSupervisorRepository->store($arrayProjectSupervisors);
-
-            }
-
-        }
-
-
-
-         // EXCLUIR E CLIENTES DO PROJETO
-         $projectClient = $this->projectClientRepository->deleteByProjectClientById($data['id']);
-
-         if(!empty($data['multipleClients'])) {
-
-            $arrayClientProjects = [];
-
-            foreach ($data['multipleClients'] as $rows =>$key) {
-
-                $arrayClientProjects['project_id'] = $data['id'];
-                $arrayClientProjects['client_id'] = $key;
-
-            //  SALVAR EM project_clients JUNTO COM O CÓDIGO DO PROJETO
-                $this->projectClientRepository->store($arrayClientProjects);
-
-            }
-
-        }
-
-
-
-        // end PIVOT TABLES
-
+        $updateProject = $this->projectRepository->update($project);
 
     }
 

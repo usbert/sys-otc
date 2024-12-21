@@ -19,11 +19,22 @@ class CreateProjectRequest extends FormRequest {
     {
         return [
 
-            'short_name'  => 'required|min:3|max:80|unique:projects,short_name',
-            'name'        => 'required|string|min:3|max:120|unique:projects,name',
-            'prefix_code' => 'required|string|min:1|max:5|unique:projects,prefix_code',
-            'cost_center' => 'required|string|min:3|max:15',
+            'code'              => 'required|min:3|max:20|unique:projects,code',
+            'name'              => 'required|string|min:3|max:120|unique:projects,name',
+            'contract_number'   => 'required',
+            'client_id'         => 'required',
+            'project_manager'   => 'required',
+            'trade_id'          => 'required',
+            'signature_date'    => 'required',
+            'start_date'        => 'required',
+            'finish_date'       => 'required',
+            'contract_value'    => 'required',
 
+            'street'           => 'required',
+            'city'              => 'required',
+            'state'             => 'required',
+            'country'           => 'required',
+            'zip_code'          => 'required',
         ];
     }
 

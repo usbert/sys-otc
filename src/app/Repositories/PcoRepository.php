@@ -18,10 +18,7 @@ class PcoRepository implements PcoRepositoryInterface
             'pcos.description',
         )
         ->where('pcos.is_activated', Pco::ACTIVATED)
-        ->selectRaw('CONCAT(addresses.code, \'-\', clients.code, \'-\', lpad(projects.id, 4, 0)) AS project_code')
-        ->selectRaw('CONCAT(addresses.street, \' - \', addresses.city, \' - \', addresses.state) AS street')
         ->leftJoin('projects', 'projects.id', '=', 'pcos.project_id')
-        ->leftJoin('addresses', 'addresses.id', '=', 'projects.address_id')
         ->leftJoin('clients', 'clients.id', '=', 'projects.client_id')
         ->get();
 

@@ -48,9 +48,16 @@
                 <thead>
                     <tr>
                         <th scope="col">{{ __('messages.Code') }}</th>
-                        <th scope="col">{{ __('messages.Street') }}</th>
+                        <th scope="col">{{ __('messages.Name') }}</th>
+                        <th scope="col">{{ __('messages.Number') }}</th>
                         <th scope="col">{{ __('messages.Client') }}</th>
-                        <th scope="col">{{ __('messages.Description') }}</th>
+                        <th scope="col">{{ __('messages.Project Manager') }}</th>
+                        <th scope="col">{{ __('messages.Trade') }}</th>
+                        <th scope="col">{{ __('messages.Signature Date') }}</th>
+                        <th scope="col">{{ __('messages.Start Date') }}</th>
+                        <th scope="col">{{ __('messages.Finish Date') }}</th>
+                        <th scope="col">{{ __('messages.Contract Value') }}</th>
+                        <th scope="col">{{ __('messages.Address') }}</th>
                         <th>
                             <a class="btn btn-sm btn-primary" href="{{ url('project/create') }}">
                                 <i class="fas fa-plus"></i>
@@ -87,11 +94,18 @@
                     searching: true,
                     ajax: "{{ url('project/') }}",
                     columns: [
-                        { data: 'code', name: 'code', orderable: true, width: "15%" },
-                        { data: 'street', name: 'street', orderable: true, width: "20%" },
-                        { data: 'client_name', name: 'client_name', orderable: true, width: "25%" },
-                        { data: 'description', name: 'description', orderable: true, width: "25%" },
-                        { data: 'action', name: 'action', orderable: false, width: "5%" },
+                        { data: 'code',             name: 'code',               orderable: true, width: "5%" },
+                        { data: 'name',             name: 'name',               orderable: true, width: "10%" },
+                        { data: 'contract_number',  name: 'contract_number',    orderable: true, width: "5%" },
+                        { data: 'client_name',      name: 'client_name',        orderable: true, width: "15%" },
+                        { data: 'project_manager',  name: 'project_manager',    orderable: true, width: "10%" },
+                        { data: 'trade_name',       name: 'trade_name',         orderable: true, width: "10%" },
+                        { data: 'signature_date',   name: 'signature_date',     orderable: true, width: "10%" },
+                        { data: 'start_date',       name: 'start_date',         orderable: true, width: "5%" },
+                        { data: 'finish_date',      name: 'finish_date',        orderable: true, width: "5%" },
+                        { data: 'contract_value',   name: 'contract_value',     orderable: true, width: "5%" },
+                        { data: 'address',          name: 'address',            orderable: true, width: "15%" },
+                        { data: 'action',           name: 'action',             orderable: false, width: "5%" },
                     ],
                     dom: 'Bfrtip',
                     buttons: [
@@ -267,7 +281,7 @@
             padding: 0%;
         }
 
-        #ajax-crud-datatable td:nth-of-type(1) {
+        #ajax-crud-datatable td:nth-of-type(1), td:nth-of-type(2) {
             /* color: #007bff; */
             font-weight: bold;
             /* text-align: left; */

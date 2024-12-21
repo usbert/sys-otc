@@ -21,12 +21,27 @@ class ProjectRepository implements ProjectRepositoryInterface
     $project = Project::Select(
         // 'projects.code',
         'projects.id',
+        'projects.code',
+        'projects.name',
+        'contract_number',
         'clients.name as client_name',
-        'projects.name as description',
+        'project_manager',
+        'trades.name as trade_name',
+        'signature_date',
+        'start_date',
+        'finish_date',
+        'contract_value',
+        'projects.street',
+        'projects.city',
+        'projects.state',
+        'projects.country',
+        'projects.zip_code',
+
     )
-    // ->selectRaw('CONCAT(addresses.code, \'-\', clients.code, \'-\', lpad(projects.id, 4, 0)) AS code')
+    ->selectRaw('CONCAT(projects.street, \'-\', projects.city, \'-\', projects.state, \'-\', projects.country) AS address')
     ->where('projects.is_activated', Project::ACTIVATED)
     ->join('clients', 'clients.id', '=', 'projects.client_id')
+    ->join('trades', 'trades.id', '=', 'projects.trade_id')
     ->orderBy('projects.code')
     ->get();
 
@@ -76,41 +91,39 @@ class ProjectRepository implements ProjectRepositoryInterface
 
      $project = Project::where('id', $id)->get();
 
-     $fieldActivity = FieldActivity::select('id', 'code', 'name')
-     ->where('is_activated', 1)
-     ->orderBy('code', 'asc')
-     ->orderBy('name', 'asc')
-     ->get();
+    $clients = Client::select(
+        'id',
+        'code',
+        'name',
+    )
+    ->where('is_activated', 1)
+    ->orderBy('name', 'asc')
+    ->get();
 
-     $supervisor = Supervisor::select('id', 'name')
-     ->where('is_activated', 1)
-     ->orderBy('name', 'asc')
-     ->get();
+    $trades = Trade::select(
+        'id',
+        'name',
+    )
+    ->where('is_activated', 1)
+    ->orderBy('name', 'asc')
+    ->get();
 
-     $clientCombo = Client::select('id', 'name')
-     ->where('is_activated', 1)
-     ->orderBy('name', 'asc')
-     ->get();
+    $typeDocuments = TypeDocument::select(
+        'id',
+        'name',
+    )
+    ->where('is_activated', 1)
+    ->orderBy('name', 'asc')
+    ->get();
 
+    $return = array(
+        'project'           => $project,
+        'clientCombo'       => $clients,
+        'tradeCombo'        => $trades,
+        'typeDocumentCombo' => $typeDocuments,
+    );
 
-      //  TABELAS PIVOT
-     $projectActivities = ProjectActivity::where('project_id', '=', $id)->get();
-     $project_supervisors = ProjectSupervisor::where('project_id', '=', $id)->get();
-     $project_clients = ProjectClient::where('project_id', '=', $id)->get();
-
-     $result = array(
-         'project' => $project,
-         'fieldActivity' => $fieldActivity,
-         'supervisor' => $supervisor,
-         'clientCombo' => $clientCombo,
-
-         // TABELAS PIVOT
-        'projectActivities'   => $projectActivities,
-        'project_supervisors'  => $project_supervisors,
-        'project_clients' => $project_clients,
-     );
-
-     return $result;
+     return $return;
 
   }
 
@@ -124,11 +137,25 @@ class ProjectRepository implements ProjectRepositoryInterface
 
     try {
 
-        $input              = Project::find($data['id']);
-        $input->short_name  = $data['short_name'];
+        $input = Project::find($data['id']);
+        $input->code        = $data['code'];
         $input->name        = $data['name'];
-        $input->prefix_code = $data['prefix_code'];
-        $input->cost_center = $data['cost_center'];
+
+        $input->contract_number   = $data['contract_number'];
+        $input->client_id         = $data['client_id'];
+        $input->project_manager   = $data['project_manager'];
+        $input->trade_id          = $data['trade_id'];
+        $input->signature_date    = $data['signature_date'];
+        $input->start_date        = $data['start_date'];
+        $input->finish_date       = $data['finish_date'];
+        // $input->contract_value    = $data['contract_value'];
+
+        $input->street            = $data['street'];
+        $input->city              = $data['city'];
+        $input->state             = $data['state'];
+        $input->country           = $data['country'];
+        $input->zip_code          = $data['zip_code'];
+
         $input->save();
 
         return $input;
