@@ -19,4 +19,9 @@ class PcoService
     }
 
 
+    public function getDataToCreate()
+    {
+        return $this->pcoRepository->getDataToCreate();
+    }
+
 }

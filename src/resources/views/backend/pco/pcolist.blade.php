@@ -50,9 +50,7 @@
                 <thead>
                     <tr>
                         <th scope="col">{{ __('messages.Code') }}</th>
-                        <th scope="col">{{ __('messages.Address') }}</th>
-                        <th scope="col">CG</th>
-                        <th scope="col">{{ __('messages.Responsible') }}</th>
+                        <th scope="col">{{ __('messages.Client') }}</th>
                         <th scope="col">{{ __('messages.Description') }}</th>
                         {{-- <th scope="col">{{ __('messages.Responsible') }}</th> --}}
                         <th>
@@ -91,12 +89,9 @@
                     searching: true,
                     ajax: "{{ url('pco/') }}",
                     columns: [
-                        { data: 'project_code',         name: 'project_code', orderable: true, width: "15%" },
-                        { data: 'street',               name: 'street', orderable: true, width: "20%" },
-                        { data: 'cg',                   name: 'cg', orderable: true, width: "15%" },
-                        { data: 'responsible',          name: 'responsible', orderable: true, width: "10%" },
-                        { data: 'description',          name: 'description', orderable: true, width: "32%" },
-                        // { data: 'responsible',      name: 'responsible', orderable: true, width: "10%" },
+                        { data: 'code',                 name: 'code', orderable: true, width: "5%" },
+                        { data: 'client_name',          name: 'client_name', orderable: true, width: "25%" },
+                        { data: 'description',          name: 'description', orderable: true, width: "62%" },
                         { data: 'action',               name: 'action', orderable: false, width: "8%" },
                     ],
                     dom: 'Bfrtip',

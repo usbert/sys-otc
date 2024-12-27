@@ -15,7 +15,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-              <li class="breadcrumb-item"><a href="{{ route('model-list') }}">PCO</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('pco-list') }}">PCO</a></li>
               <li class="breadcrumb-item active">{{ __('messages.Button.Add New')}} PCO</li>
             </ol>
           </div>
@@ -59,8 +59,9 @@
                                                         <div class="form-group">
                                                             <label>{{__('messages.Project')}}</label>
                                                             <select class="form-control form-control-sm" name="" id="" onclick="fillPrefix()">
-                                                                {{-- <option value="">{{__('messages.Select')}}</option> --}}
-                                                                <option>44-46-SFP-RCS-0020</option>
+                                                                @foreach ($result['projectCombo'] as $prj)
+                                                                    <option value="{{ $prj->id }}"> {{ $prj->name }}</option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
@@ -648,8 +649,14 @@
                                 </div>
 
 
+                                <button type="submit" class="btn btn-sm btn-primary submit-form" id="create_new">
+                                    <i class="fa fa-save"></i>&nbsp;
+                                    {{ __('messages.Button.Save') }}
+                                </button>
 
-                                <div class="row">
+
+
+                                <div class="row" style="margin-top: 20px;">
 
                                     <div class="col-sm-12">
 
@@ -763,11 +770,6 @@
 
 
                             </div>
-
-                            <button type="submit" class="btn btn-sm btn-primary submit-form" id="create_new">
-                                <i class="fa fa-save"></i>&nbsp;
-                                {{ __('messages.Button.Save') }}
-                            </button>
 
                         </form>
 

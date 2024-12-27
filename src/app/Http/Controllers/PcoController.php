@@ -51,14 +51,16 @@ class PcoController extends Controller
     // Tela Cadastrar somente Contrato
     public function getDataToCreate() {
 
-        return view('backend.pco.create');
+        try {
+            $result = $this->pcoService->getDataToCreate();
+            //  return response()->json($result);
+            return view('backend.pco.create', compact('result'));
 
-        // try {
-        //     $result = $this->pcoService->getDataToCreate();
-        //     return view('backend.pco.create', compact('result'));
-        // } catch (\Exception $e) {
-        //     return response()->json(["error" => $e->getMessage()], $e->getCode());
-        // }
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
     }
 
 
