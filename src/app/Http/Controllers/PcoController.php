@@ -64,4 +64,18 @@ class PcoController extends Controller
     }
 
 
+    // CARREGAR OS DADOS DO EQUIPAMENTO NO FORM
+    public function getAddressByProject($project_id) {
+
+        try {
+            $result = $this->pcoService->getAddressByProject($project_id);
+   return response()->json($result);
+
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
+
+
 }

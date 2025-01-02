@@ -58,7 +58,8 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>{{__('messages.Project')}}</label>
-                                                            <select class="form-control form-control-sm" name="" id="" onclick="fillPrefix()">
+                                                            <select class="form-control form-control-sm" name="project_id" id="project_id" onclick="fillAddress()">
+                                                                <option value="">{{__('messages.Select')}}</option>
                                                                 @foreach ($result['projectCombo'] as $prj)
                                                                     <option value="{{ $prj->id }}"> {{ $prj->name }}</option>
                                                                 @endforeach
@@ -69,7 +70,7 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>{{__('messages.Address')}}</label>
-                                                            <input type="text" name="" id="" class="form-control form-control-sm" value="44-56 Soldiers Field Place" readonly="readonly">
+                                                            <input type="text" name="address" id="address" class="form-control form-control-sm" value="" readonly="readonly">
                                                         </div>
                                                     </div>
 
@@ -80,14 +81,14 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>GC</label>
-                                                            <input type="text" name="" id="" class="form-control form-control-sm" value="Reynolds Construction Services, Inc" readonly="readonly">
+                                                            <input type="text" name="project_name" id="project_name" class="form-control form-control-sm" value="" readonly="readonly">
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>{{__('messages.City')}}</label>
-                                                            <input type="text" name="" id="" class="form-control form-control-sm" value="Boston" readonly="readonly">
+                                                            <input type="text" name="city" id="city" class="form-control form-control-sm" value="" readonly="readonly">
                                                         </div>
                                                     </div>
 
@@ -98,14 +99,14 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>{{__('messages.Responsible')}}</label>
-                                                            <input type="text" name="" id="" class="form-control form-control-sm" value="Amy Boehcke" readonly="readonly">
+                                                            <input type="text" name="project_manager" id="project_manager" class="form-control form-control-sm" value="">
                                                         </div>
                                                     </div>
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>{{__('messages.State')}}</label>
-                                                            <input type="text" name="" id="" class="form-control form-control-sm" value="MA, 02135" readonly="readonly">
+                                                            <input type="text" name="state" id="state" class="form-control form-control-sm" value="" readonly="readonly">
                                                         </div>
                                                     </div>
 
@@ -116,7 +117,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>ATTN</label>
-                                                            <input type="text" name="" id="" class="form-control form-control-sm" value="Amy Boehcke<amyboehcke@xxxx.com>" readonly="readonly">
+                                                            <input type="text" name="email" id="email" class="form-control form-control-sm" value="" readonly="readonly">
                                                         </div>
                                                     </div>
 
@@ -1113,10 +1114,39 @@
         //     });
         // });
 
-        function fillPrefix() {
-            if(document.getElementById("equipment_prefix_id").value > '') {
-                var tri = $("#equipment_prefix_id option:selected").text();
-                document.getElementById("prefix").value = tri.substr(0,3);
+        function fillAddress() {
+
+            if(document.getElementById("project_id").value > '') {
+
+                var project_id = document.getElementById("project_id").value
+
+
+                $.ajaxSetup({
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                });
+
+                $.ajax({
+
+                    url: '/pco/get-address-by-project/'+project_id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+
+                        document.getElementById("project_name").value =  response.project[0]['name'];
+                        document.getElementById("address").value =  response.project[0]['street'];
+                        document.getElementById("city").value =  response.project[0]['city'];
+                        document.getElementById("state").value =  response.project[0]['state'];
+
+                        return false;
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+
+
+
             }
 
         }

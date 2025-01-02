@@ -24,4 +24,9 @@ class PcoService
         return $this->pcoRepository->getDataToCreate();
     }
 
+
+    public function getAddressByProject($project_id) {
+        return $this->pcoRepository->getAddressByProject($project_id);
+    }
+
 }

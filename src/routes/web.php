@@ -9,7 +9,6 @@ use App\Http\Controllers\FieldActivityController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\EquipmentPrefixController;
 use App\Http\Controllers\EquipmentGroupController;
@@ -313,6 +312,7 @@ Route::middleware('auth')->group(function() {
     Route::controller(PcoController::class)->prefix('pco')->group(function() {
         Route::get('/', 'getAll')->name('pco-list');
         Route::get('/create', 'getDataToCreate')->name('create');
+        Route::get('/get-address-by-project/{project_id}', 'getAddressByProject')->name('get-address-by-project');
     });
 
 

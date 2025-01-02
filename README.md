@@ -476,3 +476,29 @@ Criar um job na pasta App/Jobs:
 
   php artisan queue:work
 
+
+
+====================
+Generating public/private rsa key pair.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home1/hg99ep28/.ssh/id_rsa.
+Your public key has been saved in /home1/hg99ep28/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:iFmbuJ85+e1yRmtFQoSSNOBFHI20yzXJueLsLJnBJ4E 
+The key's randomart image is:
++---[RSA 2048]----+
+|    .*B= o.      |
+|   . .=+oo.      |
+|   .. o.*.       |
+|  E .* * o. .    |
+|   .+.B S  o     |
+|    ++..  . .    |
+|    .*o. . o     |
+|    ++oo..=      |
+|     .*o.*o      |
++----[SHA256]-----+
+
+
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmgXDLJrJDBX/mVcOk5GeNZE7tVdcN8P9W59a8v/0h0ZJ+df9hO8vZKTJ2Lttxj2DimJLl4/EEtWH5KgIzQ0eg65mQrPeLUyVqUcjDBojihDC+KJq9rjQubTzLx1rpaC0+2ayl9Kk1a2f+Hyh1rgKsarnITOscWD4CXcyecl3urUCJNJL+X7mr9LReMyCqvcJAtrkNgv/sWi7rA0azomZ2a0HRRZt6U1R7+TqAtq/d4ooWnT7P3Xc/PWKexR54ZfKP6BXH1UpPnvVmvqDcHnRuGc4Vy6fuNphB1fNh1uhBQ85dSSH8kgUC9IIXBFCtR2YiS+cyy55wuy5CF9mmUM3P

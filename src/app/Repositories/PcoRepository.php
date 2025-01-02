@@ -44,4 +44,29 @@ class PcoRepository implements PcoRepositoryInterface
         return $return;
     }
 
+
+
+    public function getAddressByProject($project_id) {
+
+        $project = Project::select(
+            'id',
+            'name',
+            'street',
+            'city',
+            'state'
+        )
+        ->where('id', $project_id)
+        ->get();
+
+
+        $return = array(
+            'project' => $project,
+        );
+
+        return $return;
+
+    }
+
+
+
 }
