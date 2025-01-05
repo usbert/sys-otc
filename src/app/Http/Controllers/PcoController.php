@@ -55,26 +55,55 @@ class PcoController extends Controller
             $result = $this->pcoService->getDataToCreate();
             //  return response()->json($result);
             return view('backend.pco.create', compact('result'));
-
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
 
     }
 
 
-    // CARREGAR OS DADOS DO EQUIPAMENTO NO FORM
+    // CARREGAR OS DADOS DO PROJETO (endereço)
     public function getAddressByProject($project_id) {
 
         try {
             $result = $this->pcoService->getAddressByProject($project_id);
-   return response()->json($result);
+            return response()->json($result);
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
 
+
+    public function store(CreatePcoRequest $request) {
+        try {
+            $result = $this->pcoService->store( $request->all());
+            return response()->json($result);
+        } catch (\Exception $e) {
+            dd($e);
+           return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
+
+    public function edit($id) {
+        try {
+            $result = $this->pcoService->edit($id);
+            return view('backend.pco.edit', compact('result'));
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
+
+
+    public function delete(Request $request) {
+
+        try {
+            $result = $this->pcoService->delete( $request->all());
+            return response()->json($result);
         } catch (\Exception $e) {
             dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
+
     }
 
 

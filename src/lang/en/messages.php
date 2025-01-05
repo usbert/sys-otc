@@ -44,6 +44,7 @@ return [
     'Add New' => 'Add New',
     'Edit' => 'Edit',
     'Additional Information' => 'Additional Information',
+    'PCO Date'  => 'PCO Date',
 
     'Address'           => 'Address',
     'Addresses'         => 'Addresses',

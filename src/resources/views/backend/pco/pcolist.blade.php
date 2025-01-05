@@ -173,7 +173,7 @@
 
                     $.ajax({
                         type: 'post',
-                        url: "{{ 'project/softdelete' }}",
+                        url: "{{ 'pco/softdelete' }}",
                         data: data,
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -19,6 +19,11 @@ class Pco extends Model
     protected $fillable = [
         'id',
         'project_id',
+        'client_id',
+        'pco_date',
+        'description',
+        'responsible'
+
     ];
 
     /**
@@ -28,9 +33,6 @@ class Pco extends Model
      */
     protected $hidden = [
         'is_activated',
-        'created_at',
-        'deleted_at',
-        'updated_at',
     ];
 
     /**

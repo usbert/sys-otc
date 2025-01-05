@@ -45,6 +45,7 @@ return [
     'Add New' => 'Adicionar',
     'Edit' => 'Editar',
     'Additional Information' => 'Informações Complementares',
+    'PCO Date' => 'Data do PCO',
 
     'Address'           => 'Endereço',
     'Addresses'         => 'Endereços',

@@ -312,7 +312,10 @@ Route::middleware('auth')->group(function() {
     Route::controller(PcoController::class)->prefix('pco')->group(function() {
         Route::get('/', 'getAll')->name('pco-list');
         Route::get('/create', 'getDataToCreate')->name('create');
+        Route::post('/store', 'store')->name('store');
         Route::get('/get-address-by-project/{project_id}', 'getAddressByProject')->name('get-address-by-project');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::post('/softdelete', 'delete')->name('delete');
     });
 
 

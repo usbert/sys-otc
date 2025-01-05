@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Client;
 use App\Models\Contact;
 use App\Models\EmployeeRole;
+use App\Models\Pco;
 use App\Repositories\Interfaces\ContactRepositoryInterface;
 
 class ContactRepository implements ContactRepositoryInterface
@@ -95,7 +96,7 @@ class ContactRepository implements ContactRepositoryInterface
 
     public function delete($id)
     {
-        $return = Contact::destroy($id);
+        $return = Pco::destroy($id);
         return $return;
     }
 
