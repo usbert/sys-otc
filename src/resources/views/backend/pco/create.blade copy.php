@@ -237,14 +237,14 @@
                                                             <label>Item Cost</label>
                                                             <input type="text" name="item_cost" id="item_cost" class="form-control form-control-sm"
                                                             maxlength="6"
-                                                            {{-- @if("{{ Config::get('app.locale') }}" == 'pt_BR')
-                                                            { --}}
+                                                            @if("{{ Config::get('app.locale') }}" == 'pt_BR')
+                                                            {
                                                                 onkeypress="return fc_decimal(this, '.', ',', event, 8);"
-                                                            {{-- }
+                                                            }
                                                             @else {
                                                                 onkeypress="return fc_decimal(this,',','.',event, 8);"
                                                             }
-                                                            @endif --}}
+                                                            @endif
                                                             >
                                                         </div>
                                                     </div>
@@ -266,19 +266,19 @@
                                                 <div class="row">
 
                                                     <div class="col-sm-12">
-                                                        <table style="font-size: 14px;" class="table table-striped table-sm no-footer dataTable" id="ajax-datatable-service-item" aria-describedby="ajax-crud-datatable_info">
+                                                        <table style="font-size: 14px;" class="table table-striped table-sm no-footer dataTable" id="ajax-crud-datatable-service-item" aria-describedby="ajax-crud-datatable_info">
                                                             <thead>
                                                                 <tr>
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 1%;" aria-sort="ascending"></th>
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 88%;" aria-sort="ascending">Service Item</th>
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Item Cost</th>
-                                                                    {{-- <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Avanço</th>
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Status</th> --}}
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 1%;" aria-sort="ascending"></th>
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 1%;" aria-sort="ascending"></th>
+                                                                    <th scope="col" aria-controls="ajax-crud-datatable-service-item" style="width: 1%;" aria-sort="ascending"></th>
+                                                                    <th scope="col" aria-controls="ajax-crud-datatable-service-item" style="width: 88%;" aria-sort="ascending">Service Item</th>
+                                                                    <th scope="col" aria-controls="ajax-crud-datatable-service-item" style="width: 10%; text-align: right;">Item Cost</th>
+                                                                    {{-- <th scope="col" aria-controls="ajax-crud-datatable-service-item" style="width: 10%; text-align: right;">Avanço</th>
+                                                                    <th scope="col" aria-controls="ajax-crud-datatable-service-item" style="width: 10%; text-align: right;">Status</th> --}}
+                                                                    <th scope="col" aria-controls="ajax-crud-datatable-service-item" style="width: 1%;" aria-sort="ascending"></th>
+                                                                    <th scope="col" aria-controls="ajax-crud-datatable-service-item" style="width: 1%;" aria-sort="ascending"></th>
                                                                 </tr>
                                                             </thead>
-                                                            {{-- <tbody> --}}
+                                                            <tbody>
                                                                 {{-- <tr>
                                                                     <th scope="col" aria-controls="ajax-crud-datatable" style="width: 1%;" aria-sort="ascending"><b>1</b></th>
                                                                     <td class="sorting_1"><b>EXTENDING THE WALL OF ELECTRICAL CLOSET B10</b></td>
@@ -302,7 +302,7 @@
                                                                     <td></td>
                                                                     <td></td>
                                                                 </tr> --}}
-                                                            {{-- </tbody> --}}
+                                                            </tbody>
                                                         </table>
 
 
@@ -712,21 +712,6 @@
         </div>
 
 
-        <form name="formItemService" id="formItemService" class="form-horizontal" method="POST">
-
-            @csrf
-
-            <input type="idden" name="level_01" value="">
-            <input type="idden" name="level_02" value="">
-            <input type="idden" name="level_03" value="">
-            <input type="idden" name="item_description" value="">
-            <input type="idden" name="item_cost" value="">
-
-            <button type="submit" class="btn btn-sm btn-primary submit-form-si" id="create_new_item">
-                xxx
-            </button>
-        </form>
-
 
     </section>
     <!-- /.content -->
@@ -831,171 +816,11 @@
         });
 
 
-
-        // ********* SAVING SERVICE ITEM **********
-        function fcAddItem() {
-
-            // form-data-item-service
-            document.formItemService.level_01.value = document.getElementById("level_01").value;
-            document.formItemService.level_02.value = document.getElementById("level_02").value;
-            document.formItemService.level_03.value = document.getElementById("level_03").value;
-            document.formItemService.item_description.value = document.getElementById("item_description").value;
-            document.formItemService.item_cost.value = document.getElementById("item_cost").value;
-
-            // document.formItemService.click();
-            // $("#create_new_item").trigger('click');
-
-            // $(".submit-form-si").click(function(e) {
-
-            //     e.preventDefault();
-                var data = $('#formItemService').serialize();
-
-                $.ajax({
-                    type: 'post',
-                    url: "{{ url('pco/store-service-item/') }}",
-                    data: data,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    // beforeSend: function(){
-                    //     console.log('....Please wait');
-                    // },
-                    success: function(response){
-
-                        console.log(response);
-
-                        // if(response == 'existing data group') {
-
-                        //     toastr.options = timeOut = 10000;
-                        //     toastr.options = {
-                        //         "progressBar" : true,
-                        //         "closeButton" : true,
-                        //         "positionClass": "toast-bottom-full-width",
-                        //         "onclick": true,
-                        //         "fadeIn": 300,
-                        //         "fadeOut": 1000,
-                        //     },
-                        //     toastr.error("<b>{{ __('messages.Registration already exists') }}!</b><br>{{ __('messages.Check possible combinations of existing data') }}.", "Oops!");
-
-                        // } else {
-
-                        //     toastr.options = timeOut = 10000;
-                        //     toastr.options = {
-                        //         "progressBar" : true,
-                        //         "closeButton" : true,
-                        //         "positionClass": "toast-bottom-full-width",
-                        //         "onclick": true,
-                        //         "fadeIn": 300,
-                        //         "fadeOut": 1000,
-                        //     },
-                        //     toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
-                        //     $('#form-data')[0].reset();
-
-                        // }
-
-                    },
-                    complete: function(response){
-                        console.log('Created New');
-                    },
-                    error: function(errors) {
-
-                        // var message_erro = '{{ __('messages.Error.Required field not filled') }}: ';
-                        // console.log('TODOS', errors.responseJSON);
-                        console.log('PARCIAL NIVEIS', errors.responseJSON.errors);
-
-                        if(errors.responseJSON.errors.level_01) {
-                            message_erro_aux = errors.responseJSON.errors.level_01[0];
-                            message_erro = message_erro_aux.replace("level 01", " <b>{{__('messages.Level 01')}}</b>")
-
-                        } else if(errors.responseJSON.errors.level_02) {
-                            message_erro_aux = errors.responseJSON.errors.level_02[0];
-                            message_erro = message_erro_aux.replace("level 02", "<b>{{ __('messages.Level 02') }}</b>")
-
-                        } else if(errors.responseJSON.errors.level_03) {
-                            message_erro_aux = errors.responseJSON.errors.level_03[0];
-                            message_erro = message_erro_aux.replace("level 03", "<b>{{ __('messages.Level 03') }}</b>")
-
-                        } else if(errors.responseJSON.errors.item_description) {
-                            message_erro_aux = errors.responseJSON.errors.item_description[0];
-                            message_erro = message_erro_aux.replace("item description", "<b>{{ __('messages.Description') }}</b>")
-
-                        } else {
-                            message_erro = errors.responseJSON.errors;
-                        }
-
-                        toastr.options = timeOut = 10000;
-                        toastr.options = {
-                            "progressBar" : true,
-                            "closeButton" : true,
-                            "positionClass": "toast-bottom-full-width",
-                            "onclick": true,
-                            "fadeIn": 300,
-                            "fadeOut": 1000,
-
-                        },
-                        toastr.error(message_erro, "<b>{{ __('messages.Attention') }}</b>!");
-
-                        // loadServiceItemsByUser({{ Auth::user()->id }});
-                        loadServiceItemsByUser(1);
-
-                    }
-
-                });
-
-            // });
-
-        }
-
-
-        function loadServiceItemsByUser(user_id) {
-
-            $(document).ready( function () {
-
-                // LIMPAR TUDO ANTES DE CRIAR NOVA DATATABLE
-                $('#ajax-datatable-service-item').DataTable().clear().destroy();
-
-                $.ajaxSetup({
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                });
-
-                $('#ajax-datatable-service-item').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    searching: false,
-                    ajax: "{{ url('pco/get-service-item-by-user/') }}/"+user_id,
-                    columns: [
-                        { data: 'level',            name: 'level',              orderable: false, width: '15%' },
-                        { data: 'item_description', name: 'item_description',   orderable: false, width: '65%' },
-                        { data: 'item_cost',        name: 'item_cost',          orderable: false, width: '10%' },
-                        { data: 'action',           name: 'action',             orderable: false, width: '10%', className: "text-right" },
-                    ],
-                    // dom: 'Bfrtip',
-                    order: [[1, 'asc']],
-                        columnDefs: [{
-                        width: '5%',
-                        targets: [0],
-                        visible: true
-                    }],
-                    // QUANTIDADE DE LINHAS NA PÁGINA
-                    lengthMenu: [
-                        [6, 8, 10, 25, 50, 100, -1],
-                        ['6', '8', 10, '25', '50', '100', 'Todos']
-                    ],
-                    pageLength: '6',
-                });
-
-
-                });
-
-        }
-
-
-
-        $(function() {
-            $('input').keyup(function() {
-                this.value = this.value.toLocaleUpperCase();
-            });
-        });
+        // $(function() {
+        //     $('input').keyup(function() {
+        //         this.value = this.value.toLocaleUpperCase();
+        //     });
+        // });
 
         function fillAddress() {
 
@@ -1041,6 +866,93 @@
 
 
 
+        function fcAddItem() {
+
+            // localStorage.clear('jsonServiceItem');
+
+            if(!localStorage.getItem("serviceItem")) {
+
+                console.log('NÃO EXISTE LOCALSTORAGE DE ITENS DE SERVIÇO');
+
+                const jsonServiceItem = {
+                    serviceItem:
+                    [
+                        {
+                            id:                 1,
+                            level_01:           document.getElementById("level_01").value,
+                            level_02:           document.getElementById("level_02").value,
+                            level_03:           document.getElementById("level_03").value,
+                            item_description:   document.getElementById("item_description").value,
+                            item_cost:          document.getElementById("item_cost").value,
+
+                        },
+                    ]
+
+                };
+
+                localStorage.setItem("serviceItem", JSON.stringify(jsonServiceItem));
+
+            } else {
+
+                console.log('LOCALSTORAGE DE ITENS DE SERVIÇO JÁ EXISTE');
+
+
+                localStorage.setItem("serviceItem", JSON.stringify(jsonServiceItem));
+                localStorage.setItem("serviceItem", JSON.stringify(jsonServiceItem));
+
+            }
+
+
+
+            // LER E EXIBIR
+
+            var values = localStorage.getItem('serviceItem');
+
+            const serviceItemData = JSON.parse(values);
+            console.log('Teste C: ', serviceItemData);
+
+            // lenObj = serviceItemData['serviceItem'].length;
+
+            // for(var i=0; i<lenObj; i++) {
+            //     var id          = serviceItemData['serviceItem'][i]['id'];
+            //     var level_01    = serviceItemData['serviceItem'][i]['level_01'];
+            //     var level_02    = serviceItemData['serviceItem'][i]['level_02'];
+
+            //     console.log('id: ', id, ', level 1: ', level_01, ', level 2: ', level_02);
+
+            // }
+
+            // fim LER E EXIBIR
+
+
+
+            // conteudoMenu  = '';
+
+            // var level_01            = jsonServiceItem['serviceItem'][0]['level_01'];
+            // var level_02            = jsonServiceItem['serviceItem'][0]['level_02'];
+            // var level_03            = jsonServiceItem['serviceItem'][0]['level_03'];
+            // var item_description    = jsonServiceItem['serviceItem'][0]['item_description'];
+            // var item_cost           = jsonServiceItem['serviceItem'][0]['item_cost'];
+
+            // conteudoMenu += '<tr>';
+            //     conteudoMenu += '<th scope="col" aria-controls="ajax-crud-datatable" style="width: 1%;" aria-sort="ascending"><b>'+level_01+'.'+level_02+'.'+level_03+'</b></th>';
+            //     conteudoMenu += '<td class="sorting_1"><b>'+item_description+'</b></td>';
+            //     conteudoMenu += '<td style="text-align: right;"><b>'+item_cost+'</b></td>';
+            //     conteudoMenu += '<td><a href="#" data-toggle="tooltip" onclick="" data-id="18" class="delete"><span class="fas fa-trash"></span></a></td>';
+            //     conteudoMenu += '<td><a href="#" data-toggle="tooltip" onclick="" data-id="18" class="delete"></td>';
+            // conteudoMenu += '</tr>';
+
+            // console.log('>aqui> ', jsonServiceItem);
+
+            // console.log(conteudoMenu);
+
+            // $("#ajax-crud-datatable-service-item").html(conteudoMenu);
+
+
+        }
+
+
+
 
         function openModalCost() {
             $('#myModalCost').modal({
@@ -1081,19 +993,6 @@
 
 
             $('#link31').addClass('active');
-
-
-        // ENTER DISABLED
-        $(document).ready(function() {
-            $(window).keydown(function(event){
-                if(event.keyCode == 13) {
-                event.preventDefault();
-                return false;
-                }
-            });
-        });
-
-
 
     </script>
 

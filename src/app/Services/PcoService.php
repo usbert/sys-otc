@@ -58,6 +58,33 @@ class PcoService
     }
 
 
+    public function storeServiceItem(array $data)
+    {
+        if(!empty($data['item_cost'])) {
+            $item_cost = Parse_money_database_br($data['item_cost']);
+        } else {
+            $item_cost = null;
+        }
+
+        $item_number = str_pad($data['level_01'], 3, "0", STR_PAD_LEFT).str_pad($data['level_02'], 3, "0", STR_PAD_LEFT).str_pad($data['level_03'], 3, "0", STR_PAD_LEFT);
+
+        $service_item = array(
+            'level_01'          => $data['level_01'],
+            'level_02'          => $data['level_02'],
+            'level_03'          => $data['level_03'],
+            'item_number'       => $item_number,
+            'item_description'  => $data['item_description'],
+            'item_cost'         => $item_cost,
+
+        );
+        $service_item_id = $this->pcoRepository->storeServiceItem($service_item);
+    }
+
+
+    public function getServiceItemByUser($user_id) {
+        return $this->pcoRepository->getServiceItemByUser($user_id);
+    }
+
 
     public function edit($id) {
         return $this->pcoRepository->edit($id);

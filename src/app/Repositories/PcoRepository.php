@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Pco;
 use App\Models\Project;
+use App\Models\ServiceItem;
 use App\Repositories\Interfaces\PcoRepositoryInterface;
 
 class PcoRepository implements PcoRepositoryInterface
@@ -76,6 +77,29 @@ class PcoRepository implements PcoRepositoryInterface
     public function store($data)
     {
         return Pco::create($data)->id;
+    }
+
+
+    public function storeServiceItem($data)
+    {
+        return ServiceItem::create($data)->id;
+    }
+
+
+
+    public function getServiceItemByUser($user_id) {
+
+        $servicItems = ServiceItem::select(
+            'id',
+            'item_description',
+        )
+        ->selectRaw('CONCAT(level_01, \'.\', level_02, \'.\', level_03) AS level')
+        ->where('user_id', $user_id)
+        ->orderBy('item_number')
+        ->get();
+
+       return $servicItems;
+
     }
 
 

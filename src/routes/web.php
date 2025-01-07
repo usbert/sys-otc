@@ -316,6 +316,8 @@ Route::middleware('auth')->group(function() {
         Route::get('/get-address-by-project/{project_id}', 'getAddressByProject')->name('get-address-by-project');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/softdelete', 'delete')->name('delete');
+        Route::post('/store-service-item', 'storeServiceItem')->name('store-service-item');
+        Route::get('/get-service-item-by-user/{user_id}', 'getServiceItemByUser')->name('get-service-item-by-user');
     });
 
 
