@@ -215,7 +215,7 @@
             loadDatatable();
 
             // MARCAR O LINK NO SIDEBAR
-            $('#link31').addClass('active');
+            $('#link-pco').addClass('active');
 
         }, 100);
 

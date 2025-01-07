@@ -269,12 +269,11 @@
                                                         <table style="font-size: 14px;" class="table table-striped table-sm no-footer dataTable" id="ajax-datatable-service-item" aria-describedby="ajax-crud-datatable_info">
                                                             <thead>
                                                                 <tr>
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 1%;" aria-sort="ascending"></th>
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 88%;" aria-sort="ascending">Service Item</th>
+                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 1%;" aria-sort="ascending">#</th>
+                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 88%;" aria-sort="ascending">Item Description</th>
                                                                     <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Item Cost</th>
                                                                     {{-- <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Avanço</th>
                                                                     <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Status</th> --}}
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 1%;" aria-sort="ascending"></th>
                                                                     <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 1%;" aria-sort="ascending"></th>
                                                                 </tr>
                                                             </thead>
@@ -733,6 +732,11 @@
 
     <style>
         input, select { margin-bottom: 8px; }
+
+        #ajax-datatable-service-item td:nth-of-type(1) {
+            font-weight: bold;
+        }
+
     </style>
 
     <script>
@@ -864,34 +868,42 @@
 
                         console.log(response);
 
-                        // if(response == 'existing data group') {
+                        if(response == 'existing data group') {
 
-                        //     toastr.options = timeOut = 10000;
-                        //     toastr.options = {
-                        //         "progressBar" : true,
-                        //         "closeButton" : true,
-                        //         "positionClass": "toast-bottom-full-width",
-                        //         "onclick": true,
-                        //         "fadeIn": 300,
-                        //         "fadeOut": 1000,
-                        //     },
-                        //     toastr.error("<b>{{ __('messages.Registration already exists') }}!</b><br>{{ __('messages.Check possible combinations of existing data') }}.", "Oops!");
+                            toastr.options = timeOut = 10000;
+                            toastr.options = {
+                                "progressBar" : true,
+                                "closeButton" : true,
+                                "positionClass": "toast-bottom-full-width",
+                                "onclick": true,
+                                "fadeIn": 300,
+                                "fadeOut": 1000,
+                            },
+                            toastr.error("<b>{{ __('messages.Registration already exists') }}!</b><br>{{ __('messages.Check possible combinations of existing data') }}.", "Oops!");
 
-                        // } else {
+                        } else {
 
-                        //     toastr.options = timeOut = 10000;
-                        //     toastr.options = {
-                        //         "progressBar" : true,
-                        //         "closeButton" : true,
-                        //         "positionClass": "toast-bottom-full-width",
-                        //         "onclick": true,
-                        //         "fadeIn": 300,
-                        //         "fadeOut": 1000,
-                        //     },
-                        //     toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
-                        //     $('#form-data')[0].reset();
+                            // toastr.options = timeOut = 10000;
+                            // toastr.options = {
+                            //     "progressBar" : true,
+                            //     "closeButton" : true,
+                            //     "positionClass": "toast-bottom-full-width",
+                            //     "onclick": true,
+                            //     "fadeIn": 300,
+                            //     "fadeOut": 1000,
+                            // },
+                            // toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
 
-                        // }
+                            // loadServiceItemsByUser({{ Auth::user()->id }});
+                            loadServiceItemsByUser(1);
+
+                            setTimeout(function() {
+                                document.getElementById("ajax-datatable-service-item_length").style.display = "none";
+                            }, 150);
+
+                            $('#form-data')[0].reset();
+
+                        }
 
                     },
                     complete: function(response){
@@ -935,8 +947,6 @@
                         },
                         toastr.error(message_erro, "<b>{{ __('messages.Attention') }}</b>!");
 
-                        // loadServiceItemsByUser({{ Auth::user()->id }});
-                        loadServiceItemsByUser(1);
 
                     }
 
@@ -964,8 +974,8 @@
                     searching: false,
                     ajax: "{{ url('pco/get-service-item-by-user/') }}/"+user_id,
                     columns: [
-                        { data: 'level',            name: 'level',              orderable: false, width: '15%' },
-                        { data: 'item_description', name: 'item_description',   orderable: false, width: '65%' },
+                        { data: 'level',            name: 'level',              orderable: false, width: '05%' },
+                        { data: 'item_description', name: 'item_description',   orderable: false, width: '75%' },
                         { data: 'item_cost',        name: 'item_cost',          orderable: false, width: '10%' },
                         { data: 'action',           name: 'action',             orderable: false, width: '10%', className: "text-right" },
                     ],
@@ -978,14 +988,14 @@
                     }],
                     // QUANTIDADE DE LINHAS NA PÁGINA
                     lengthMenu: [
-                        [6, 8, 10, 25, 50, 100, -1],
-                        ['6', '8', 10, '25', '50', '100', 'Todos']
+                        [6, 8, 15, 20, 25, 50, 100, -1],
+                        ['6', '8', 15, 20, '25', '50', '100', 'Todos']
                     ],
-                    pageLength: '6',
+                    pageLength: '15',
                 });
 
 
-                });
+            });
 
         }
 
@@ -1080,7 +1090,7 @@
             }
 
 
-            $('#link31').addClass('active');
+            $('#link-pco').addClass('active');
 
 
         // ENTER DISABLED
@@ -1092,7 +1102,6 @@
                 }
             });
         });
-
 
 
     </script>

@@ -92,6 +92,7 @@ class PcoRepository implements PcoRepositoryInterface
         $servicItems = ServiceItem::select(
             'id',
             'item_description',
+            'item_cost',
         )
         ->selectRaw('CONCAT(level_01, \'.\', level_02, \'.\', level_03) AS level')
         ->where('user_id', $user_id)

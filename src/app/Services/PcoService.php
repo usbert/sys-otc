@@ -75,7 +75,7 @@ class PcoService
             'item_number'       => $item_number,
             'item_description'  => $data['item_description'],
             'item_cost'         => $item_cost,
-
+            'user_id'           => Auth::user()->id,
         );
         $service_item_id = $this->pcoRepository->storeServiceItem($service_item);
     }

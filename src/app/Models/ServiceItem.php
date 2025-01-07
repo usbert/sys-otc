@@ -18,12 +18,14 @@ class ServiceItem extends Model
      */
     protected $fillable = [
         'id',
+        'user_id',
+        'pco_id',
         'level_01',
         'level_02',
         'level_03',
         'item_number',
         'item_description',
-        'item_cost'
+        'item_cost',
 
     ];
 
