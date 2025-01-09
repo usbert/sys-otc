@@ -146,4 +146,17 @@ class PcoController extends Controller
     }
 
 
+    public function deleteServiceItemByUser(Request $request) {
+        try {
+            $result = $this->pcoService->deleteServiceItemByUser( $request->all());
+            return response()->json($result);
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
+    }
+
+
+
 }

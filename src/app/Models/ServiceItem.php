@@ -3,14 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 class ServiceItem extends Model
 {
-    use SoftDeletes;
-
-    public const ACTIVATED = 1;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +17,7 @@ class ServiceItem extends Model
         'level_01',
         'level_02',
         'level_03',
+        'identification_level',
         'item_number',
         'item_description',
         'item_cost',

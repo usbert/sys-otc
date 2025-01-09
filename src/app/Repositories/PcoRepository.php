@@ -6,6 +6,7 @@ use App\Models\Pco;
 use App\Models\Project;
 use App\Models\ServiceItem;
 use App\Repositories\Interfaces\PcoRepositoryInterface;
+use Illuminate\Http\Request;
 
 class PcoRepository implements PcoRepositoryInterface
 {
@@ -91,6 +92,7 @@ class PcoRepository implements PcoRepositoryInterface
 
         $servicItems = ServiceItem::select(
             'id',
+            'identification_level',
             'item_description',
             'item_cost',
         )
@@ -132,6 +134,19 @@ class PcoRepository implements PcoRepositoryInterface
     {
         $return = Pco::destroy($id);
         return $return;
+    }
+
+
+    public function deleteServiceItemByUser($user_id) {
+        try {
+            $return = ServiceItem::where("user_id", $user_id)
+            ->where("pco_id", null)
+            ->delete();
+            return $return;
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
     }
 
 

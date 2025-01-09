@@ -269,14 +269,18 @@
                                                         <table style="font-size: 14px;" class="table table-striped table-sm no-footer dataTable" id="ajax-datatable-service-item" aria-describedby="ajax-crud-datatable_info">
                                                             <thead>
                                                                 <tr>
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 1%;" aria-sort="ascending">#</th>
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 88%;" aria-sort="ascending">Item Description</th>
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Item Cost</th>
+                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" aria-sort="ascending">#</th>
+                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" aria-sort="ascending">Item Description</th>
+                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="text-align: right;">Item Cost</th>
                                                                     {{-- <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Avanço</th>
                                                                     <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Status</th> --}}
-                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 1%;" aria-sort="ascending"></th>
+                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" aria-sort="ascending"></th>
                                                                 </tr>
                                                             </thead>
+                                                            <tbody id="divBodyIS">
+
+                                                            </tbody>
+
                                                             {{-- <tbody> --}}
                                                                 {{-- <tr>
                                                                     <th scope="col" aria-controls="ajax-crud-datatable" style="width: 1%;" aria-sort="ascending"><b>1</b></th>
@@ -715,15 +719,21 @@
 
             @csrf
 
-            <input type="idden" name="level_01" value="">
-            <input type="idden" name="level_02" value="">
-            <input type="idden" name="level_03" value="">
-            <input type="idden" name="item_description" value="">
-            <input type="idden" name="item_cost" value="">
-
+            <input type="hidden" name="level_01" value="">
+            <input type="hidden" name="level_02" value="">
+            <input type="hidden" name="level_03" value="">
+            <input type="hidden" name="item_description" value="">
+            <input type="hidden" name="item_cost" value="">
+{{--
             <button type="submit" class="btn btn-sm btn-primary submit-form-si" id="create_new_item">
                 xxx
-            </button>
+            </button> --}}
+        </form>
+
+
+        <form name="form_data_delete_by_user" id="form_data_delete_by_user" method="POST">
+            <input type="idden" name="user_id" value="{{ Auth::user()->id }}">
+            @csrf
         </form>
 
 
@@ -962,43 +972,130 @@
             $(document).ready( function () {
 
                 // LIMPAR TUDO ANTES DE CRIAR NOVA DATATABLE
-                $('#ajax-datatable-service-item').DataTable().clear().destroy();
+                // $('#ajax-datatable-service-item').DataTable().clear().destroy();
 
                 $.ajaxSetup({
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 });
 
-                $('#ajax-datatable-service-item').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    searching: false,
-                    ajax: "{{ url('pco/get-service-item-by-user/') }}/"+user_id,
-                    columns: [
-                        { data: 'level',            name: 'level',              orderable: false, width: '05%' },
-                        { data: 'item_description', name: 'item_description',   orderable: false, width: '75%' },
-                        { data: 'item_cost',        name: 'item_cost',          orderable: false, width: '10%' },
-                        { data: 'action',           name: 'action',             orderable: false, width: '10%', className: "text-right" },
-                    ],
-                    // dom: 'Bfrtip',
-                    order: [[1, 'asc']],
-                        columnDefs: [{
-                        width: '5%',
-                        targets: [0],
-                        visible: true
-                    }],
-                    // QUANTIDADE DE LINHAS NA PÁGINA
-                    lengthMenu: [
-                        [6, 8, 15, 20, 25, 50, 100, -1],
-                        ['6', '8', 15, 20, '25', '50', '100', 'Todos']
-                    ],
-                    pageLength: '15',
+                $.ajax({
+
+                    // Passar Status = 1 (mobilizado)
+
+                    url: '/pco/get-service-item-by-user/'+user_id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        values = JSON.stringify(response);
+
+                        const serviceItemData = JSON.parse(values);
+                        // console.log(serviceItemData);
+
+                        lenObj = serviceItemData['data'].length;
+
+                        contentServicesItem  = '';
+                        var grandTotal = 0;
+
+                        for(var i=0; i<lenObj; i++) {
+
+                            var level               = serviceItemData['data'][i]['level'];
+                            var item_description    = serviceItemData['data'][i]['item_description'];
+                            var item_cost           = serviceItemData['data'][i]['item_cost'];
+                            if(item_cost == null) {
+                                var item_cost = '';
+                            } else {
+                                var item_cost = serviceItemData['data'][i]['item_cost'];
+                                grandTotal = parseFloat(grandTotal) + parseFloat(item_cost);
+                            }
+                            var action = serviceItemData['data'][i]['action'];
+
+                            // identação
+                            var identification_level = serviceItemData['data'][i]['identification_level'];
+
+                            if(identification_level == 1) {
+                                ident = "";
+                            } else if(identification_level == 2) {
+                                ident = "&nbsp;&nbsp;";
+                            } else {
+                                ident = "&nbsp;&nbsp;&nbsp;&nbsp;";
+                            }
+
+                            contentServicesItem += '<tr>';
+                                contentServicesItem += '<td class="sorting_1" style="width: 6%;">'+ident+'<b>'+level+'</b></td>';
+                                contentServicesItem += '<td class="sorting_1" style="width: 74%;">'+item_description+'</td>';
+                                contentServicesItem += '<td class="sorting_1" style="width: 10%; text-align: right;">'+item_cost+'</td>';
+                                contentServicesItem += '<td class="sorting_1" style="width: 10%;">'+action+'</td>';
+                                // contentServicesItem += '<td style="text-align: right;"><b>'+level_01+'</b></td>';
+                                // contentServicesItem += '<td><a href="#" data-toggle="tooltip" onclick="" data-id="18" class="delete">xx</td>';
+                            contentServicesItem += '</tr>';
+
+
+
+                        }
+                        contentServicesItem += '<tr>';
+                            contentServicesItem += '<td class="sorting_1" style="background-color: #d0d0d0; text-align: right;" colspan="2">Grand Total</td>';
+                            contentServicesItem += '<td class="sorting_1" style="background-color: #d0d0d0; text-align: right;"><b>'+grandTotal+'</b></td>';
+                            contentServicesItem += '<td class="sorting_1" style="background-color: #d0d0d0;"><b>&nbsp;</b></td>';
+                        contentServicesItem += '</tr>';
+
+
+                        document.getElementById("divBodyIS").innerHTML = contentServicesItem;
+
+                        // document.getElementById("divBodyIS").innerHTML = JSON.stringify(response);
+
+                    },
+                    error: function(xhr, status, error) {
+
+                        console.error(error);
+                    }
+
+                    // $('#ajax-datatable-service-item').DataTable({
+                    //     processing: true,
+                    //     serverSide: true,
+                    //     searching: false,
+                    //     ajax: "{{ url('pco/get-service-item-by-user/') }}/"+user_id,
+                    //     columns: [
+                    //         { data: 'level',            name: 'level',              orderable: false, width: '05%' },
+                    //         { data: 'item_description', name: 'item_description',   orderable: false, width: '75%' },
+                    //         { data: 'item_cost',        name: 'item_cost',          orderable: false, width: '10%' },
+                    //         { data: 'action',           name: 'action',             orderable: false, width: '10%', className: "text-right" },
+                    //     ],
+                    //     //
+                    //     order: [[1, 'asc']],
+                    //         columnDefs: [{
+                    //         width: '5%',
+                    //         targets: [0],
+                    //         visible: true
+                    //     }],
+                    //     // QUANTIDADE DE LINHAS NA PÁGINA
+                    //     lengthMenu: [
+                    //         [6, 8, 15, 20, 25, 50, 100, -1],
+                    //         ['6', '8', 15, 20, '25', '50', '100', 'Todos']
+                    //     ],
+                    //     pageLength: '15',
+                    // });
+
                 });
 
 
             });
 
-        }
 
+            // $(document).ready(function() {
+            //     $('#ajax-datatable-service-item').DataTable({
+            //         "sDom": "lfrti",
+            //         paging: true,
+            //         lengthMenu: [
+            //             [6, 8, 10, 25, 50, 100, -1],
+            //             ['6', '8', 10, '25', '50', '100', 'Todos']
+            //         ],
+            //         pageLength: '10',
+            //     });
+            // });
+
+
+
+        }
 
 
         $(function() {
@@ -1102,6 +1199,28 @@
                 }
             });
         });
+
+
+
+
+        // Clear temporary datas
+        setTimeout(function() {
+
+            var data = $('#form_data_delete_by_user').serialize();
+
+            $.ajax({
+                type: 'post',
+                url: "{{ 'delete-service-item-by-user' }}",
+                data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+
+            });
+
+
+        }, 150);
+
 
 
     </script>

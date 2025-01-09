@@ -68,10 +68,19 @@ class PcoService
 
         $item_number = str_pad($data['level_01'], 3, "0", STR_PAD_LEFT).str_pad($data['level_02'], 3, "0", STR_PAD_LEFT).str_pad($data['level_03'], 3, "0", STR_PAD_LEFT);
 
+        if($data['level_02'] > 0 && $data['level_03'] > 0) {
+            $identification_level = 3;
+        } else if($data['level_02'] > 0 && $data['level_03'] == 0) {
+             $identification_level = 2;
+        } else {
+            $identification_level = 1;
+        }
+
         $service_item = array(
             'level_01'          => $data['level_01'],
             'level_02'          => $data['level_02'],
             'level_03'          => $data['level_03'],
+            'identification_level' => $identification_level,
             'item_number'       => $item_number,
             'item_description'  => $data['item_description'],
             'item_cost'         => $item_cost,
@@ -95,6 +104,12 @@ class PcoService
     {
         $project = $this->pcoRepository->delete($data['id']);
 
+    }
+
+
+    public function deleteServiceItemByUser(array $data)
+    {
+        $del = $this->pcoRepository->deleteServiceItemByUser($data['user_id']);
     }
 
 
