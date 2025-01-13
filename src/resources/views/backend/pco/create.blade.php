@@ -245,6 +245,7 @@
                                                                 onkeypress="return fc_decimal(this,',','.',event, 8);"
                                                             }
                                                             @endif --}}
+                                                            value="1.000,00"
                                                             >
                                                         </div>
                                                     </div>
@@ -254,7 +255,9 @@
                                                         <label>&nbsp;</label>
                                                         <div class="input-group input-group-sm">
                                                             <span class="input-group-append">
-                                                                <button type="button" class="btn btn-info btn-flat" onclick="fcAddItem()">&nbsp;<span class="fas fa-plus"></span></button>
+                                                                <button type="button" class="btn btn-info btn-flat" onclick="fcAddServiceItem()"    id="btnSaveSI" title="Add">&nbsp;<span class="fas fa-plus"></span></button>
+                                                                <button type="button" class="btn btn-info btn-flat" onclick="fcUpdateServiceItem()" id="btnUpdateSI" title="Update" style="display: none;">&nbsp;<span class="fas fa-sync"></span></button>&nbsp;
+                                                                <button type="button" class="btn btn-info btn-flat" onclick="fcCancelServiceItem()" id="btnCancelSI" title="Cancel" style="display: none;">&nbsp;<span class="fas fa-ban"></span></button>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -719,11 +722,11 @@
 
             @csrf
 
-            <input type="hidden" name="level_01" value="">
-            <input type="hidden" name="level_02" value="">
-            <input type="hidden" name="level_03" value="">
-            <input type="hidden" name="item_description" value="">
-            <input type="hidden" name="item_cost" value="">
+            <input type="idden" name="level_01" value="">
+            <input type="idden" name="level_02" value="">
+            <input type="idden" name="level_03" value="">
+            <input type="idden" name="item_description" value="">
+            <input type="idden" name="item_cost" value="">
 {{--
             <button type="submit" class="btn btn-sm btn-primary submit-form-si" id="create_new_item">
                 xxx
@@ -847,7 +850,7 @@
 
 
         // ********* SAVING SERVICE ITEM **********
-        function fcAddItem() {
+        function fcAddServiceItem() {
 
             // form-data-item-service
             document.formItemService.level_01.value = document.getElementById("level_01").value;
@@ -907,11 +910,11 @@
                             // loadServiceItemsByUser({{ Auth::user()->id }});
                             loadServiceItemsByUser(1);
 
-                            setTimeout(function() {
-                                document.getElementById("ajax-datatable-service-item_length").style.display = "none";
-                            }, 150);
+                            // setTimeout(function() {
+                            //     document.getElementById("ajax-datatable-service-item_length").style.display = "none";
+                            // }, 150);
 
-                            $('#form-data')[0].reset();
+                            // $('#form-data')[0].reset();
 
                         }
 
@@ -965,6 +968,32 @@
             // });
 
         }
+
+
+
+        function fcUpdateServiceItem(id) {
+
+            console.log(id);
+
+            document.getElementById("btnSaveSI").style.display = "none";
+            document.getElementById("btnUpdateSI").style.display = "";
+            document.getElementById("btnCancelSI").style.display = "";
+
+            // document.formItemService.level_01.value = document.getElementById("level_01").value;
+            // document.formItemService.level_02.value = document.getElementById("level_02").value;
+            // document.formItemService.level_03.value = document.getElementById("level_03").value;
+            // document.formItemService.item_description.value = document.getElementById("item_description").value;
+            // document.formItemService.item_cost.value = document.getElementById("item_cost").value;
+
+        }
+
+         function fcCancelServiceItem() {
+
+            document.getElementById("btnSaveSI").style.display = "";
+            document.getElementById("btnUpdateSI").style.display = "none";
+            document.getElementById("btnCancelSI").style.display = "none";
+
+         }
 
 
         function loadServiceItemsByUser(user_id) {
@@ -1204,22 +1233,22 @@
 
 
         // Clear temporary datas
-        setTimeout(function() {
+        // setTimeout(function() {
 
-            var data = $('#form_data_delete_by_user').serialize();
+        //     var data = $('#form_data_delete_by_user').serialize();
 
-            $.ajax({
-                type: 'post',
-                url: "{{ 'delete-service-item-by-user' }}",
-                data: data,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
+        //     $.ajax({
+        //         type: 'post',
+        //         url: "{{ 'delete-service-item-by-user' }}",
+        //         data: data,
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
 
-            });
+        //     });
 
 
-        }, 150);
+        // }, 150);
 
 
 

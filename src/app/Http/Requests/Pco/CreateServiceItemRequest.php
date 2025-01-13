@@ -5,6 +5,7 @@ namespace App\Http\Requests\Pco;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateServiceItemRequest extends FormRequest {
 
@@ -17,11 +18,28 @@ class CreateServiceItemRequest extends FormRequest {
     // Regra de validação dos campos
     public function rules()
     {
+
+        $level_01 = $this->input('level_01');
+        $level_02 = $this->input('level_02');
+        $level_03 = $this->input('level_03');
+
         return [
-            'level_01'          => 'required',
-            'level_02'          => 'required',
-            'level_03'          => 'required',
+
+            'level_01' => [
+                'required',
+                Rule::unique('service_items')->where(function ($query)
+                use ($level_01, $level_02, $level_03)
+                {
+                    return $query->where('level_01', $level_01)
+                                ->where('level_02', $level_02)
+                                ->where('level_03', $level_03);
+                }),
+            ],
+
             'item_description'  => 'required',
+
+
+
         ];
     }
 
