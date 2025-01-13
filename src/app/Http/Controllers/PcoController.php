@@ -103,20 +103,20 @@ class PcoController extends Controller
 
             if(request()->ajax()) {
                 return datatables()->of($result)
-                ->addColumn('action', function($row) {
-                    $idx = $row->id;
-                    $btn  = "<a href='javascript:fcUpdateServiceItem($idx)' data-toggle='tooltip' data-id='$idx' class='edit'><span class='fas fa-pencil-alt'></a>&nbsp;";
-                    $btn .= "<a href='javascript:void(0)' data-toggle='tooltip' onClick='deleteReg($idx)' data-id='$idx' class='delete'><span class='fas fa-trash'></span></a>&nbsp;";
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->addIndexColumn()
+                // ->addColumn('action', function($row) {
+                //     $idx = $row->id;
+                //     $btn  = "<a href='javascript:fcUpdateServiceItem($idx,$row)' data-toggle='tooltip' data-id='$idx' class='edit'><span class='fas fa-pencil-alt'></a>&nbsp;";
+                //     $btn .= "<a href='javascript:void(0)' data-toggle='tooltip' onClick='deleteReg($idx)' data-id='$idx' class='delete'><span class='fas fa-trash'></span></a>&nbsp;";
+                //     return $btn;
+                // })
+                // ->rawColumns(['action'])
+                // ->addIndexColumn()
                 ->make(true);
 
             }
 
         } catch (\Exception $e) {
-            // dd($e);
+            dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
     }

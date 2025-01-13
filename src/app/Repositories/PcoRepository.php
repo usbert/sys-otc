@@ -6,7 +6,7 @@ use App\Models\Pco;
 use App\Models\Project;
 use App\Models\ServiceItem;
 use App\Repositories\Interfaces\PcoRepositoryInterface;
-use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\DB;
 
 class PcoRepository implements PcoRepositoryInterface
 {
@@ -86,6 +86,14 @@ class PcoRepository implements PcoRepositoryInterface
         return ServiceItem::create($data)->id;
     }
 
+    // $offset = $request->input('perPage', 0) * ($request->input('page', 1) - 1);
+
+    // DB::statement(DB::raw('set @row_number = 0'));
+
+    // return $query->select([
+    //         DB::raw("(@row_number:=@row_number + 1) + $offset AS num"),
+    //         'your_table_name.*'
+    // ]);
 
 
     public function getServiceItemByUser($user_id) {
@@ -96,6 +104,7 @@ class PcoRepository implements PcoRepositoryInterface
             'item_description',
             'item_cost',
         )
+
         ->selectRaw('CONCAT(level_01, \'.\', level_02, \'.\', level_03) AS level')
         ->where('user_id', $user_id)
         ->orderBy('item_number')

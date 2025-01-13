@@ -257,7 +257,7 @@
                                                             <span class="input-group-append">
                                                                 <button type="button" class="btn btn-info btn-flat" onclick="fcAddServiceItem()"    id="btnSaveSI" title="Add">&nbsp;<span class="fas fa-plus"></span></button>
                                                                 <button type="button" class="btn btn-info btn-flat" onclick="fcUpdateServiceItem()" id="btnUpdateSI" title="Update" style="display: none;">&nbsp;<span class="fas fa-sync"></span></button>&nbsp;
-                                                                <button type="button" class="btn btn-info btn-flat" onclick="fcCancelServiceItem()" id="btnCancelSI" title="Cancel" style="display: none;">&nbsp;<span class="fas fa-ban"></span></button>
+                                                                <button type="button" class="btn btn-danger btn-flat" onclick="fcCancelServiceItem()" id="btnCancelSI" title="Cancel" style="display: none;">&nbsp;<span class="fas fa-ban"></span></button>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -277,6 +277,7 @@
                                                                     <th scope="col" aria-controls="ajax-datatable-service-item" style="text-align: right;">Item Cost</th>
                                                                     {{-- <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Avanço</th>
                                                                     <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Status</th> --}}
+                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" aria-sort="ascending"></th>
                                                                     <th scope="col" aria-controls="ajax-datatable-service-item" aria-sort="ascending"></th>
                                                                 </tr>
                                                             </thead>
@@ -971,9 +972,21 @@
 
 
 
-        function fcUpdateServiceItem(id) {
+        function fcUpdateServiceItem(id, indx) {
 
             console.log(id);
+
+            const str = document.getElementById("colSI-A-"+indx+"").innerText;
+            const chars = str.split('.');
+            document.getElementById("level_01").value = chars[0].trim();
+            document.getElementById("level_02").value = chars[1];
+            document.getElementById("level_03").value = chars[2];
+            document.getElementById("level_03").value = chars[2];
+
+            document.getElementById("item_description").value = document.getElementById("colSI-B-"+indx+"").innerText;
+            document.getElementById("item_cost").value = document.getElementById("colSI-C-"+indx+"").innerText;
+            document.getElementById("item_cost").focus();
+
 
             document.getElementById("btnSaveSI").style.display = "none";
             document.getElementById("btnUpdateSI").style.display = "";
@@ -1027,6 +1040,7 @@
 
                         for(var i=0; i<lenObj; i++) {
 
+                            var id               = serviceItemData['data'][i]['id'];
                             var level               = serviceItemData['data'][i]['level'];
                             var item_description    = serviceItemData['data'][i]['item_description'];
                             var item_cost           = serviceItemData['data'][i]['item_cost'];
@@ -1036,8 +1050,6 @@
                                 var item_cost = serviceItemData['data'][i]['item_cost'];
                                 grandTotal = parseFloat(grandTotal) + parseFloat(item_cost);
                             }
-                            var action = serviceItemData['data'][i]['action'];
-
                             // identação
                             var identification_level = serviceItemData['data'][i]['identification_level'];
 
@@ -1050,15 +1062,13 @@
                             }
 
                             contentServicesItem += '<tr>';
-                                contentServicesItem += '<td class="sorting_1" style="width: 6%;">'+ident+'<b>'+level+'</b></td>';
-                                contentServicesItem += '<td class="sorting_1" style="width: 74%;">'+item_description+'</td>';
-                                contentServicesItem += '<td class="sorting_1" style="width: 10%; text-align: right;">'+item_cost+'</td>';
-                                contentServicesItem += '<td class="sorting_1" style="width: 10%;">'+action+'</td>';
-                                // contentServicesItem += '<td style="text-align: right;"><b>'+level_01+'</b></td>';
-                                // contentServicesItem += '<td><a href="#" data-toggle="tooltip" onclick="" data-id="18" class="delete">xx</td>';
+                                contentServicesItem += '<td id="colSI-A-'+i+'" class="sorting_1" style="width: 6%;">'+ident+'<b>'+level+'</b></td>';
+                                contentServicesItem += '<td id="colSI-B-'+i+'" class="sorting_1" style="width: 84%;">'+item_description+'</td>';
+                                contentServicesItem += '<td id="colSI-C-'+i+'" class="sorting_1" style="width: 6%; text-align: right;">'+item_cost+'</td>';
+                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%;"><a href="javascript:fcUpdateServiceItem('+id+','+i+')" data-toggle="tooltip" data-id="0" class="edit"><span class="fas fa-pencil-alt"></a></td>';
+                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%;"><a href="javascript:void(0)" data-toggle="tooltip" onClick="deleteReg()" data-id="" class="delete"><span class="fas fa-trash"></span></a></td>';
+
                             contentServicesItem += '</tr>';
-
-
 
                         }
                         contentServicesItem += '<tr>';
