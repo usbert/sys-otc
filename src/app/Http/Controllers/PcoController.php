@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\Pco\CreatePcoRequest;
 use App\Http\Requests\Pco\CreateServiceItemRequest;
+use App\Http\Requests\Pco\UpdateServiceItemRequest;
 // use App\Http\Requests\Pco\UpdatePcoRequest;
 use App\Services\PcoService;
 use Illuminate\Http\Request;
@@ -150,6 +151,18 @@ class PcoController extends Controller
         try {
             $result = $this->pcoService->deleteServiceItemByUser( $request->all());
             return response()->json($result);
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
+    }
+
+
+    public function updateServiceItem(UpdateServiceItemRequest $request) {
+        try {
+            $result = $this->pcoService->updateServiceItem( $request->all());
+            return response()->json($result);
+
         } catch (\Exception $e) {
             dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());

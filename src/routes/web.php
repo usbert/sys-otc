@@ -319,6 +319,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/store-service-item', 'storeServiceItem')->name('store-service-item');
         Route::get('/get-service-item-by-user/{user_id}', 'getServiceItemByUser')->name('get-service-item-by-user');
         Route::post('/delete-service-item-by-user', 'deleteServiceItemByUser')->name('delete-service-item-by-user');
+        Route::post('/update-service-item', 'updateServiceItem')->name('update-service-item');
     });
 
 

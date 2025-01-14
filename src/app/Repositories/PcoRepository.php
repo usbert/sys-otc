@@ -6,7 +6,7 @@ use App\Models\Pco;
 use App\Models\Project;
 use App\Models\ServiceItem;
 use App\Repositories\Interfaces\PcoRepositoryInterface;
-// use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PcoRepository implements PcoRepositoryInterface
 {
@@ -155,6 +155,34 @@ class PcoRepository implements PcoRepositoryInterface
             return $return;
         } catch (\Exception $e) {
             return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
+    }
+
+
+
+    public function updateServiceItem(array $data)
+    {
+        try {
+
+            $input                      = ServiceItem::find($data['id']);
+            $input->level_01            = $data['level_01'];
+            $input->level_02            = $data['level_02'];
+            $input->level_03            = $data['level_03'];
+            $input->item_description    = $data['item_description'];
+            $input->item_number         = $data['item_number'];
+            $input->item_description    = $data['item_description'];
+            $input->item_cost           = $data['item_cost'];
+            $input->user_id             = Auth::user()->id;
+
+
+            $input->save();
+
+            return $input;
+
+        } catch (\Exception $e) {
+            // dd($e);
+            return response()->json(["error" => $e->getMessage()]);
         }
 
     }
