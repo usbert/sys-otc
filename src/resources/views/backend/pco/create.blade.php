@@ -54,6 +54,7 @@
                                             <div class="card-body">
 
                                                 <input type="hidden" name="client_id" id="client_id">
+                                                <input type="idden" name="locale" id="locale" value="{{ Config::get('app.locale') }}">
 
 
                                                 <div class="row">
@@ -195,7 +196,7 @@
                                                         <div class="form-group">
                                                             <label>&nbsp;</label>
                                                             <select class="form-control form-control-sm" name="level_01" id="level_01">
-                                                                {{-- <option value="">{{__('messages.Select')}}</option> --}}
+                                                                <option value="">{{__('messages.Select')}}</option>
                                                                 @for($x=1; $x<100; $x++)
                                                                     <option value="{{ $x }}">{{ $x }}</option>
                                                                 @endfor
@@ -206,7 +207,7 @@
                                                         <div class="form-group">
                                                             <label>&nbsp;</label>
                                                             <select class="form-control form-control-sm" name="level_02" id="level_02">
-                                                                {{-- <option value="">{{__('messages.Select')}}</option> --}}
+                                                                <option value="">{{__('messages.Select')}}</option>
                                                                 @for($x=0; $x<100; $x++)
                                                                     <option value="{{ $x }}">{{ $x }}</option>
                                                                 @endfor
@@ -217,7 +218,7 @@
                                                         <div class="form-group">
                                                             <label>&nbsp;</label>
                                                             <select class="form-control form-control-sm" name="level_03" id="level_03">
-                                                                {{-- <option value="">{{__('messages.Select')}}</option> --}}
+                                                                <option value="">{{__('messages.Select')}}</option>
                                                                 @for($x=0; $x<100; $x++)
                                                                     <option value="{{ $x }}">{{ $x }}</option>
                                                                 @endfor
@@ -228,7 +229,7 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Item Description</label>
-                                                            <input type="text" name="item_description" id="item_description" class="form-control form-control-sm" value="Teste nonono" maxlength="150">
+                                                            <input type="text" name="item_description" id="item_description" class="form-control form-control-sm" value="" maxlength="150">
                                                         </div>
                                                     </div>
 
@@ -237,15 +238,15 @@
                                                             <label>Item Cost</label>
                                                             <input type="text" name="item_cost" id="item_cost" class="form-control form-control-sm"
                                                             maxlength="6"
-                                                            {{-- @if("{{ Config::get('app.locale') }}" == 'pt_BR')
-                                                            { --}}
+                                                            @if("{{ Config::get('app.locale') }}" == 'pt_BR')
+                                                            {
                                                                 onkeypress="return fc_decimal(this, '.', ',', event, 8);"
-                                                            {{-- }
+                                                            }
                                                             @else {
                                                                 onkeypress="return fc_decimal(this,',','.',event, 8);"
                                                             }
-                                                            @endif --}}
-                                                            value="1.000,00"
+                                                            @endif
+                                                            value=""
                                                             >
                                                         </div>
                                                     </div>
@@ -256,8 +257,8 @@
                                                         <div class="input-group input-group-sm">
                                                             <span class="input-group-append">
                                                                 <button type="button" class="btn btn-info btn-flat" onclick="fcAddServiceItem()"    id="btnSaveSI" title="Add">&nbsp;<span class="fas fa-plus"></span></button>
-                                                                <button type="button" class="btn btn-info btn-flat" onclick="fcUpdateServiceItem()" id="btnUpdateSI" title="Update" style="display: none;">&nbsp;<span class="fas fa-sync"></span></button>&nbsp;
-                                                                <button type="button" class="btn btn-danger btn-flat" onclick="fcCancelServiceItem()" id="btnCancelSI" title="Cancel" style="display: none;">&nbsp;<span class="fas fa-ban"></span></button>
+                                                                <button type="button" class="btn btn-info btn-flat" onclick="fcSetServiceItemRow()" id="btnUpdateSI" title="Update" style="display: none;">&nbsp;<span class="fas fa-sync"></span></button>&nbsp;
+                                                                <button type="button" class="btn btn-danger btn-flat" onclick="fcCancelServiceItemRow()" id="btnCancelSI" title="Cancel" style="display: none;">&nbsp;<span class="fas fa-ban"></span></button>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -723,11 +724,11 @@
 
             @csrf
 
-            <input type="idden" name="level_01" value="">
-            <input type="idden" name="level_02" value="">
-            <input type="idden" name="level_03" value="">
-            <input type="idden" name="item_description" value="">
-            <input type="idden" name="item_cost" value="">
+            <input type="hidden" name="level_01" value="">
+            <input type="hidden" name="level_02" value="">
+            <input type="hidden" name="level_03" value="">
+            <input type="hidden" name="item_description" value="">
+            <input type="hidden" name="item_cost" value="">
 {{--
             <button type="submit" class="btn btn-sm btn-primary submit-form-si" id="create_new_item">
                 xxx
@@ -736,7 +737,7 @@
 
 
         <form name="form_data_delete_by_user" id="form_data_delete_by_user" method="POST">
-            <input type="idden" name="user_id" value="{{ Auth::user()->id }}">
+            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
             @csrf
         </form>
 
@@ -747,9 +748,9 @@
     <style>
         input, select { margin-bottom: 8px; }
 
-        #ajax-datatable-service-item td:nth-of-type(1) {
+        /* #ajax-datatable-service-item td:nth-of-type(1) {
             font-weight: bold;
-        }
+        } */
 
     </style>
 
@@ -972,7 +973,7 @@
 
 
 
-        function fcUpdateServiceItem(id, indx) {
+        function fcSetServiceItemRow(id, indx) {
 
             console.log(id);
 
@@ -992,15 +993,9 @@
             document.getElementById("btnUpdateSI").style.display = "";
             document.getElementById("btnCancelSI").style.display = "";
 
-            // document.formItemService.level_01.value = document.getElementById("level_01").value;
-            // document.formItemService.level_02.value = document.getElementById("level_02").value;
-            // document.formItemService.level_03.value = document.getElementById("level_03").value;
-            // document.formItemService.item_description.value = document.getElementById("item_description").value;
-            // document.formItemService.item_cost.value = document.getElementById("item_cost").value;
-
         }
 
-         function fcCancelServiceItem() {
+         function fcCancelServiceItemRow() {
 
             document.getElementById("btnSaveSI").style.display = "";
             document.getElementById("btnUpdateSI").style.display = "none";
@@ -1040,33 +1035,43 @@
 
                         for(var i=0; i<lenObj; i++) {
 
-                            var id               = serviceItemData['data'][i]['id'];
+                            var id                  = serviceItemData['data'][i]['id'];
                             var level               = serviceItemData['data'][i]['level'];
                             var item_description    = serviceItemData['data'][i]['item_description'];
                             var item_cost           = serviceItemData['data'][i]['item_cost'];
+
                             if(item_cost == null) {
                                 var item_cost = '';
                             } else {
-                                var item_cost = serviceItemData['data'][i]['item_cost'];
+
                                 grandTotal = parseFloat(grandTotal) + parseFloat(item_cost);
+
+                                if(document.getElementById("locale").value == 'pt_BR') {
+                                    var item_cost = serviceItemData['data'][i]['item_cost_br'];
+                                } else {
+                                    var item_cost = serviceItemData['data'][i]['item_cost_en'];
+                                }
                             }
                             // identação
                             var identification_level = serviceItemData['data'][i]['identification_level'];
 
                             if(identification_level == 1) {
-                                ident = "";
+                                ident = '';
+                                bold = 'bold';
                             } else if(identification_level == 2) {
-                                ident = "&nbsp;&nbsp;";
+                                ident = '&nbsp;&nbsp;';
+                                bold = 'normal';
                             } else {
-                                ident = "&nbsp;&nbsp;&nbsp;&nbsp;";
+                                ident = '&nbsp;&nbsp;&nbsp;&nbsp;';
+                                bold = 'normal';
                             }
 
                             contentServicesItem += '<tr>';
-                                contentServicesItem += '<td id="colSI-A-'+i+'" class="sorting_1" style="width: 6%;">'+ident+'<b>'+level+'</b></td>';
-                                contentServicesItem += '<td id="colSI-B-'+i+'" class="sorting_1" style="width: 84%;">'+item_description+'</td>';
-                                contentServicesItem += '<td id="colSI-C-'+i+'" class="sorting_1" style="width: 6%; text-align: right;">'+item_cost+'</td>';
-                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%;"><a href="javascript:fcUpdateServiceItem('+id+','+i+')" data-toggle="tooltip" data-id="0" class="edit"><span class="fas fa-pencil-alt"></a></td>';
-                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%;"><a href="javascript:void(0)" data-toggle="tooltip" onClick="deleteReg()" data-id="" class="delete"><span class="fas fa-trash"></span></a></td>';
+                                contentServicesItem += '<td id="colSI-A-'+i+'" class="sorting_1" style="width: 6%; font-weight: '+bold+';">'+ident+level+'</td>';
+                                contentServicesItem += '<td id="colSI-B-'+i+'" class="sorting_1" style="width: 84%; font-weight: '+bold+';">'+item_description+'</td>';
+                                contentServicesItem += '<td id="colSI-C-'+i+'" class="sorting_1" style="width: 6%; font-weight: '+bold+'; text-align: right;">'+item_cost+'</td>';
+                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:fcSetServiceItemRow('+id+','+i+')" data-toggle="tooltip" data-id="0" class="edit"><span class="fas fa-pencil-alt"></a></td>';
+                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:void(0)" data-toggle="tooltip" onClick="deleteReg()" data-id="" class="delete"><span class="fas fa-trash"></span></a></td>';
 
                             contentServicesItem += '</tr>';
 

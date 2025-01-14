@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\PcoRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class PcoService
 {
@@ -60,10 +61,17 @@ class PcoService
 
     public function storeServiceItem(array $data)
     {
-        if(!empty($data['item_cost'])) {
-            $item_cost = Parse_money_database_br($data['item_cost']);
-        } else {
+
+        if(empty($data['item_cost'])) {
             $item_cost = null;
+
+        } else {
+            if(Config::get('app.locale') == 'en') {
+                $item_cost = Parse_money_database_en($data['item_cost']);
+            } else {
+                $item_cost = Parse_money_database_br($data['item_cost']);
+            }
+
         }
 
         $item_number = str_pad($data['level_01'], 3, "0", STR_PAD_LEFT).str_pad($data['level_02'], 3, "0", STR_PAD_LEFT).str_pad($data['level_03'], 3, "0", STR_PAD_LEFT);

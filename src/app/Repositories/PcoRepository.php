@@ -104,7 +104,8 @@ class PcoRepository implements PcoRepositoryInterface
             'item_description',
             'item_cost',
         )
-
+        ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(item_cost, 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS item_cost_en')
+        ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(item_cost, 2),\'.\',\';\'),\',\',\'.\'),\';\',\',\')) AS item_cost_br')
         ->selectRaw('CONCAT(level_01, \'.\', level_02, \'.\', level_03) AS level')
         ->where('user_id', $user_id)
         ->orderBy('item_number')
