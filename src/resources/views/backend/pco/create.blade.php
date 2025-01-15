@@ -54,7 +54,7 @@
                                             <div class="card-body">
 
                                                 <input type="hidden" name="client_id" id="client_id">
-                                                <input type="idden" name="locale" id="locale" value="{{ Config::get('app.locale') }}">
+                                                <input type="hidden" name="locale" id="locale" value="{{ Config::get('app.locale') }}">
 
 
                                                 <div class="row">
@@ -193,6 +193,9 @@
                                                 <div class="row">
 
                                                     <div class="col-sm-1">
+
+                                                        <input type="hidden" name="service_item_id" id="service_item_id">
+
                                                         <div class="form-group">
                                                             <label>&nbsp;</label>
                                                             <select class="form-control form-control-sm" name="level_01" id="level_01">
@@ -723,12 +726,12 @@
         <form name="formItemService" id="formItemService" class="form-horizontal" method="POST">
 
             @csrf
-
+            <input type="idden" name="service_item_id" id="service_item_id">
             <input type="hidden" name="level_01" value="">
             <input type="hidden" name="level_02" value="">
             <input type="hidden" name="level_03" value="">
             <input type="hidden" name="item_description" value="">
-            <input type="hidden" name="item_cost" value="">
+            <input type="idden" name="item_cost" value="">
 {{--
             <button type="submit" class="btn btn-sm btn-primary submit-form-si" id="create_new_item">
                 xxx
@@ -909,8 +912,7 @@
                             // },
                             // toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
 
-                            // loadServiceItemsByUser({{ Auth::user()->id }});
-                            loadServiceItemsByUser(1);
+                            loadServiceItemsByUser({{ Auth::user()->id }});
 
                             // setTimeout(function() {
                             //     document.getElementById("ajax-datatable-service-item_length").style.display = "none";
@@ -973,9 +975,9 @@
 
 
 
-        function fcSetServiceItemRow(id, indx) {
+        function fcGetServiceItemRow(id, indx) {
 
-            console.log(id);
+            document.getElementById("service_item_id").value = id;
 
             const str = document.getElementById("colSI-A-"+indx+"").innerText;
             const chars = str.split('.');
@@ -1075,7 +1077,7 @@
                                 contentServicesItem += '<td id="colSI-A-'+i+'" class="sorting_1" style="width: 6%; font-weight: '+bold+';">'+ident+level+'</td>';
                                 contentServicesItem += '<td id="colSI-B-'+i+'" class="sorting_1" style="width: 84%; font-weight: '+bold+';">'+item_description+'</td>';
                                 contentServicesItem += '<td id="colSI-C-'+i+'" class="sorting_1" style="width: 6%; font-weight: '+bold+'; text-align: right;">'+item_cost+'</td>';
-                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:fcSetServiceItemRow('+id+','+i+')" data-toggle="tooltip" data-id="0" class="edit"><span class="fas fa-pencil-alt"></a></td>';
+                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:fcGetServiceItemRow('+id+','+i+')" data-toggle="tooltip" data-id="0" class="edit"><span class="fas fa-pencil-alt"></a></td>';
                                 contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:void(0)" data-toggle="tooltip" onClick="deleteReg()" data-id="" class="delete"><span class="fas fa-trash"></span></a></td>';
 
                             contentServicesItem += '</tr>';
@@ -1149,7 +1151,7 @@
 
         function fcUpdateServiceItem() {
 
-
+            document.formItemService.service_item_id.value = document.getElementById("service_item_id").value;
             document.formItemService.level_01.value = document.getElementById("level_01").value;
             document.formItemService.level_02.value = document.getElementById("level_02").value;
             document.formItemService.level_03.value = document.getElementById("level_03").value;
@@ -1159,7 +1161,7 @@
             // $(".submit-form").click(function(e) {
                 // e.preventDefault();
 
-                var data = $('#form-data').serialize();
+                var data = $('#formItemService').serialize();
 
                 $.ajax({
                     type: 'post',
@@ -1187,7 +1189,11 @@
 
                         toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
 
-                        $('#form-data')[0].reset();
+                        $('#formItemService')[0].reset();
+                        loadServiceItemsByUser({{ Auth::user()->id }});
+                        document.getElementById("btnSaveSI").style.display = "";
+                        document.getElementById("btnUpdateSI").style.display = "none";
+                        document.getElementById("btnCancelSI").style.display = "none";
 
                     },
                     complete: function(response){

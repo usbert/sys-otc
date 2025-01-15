@@ -19,6 +19,9 @@ class UpdateServiceItemRequest extends FormRequest {
     public function rules()
     {
 
+
+        $service_item_id = $this->service_item_id;
+
         $level_01 = $this->input('level_01');
         $level_02 = $this->input('level_02');
         $level_03 = $this->input('level_03');
@@ -29,17 +32,18 @@ class UpdateServiceItemRequest extends FormRequest {
                 'required',
                 Rule::unique('service_items')
                 ->where(function ($query)
-                use ($level_01, $level_02, $level_03)
+                use ($service_item_id, $level_01, $level_02, $level_03)
                 {
                     return $query->where('level_01', $level_01)
                                 ->where('level_02', $level_02)
-                                ->where('level_03', $level_03);
-                },).$this->id,
+                                ->where('level_03', $level_03)
+                                ->where('id', '<>', $service_item_id)
+                                ;
+                })
             ],
-
             'item_description'  => 'required',
 
-// ,'.$this->id,
+
 
         ];
     }

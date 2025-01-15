@@ -142,13 +142,13 @@ class PcoService
             $identification_level = 3;
         } else if($data['level_02'] > 0 && $data['level_03'] == 0) {
              $identification_level = 2;
-        } else {
+        } else if($data['level_02'] == 0 && $data['level_03'] == 0) {
             $identification_level = 1;
         }
 
         $service_item = array(
 
-            'id'                    => $data['id'],
+            'service_item_id'       => $data['service_item_id'],
             'level_01'              => $data['level_01'],
             'level_02'              => $data['level_02'],
             'level_03'              => $data['level_03'],
@@ -160,9 +160,7 @@ class PcoService
 
         );
 
-        dd($service_item);
-
-        $updateServiceItem = $this->pcoRepository->update($service_item);
+        $updateServiceItem = $this->pcoRepository->updateServiceItem($service_item);
 
     }
 

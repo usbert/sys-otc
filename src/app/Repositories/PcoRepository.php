@@ -165,7 +165,7 @@ class PcoRepository implements PcoRepositoryInterface
     {
         try {
 
-            $input                      = ServiceItem::find($data['id']);
+            $input                      = ServiceItem::find($data['service_item_id']);
             $input->level_01            = $data['level_01'];
             $input->level_02            = $data['level_02'];
             $input->level_03            = $data['level_03'];
