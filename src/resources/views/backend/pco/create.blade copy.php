@@ -213,17 +213,6 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-1">
-                                                        <div class="form-group">
-                                                            <label>&nbsp;</label>
-                                                            <select class="form-control form-control-sm" name="level_03" id="level_03">
-                                                                {{-- <option value="">{{__('messages.Select')}}</option> --}}
-                                                                @for($x=0; $x<100; $x++)
-                                                                    <option value="{{ $x }}">{{ $x }}</option>
-                                                                @endfor
-                                                            </select>
-                                                        </div>
-                                                    </div>
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
@@ -881,7 +870,6 @@
                             id:                 1,
                             level_01:           document.getElementById("level_01").value,
                             level_02:           document.getElementById("level_02").value,
-                            level_03:           document.getElementById("level_03").value,
                             item_description:   document.getElementById("item_description").value,
                             item_cost:          document.getElementById("item_cost").value,
 
@@ -930,12 +918,11 @@
 
             // var level_01            = jsonServiceItem['serviceItem'][0]['level_01'];
             // var level_02            = jsonServiceItem['serviceItem'][0]['level_02'];
-            // var level_03            = jsonServiceItem['serviceItem'][0]['level_03'];
             // var item_description    = jsonServiceItem['serviceItem'][0]['item_description'];
             // var item_cost           = jsonServiceItem['serviceItem'][0]['item_cost'];
 
             // conteudoMenu += '<tr>';
-            //     conteudoMenu += '<th scope="col" aria-controls="ajax-crud-datatable" style="width: 1%;" aria-sort="ascending"><b>'+level_01+'.'+level_02+'.'+level_03+'</b></th>';
+            //     conteudoMenu += '<th scope="col" aria-controls="ajax-crud-datatable" style="width: 1%;" aria-sort="ascending"><b>'+level_01+'.'+level_02+'</b></th>';
             //     conteudoMenu += '<td class="sorting_1"><b>'+item_description+'</b></td>';
             //     conteudoMenu += '<td style="text-align: right;"><b>'+item_cost+'</b></td>';
             //     conteudoMenu += '<td><a href="#" data-toggle="tooltip" onclick="" data-id="18" class="delete"><span class="fas fa-trash"></span></a></td>';

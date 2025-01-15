@@ -16,7 +16,6 @@ class ServiceItem extends Model
         'pco_id',
         'level_01',
         'level_02',
-        'level_03',
         'identification_level',
         'item_number',
         'item_description',

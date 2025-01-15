@@ -217,17 +217,6 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-1">
-                                                        <div class="form-group">
-                                                            <label>&nbsp;</label>
-                                                            <select class="form-control form-control-sm" name="level_03" id="level_03">
-                                                                <option value="">{{__('messages.Select')}}</option>
-                                                                @for($x=0; $x<100; $x++)
-                                                                    <option value="{{ $x }}">{{ $x }}</option>
-                                                                @endfor
-                                                            </select>
-                                                        </div>
-                                                    </div>
 
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
@@ -281,6 +270,7 @@
                                                                     <th scope="col" aria-controls="ajax-datatable-service-item" style="text-align: right;">Item Cost</th>
                                                                     {{-- <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Avanço</th>
                                                                     <th scope="col" aria-controls="ajax-datatable-service-item" style="width: 10%; text-align: right;">Status</th> --}}
+                                                                    <th scope="col" aria-controls="ajax-datatable-service-item" aria-sort="ascending"></th>
                                                                     <th scope="col" aria-controls="ajax-datatable-service-item" aria-sort="ascending"></th>
                                                                     <th scope="col" aria-controls="ajax-datatable-service-item" aria-sort="ascending"></th>
                                                                 </tr>
@@ -729,7 +719,6 @@
             <input type="idden" name="service_item_id" id="service_item_id">
             <input type="hidden" name="level_01" value="">
             <input type="hidden" name="level_02" value="">
-            <input type="hidden" name="level_03" value="">
             <input type="hidden" name="item_description" value="">
             <input type="idden" name="item_cost" value="">
 {{--
@@ -865,7 +854,6 @@
             // form-data-item-service
             document.formItemService.level_01.value = document.getElementById("level_01").value;
             document.formItemService.level_02.value = document.getElementById("level_02").value;
-            document.formItemService.level_03.value = document.getElementById("level_03").value;
             document.formItemService.item_description.value = document.getElementById("item_description").value;
             document.formItemService.item_cost.value = document.getElementById("item_cost").value;
 
@@ -889,43 +877,27 @@
                     // },
                     success: function(response){
 
-                        console.log(response);
+                        toastr.options = timeOut = 10000;
+                        toastr.options = {
+                            "progressBar" : true,
+                            "closeButton" : true,
+                            "positionClass": "toast-bottom-full-width",
+                            "onclick": true,
+                            "fadeIn": 300,
+                            "fadeOut": 1000,
+                        },
+                        toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
 
-                        if(response == 'existing data group') {
+                        loadServiceItemsByUser({{ Auth::user()->id }});
+                        document.getElementById("item_description").value = '';
+                        document.getElementById("item_cost").value = '';
 
-                            toastr.options = timeOut = 10000;
-                            toastr.options = {
-                                "progressBar" : true,
-                                "closeButton" : true,
-                                "positionClass": "toast-bottom-full-width",
-                                "onclick": true,
-                                "fadeIn": 300,
-                                "fadeOut": 1000,
-                            },
-                            toastr.error("<b>{{ __('messages.Registration already exists') }}!</b><br>{{ __('messages.Check possible combinations of existing data') }}.", "Oops!");
+                        // setTimeout(function() {
+                        //     document.getElementById("ajax-datatable-service-item_length").style.display = "none";
+                        // }, 150);
 
-                        } else {
+                        // $('#form-data')[0].reset();
 
-                            // toastr.options = timeOut = 10000;
-                            // toastr.options = {
-                            //     "progressBar" : true,
-                            //     "closeButton" : true,
-                            //     "positionClass": "toast-bottom-full-width",
-                            //     "onclick": true,
-                            //     "fadeIn": 300,
-                            //     "fadeOut": 1000,
-                            // },
-                            // toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
-
-                            loadServiceItemsByUser({{ Auth::user()->id }});
-
-                            // setTimeout(function() {
-                            //     document.getElementById("ajax-datatable-service-item_length").style.display = "none";
-                            // }, 150);
-
-                            // $('#form-data')[0].reset();
-
-                        }
 
                     },
                     complete: function(response){
@@ -944,10 +916,6 @@
                         } else if(errors.responseJSON.errors.level_02) {
                             message_erro_aux = errors.responseJSON.errors.level_02[0];
                             message_erro = message_erro_aux.replace("level 02", "<b>{{ __('messages.Level 02') }}</b>")
-
-                        } else if(errors.responseJSON.errors.level_03) {
-                            message_erro_aux = errors.responseJSON.errors.level_03[0];
-                            message_erro = message_erro_aux.replace("level 03", "<b>{{ __('messages.Level 03') }}</b>")
 
                         } else if(errors.responseJSON.errors.item_description) {
                             message_erro_aux = errors.responseJSON.errors.item_description[0];
@@ -988,7 +956,6 @@
             const chars = str.split('.');
             document.getElementById("level_01").value = chars[0].trim();
             document.getElementById("level_02").value = chars[1];
-            document.getElementById("level_03").value = chars[2];
 
             document.getElementById("item_description").value = document.getElementById("colSI-B-"+indx+"").innerText;
             document.getElementById("item_cost").value = document.getElementById("colSI-C-"+indx+"").innerText;
@@ -1009,7 +976,6 @@
 
             document.getElementById("level_01").value = '';
             document.getElementById("level_02").value = '';
-            document.getElementById("level_03").value = '';
             document.getElementById("item_description").value = '';
             document.getElementById("item_cost").value = '';
 
@@ -1079,19 +1045,27 @@
                             }
 
                             contentServicesItem += '<tr>';
-                                contentServicesItem += '<td id="colSI-A-'+i+'" class="sorting_1" style="width: 6%; font-weight: '+bold+';">'+ident+level+'</td>';
-                                contentServicesItem += '<td id="colSI-B-'+i+'" class="sorting_1" style="width: 84%; font-weight: '+bold+';">'+item_description+'</td>';
+                                contentServicesItem += '<td id="colSI-A-'+i+'" class="sorting_1" style="width: 4%; font-weight: '+bold+';">'+ident+level+'</td>';
+                                contentServicesItem += '<td id="colSI-B-'+i+'" class="sorting_1" style="width: 86%; font-weight: '+bold+';">'+item_description+'</td>';
                                 contentServicesItem += '<td id="colSI-C-'+i+'" class="sorting_1" style="width: 6%; font-weight: '+bold+'; text-align: right;">'+item_cost+'</td>';
                                 contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:fcGetServiceItemRow('+id+','+i+')" data-toggle="tooltip" class="edit"><span class="fas fa-pencil-alt"></a></td>';
                                 contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:deleteServiceItem('+id+')" data-toggle="tooltip" class="delete"><span class="fas fa-trash"></span></a></td>';
 
+                                if(identification_level == 2) {
+                                    contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:openModalCost('+id+')" data-toggle="tooltip" class="edit"><span class="fas fa-hard-hat"></span></a></td>';
+                                } else {
+                                    contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%;">&nbsp;</td>';
+                                }
+
+
+                                // <td><span class="pull-right badge bg-green" style="font-size: 12px;">Completed</span></td>
                             contentServicesItem += '</tr>';
 
                         }
                         contentServicesItem += '<tr>';
                             contentServicesItem += '<td class="sorting_1" style="background-color: #d0d0d0; text-align: right;" colspan="2">Grand Total</td>';
                             contentServicesItem += '<td class="sorting_1" style="background-color: #d0d0d0; text-align: right;"><b>'+grandTotal+'</b></td>';
-                            contentServicesItem += '<td class="sorting_1" style="background-color: #d0d0d0;" colspan="2"><b>&nbsp;</b></td>';
+                            contentServicesItem += '<td class="sorting_1" style="background-color: #d0d0d0;" colspan="3"><b>&nbsp;</b></td>';
                         contentServicesItem += '</tr>';
 
 
@@ -1159,7 +1133,6 @@
             document.formItemService.service_item_id.value = document.getElementById("service_item_id").value;
             document.formItemService.level_01.value = document.getElementById("level_01").value;
             document.formItemService.level_02.value = document.getElementById("level_02").value;
-            document.formItemService.level_03.value = document.getElementById("level_03").value;
             document.formItemService.item_description.value = document.getElementById("item_description").value;
             document.formItemService.item_cost.value = document.getElementById("item_cost").value;
 
@@ -1198,7 +1171,6 @@
 
                         document.getElementById("level_01").value           = '';
                         document.getElementById("level_02").value           = '';
-                        document.getElementById("level_03").value           = '';
                         document.getElementById("item_description").value   = '';
                         document.getElementById("item_cost").value          = '';
 
@@ -1225,10 +1197,6 @@
                         } else if(errors.responseJSON.errors.level_02) {
                             message_erro_aux = errors.responseJSON.errors.level_02[0];
                             message_erro = message_erro_aux.replace("level 02", "<b>{{ __('messages.Level 02') }}</b>")
-
-                        } else if(errors.responseJSON.errors.level_03) {
-                            message_erro_aux = errors.responseJSON.errors.level_03[0];
-                            message_erro = message_erro_aux.replace("level 03", "<b>{{ __('messages.Level 03') }}</b>")
 
                         } else if(errors.responseJSON.errors.item_description) {
                             message_erro_aux = errors.responseJSON.errors.item_description[0];
@@ -1406,7 +1374,7 @@
 
             }
 
-        // Clear temporary datas
+        // Clear all temporary service items records
         // setTimeout(function() {
 
         //     var data = $('#form_data_delete_by_user').serialize();
@@ -1420,7 +1388,6 @@
         //         },
 
         //     });
-
 
         // }, 150);
 

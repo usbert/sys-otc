@@ -74,22 +74,17 @@ class PcoService
 
         }
 
-        $item_number = str_pad($data['level_01'], 3, "0", STR_PAD_LEFT).str_pad($data['level_02'], 3, "0", STR_PAD_LEFT).str_pad($data['level_03'], 3, "0", STR_PAD_LEFT);
+        $item_number = str_pad($data['level_01'], 3, "0", STR_PAD_LEFT).str_pad($data['level_02'], 3, "0", STR_PAD_LEFT);
 
-        if($data['level_02'] > 0 && $data['level_03'] > 0) {
-            $identification_level = 3;
-        } else if($data['level_02'] > 0 && $data['level_03'] == 0) {
-             $identification_level = 2;
-        } else if($data['level_02'] == 0 && $data['level_03'] == 0) {
-            $identification_level = 1;
-        } else if($data['level_02'] == 0 && $data['level_03'] > 0) {
+        if($data['level_02'] > 0) {
+            $identification_level = 2;
+        } else {
             $identification_level = 1;
         }
 
         $service_item = array(
             'level_01'              => $data['level_01'],
             'level_02'              => $data['level_02'],
-            'level_03'              => $data['level_03'],
             'identification_level'  => $identification_level,
             'item_number'           => $item_number,
             'item_description'      => $data['item_description'],
@@ -138,15 +133,11 @@ class PcoService
 
         }
 
-        $item_number = str_pad($data['level_01'], 3, "0", STR_PAD_LEFT).str_pad($data['level_02'], 3, "0", STR_PAD_LEFT).str_pad($data['level_03'], 3, "0", STR_PAD_LEFT);
+        $item_number = str_pad($data['level_01'], 3, "0", STR_PAD_LEFT).str_pad($data['level_02'], 3, "0", STR_PAD_LEFT);
 
-        if($data['level_02'] > 0 && $data['level_03'] > 0) {
-            $identification_level = 3;
-        } else if($data['level_02'] > 0 && $data['level_03'] == 0) {
-             $identification_level = 2;
-        } else if($data['level_02'] == 0 && $data['level_03'] == 0) {
-            $identification_level = 1;
-        } else if($data['level_02'] == 0 && $data['level_03'] > 0) {
+        if($data['level_02'] > 0) {
+            $identification_level = 2;
+        } else {
             $identification_level = 1;
         }
 
@@ -155,7 +146,6 @@ class PcoService
             'service_item_id'       => $data['service_item_id'],
             'level_01'              => $data['level_01'],
             'level_02'              => $data['level_02'],
-            'level_03'              => $data['level_03'],
             'identification_level'  => $identification_level,
             'item_number'           => $item_number,
             'item_description'      => $data['item_description'],

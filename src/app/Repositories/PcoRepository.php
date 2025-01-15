@@ -106,7 +106,7 @@ class PcoRepository implements PcoRepositoryInterface
         )
         ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(item_cost, 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS item_cost_en')
         ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(item_cost, 2),\'.\',\';\'),\',\',\'.\'),\';\',\',\')) AS item_cost_br')
-        ->selectRaw('CONCAT(level_01, \'.\', level_02, \'.\', level_03) AS level')
+        ->selectRaw('CONCAT(level_01, \'.\', level_02) AS level')
         ->where('user_id', $user_id)
         ->orderBy('item_number')
         ->get();
@@ -168,7 +168,6 @@ class PcoRepository implements PcoRepositoryInterface
             $input                          = ServiceItem::find($data['service_item_id']);
             $input->level_01                = $data['level_01'];
             $input->level_02                = $data['level_02'];
-            $input->level_03                = $data['level_03'];
             $input->identification_level    = $data['identification_level'];
             $input->item_description        = $data['item_description'];
             $input->item_number             = $data['item_number'];
