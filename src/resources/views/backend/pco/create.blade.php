@@ -744,6 +744,11 @@
             @csrf
         </form>
 
+        <form name="form_delete_service_item" id="form_delete_service_item" method="POST">
+            <input type="hidden" name="id" value="">
+            @csrf
+        </form>
+
 
     </section>
     <!-- /.content -->
@@ -1077,8 +1082,8 @@
                                 contentServicesItem += '<td id="colSI-A-'+i+'" class="sorting_1" style="width: 6%; font-weight: '+bold+';">'+ident+level+'</td>';
                                 contentServicesItem += '<td id="colSI-B-'+i+'" class="sorting_1" style="width: 84%; font-weight: '+bold+';">'+item_description+'</td>';
                                 contentServicesItem += '<td id="colSI-C-'+i+'" class="sorting_1" style="width: 6%; font-weight: '+bold+'; text-align: right;">'+item_cost+'</td>';
-                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:fcGetServiceItemRow('+id+','+i+')" data-toggle="tooltip" data-id="0" class="edit"><span class="fas fa-pencil-alt"></a></td>';
-                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:void(0)" data-toggle="tooltip" onClick="deleteReg()" data-id="" class="delete"><span class="fas fa-trash"></span></a></td>';
+                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:fcGetServiceItemRow('+id+','+i+')" data-toggle="tooltip" class="edit"><span class="fas fa-pencil-alt"></a></td>';
+                                contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:deleteServiceItem('+id+')" data-toggle="tooltip" class="delete"><span class="fas fa-trash"></span></a></td>';
 
                             contentServicesItem += '</tr>';
 
@@ -1189,8 +1194,16 @@
 
                         toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
 
-                        $('#formItemService')[0].reset();
                         loadServiceItemsByUser({{ Auth::user()->id }});
+
+                        document.getElementById("level_01").value           = '';
+                        document.getElementById("level_02").value           = '';
+                        document.getElementById("level_03").value           = '';
+                        document.getElementById("item_description").value   = '';
+                        document.getElementById("item_cost").value          = '';
+
+                        $('#formItemService')[0].reset();
+
                         document.getElementById("btnSaveSI").style.display = "";
                         document.getElementById("btnUpdateSI").style.display = "none";
                         document.getElementById("btnCancelSI").style.display = "none";
@@ -1349,7 +1362,49 @@
         });
 
 
+        // Delete Service Item
+        function deleteServiceItem(id) {
 
+            Swal.fire({
+                title: "{{ __('messages.Confirm record deletion') }}",
+                text: "{{ __('messages.You wont be able to reverse this') }}!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "{{ __('messages.Yes delete') }}!"
+                }).then((result) => {
+                if (result.isConfirmed) {
+
+                    document.form_delete_service_item.id.value = id;
+
+                    var data = $('#form_delete_service_item').serialize();
+
+                    $.ajax({
+                        type: 'post',
+                        url: "{{ '/pco/delete-service-item' }}",
+                        data: data,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+
+                    });
+
+                    Swal.fire({
+                        title: "{{ __('messages.Deleted') }}!",
+                        text: "{{ __('messages.Successfully deleted record') }}!",
+                        icon: "success"
+                    });
+
+                    // REFRESH DATATABLE
+                    setTimeout(function() {
+                        loadServiceItemsByUser({{ Auth::user()->id }});
+                    }, 200);
+
+                }
+            });
+
+            }
 
         // Clear temporary datas
         // setTimeout(function() {
@@ -1368,6 +1423,8 @@
 
 
         // }, 150);
+
+
 
 
 

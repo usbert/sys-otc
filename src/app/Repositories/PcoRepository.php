@@ -188,5 +188,12 @@ class PcoRepository implements PcoRepositoryInterface
 
     }
 
+    public function deleteServiceItem($id)
+    {
+        $return = ServiceItem::destroy($id);
+        return $return;
+    }
+
+
 
 }

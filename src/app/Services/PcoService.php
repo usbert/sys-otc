@@ -169,5 +169,14 @@ class PcoService
     }
 
 
+    public function deleteServiceItem(array $data)
+    {
+        $pcoServiceItem = $this->pcoRepository->deleteServiceItem($data['id']);
+
+    }
+
+
+
+
 
 }
