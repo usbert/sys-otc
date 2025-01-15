@@ -80,7 +80,9 @@ class PcoService
             $identification_level = 3;
         } else if($data['level_02'] > 0 && $data['level_03'] == 0) {
              $identification_level = 2;
-        } else {
+        } else if($data['level_02'] == 0 && $data['level_03'] == 0) {
+            $identification_level = 1;
+        } else if($data['level_02'] == 0 && $data['level_03'] > 0) {
             $identification_level = 1;
         }
 
@@ -143,6 +145,8 @@ class PcoService
         } else if($data['level_02'] > 0 && $data['level_03'] == 0) {
              $identification_level = 2;
         } else if($data['level_02'] == 0 && $data['level_03'] == 0) {
+            $identification_level = 1;
+        } else if($data['level_02'] == 0 && $data['level_03'] > 0) {
             $identification_level = 1;
         }
 

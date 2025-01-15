@@ -165,15 +165,16 @@ class PcoRepository implements PcoRepositoryInterface
     {
         try {
 
-            $input                      = ServiceItem::find($data['service_item_id']);
-            $input->level_01            = $data['level_01'];
-            $input->level_02            = $data['level_02'];
-            $input->level_03            = $data['level_03'];
-            $input->item_description    = $data['item_description'];
-            $input->item_number         = $data['item_number'];
-            $input->item_description    = $data['item_description'];
-            $input->item_cost           = $data['item_cost'];
-            $input->user_id             = Auth::user()->id;
+            $input                          = ServiceItem::find($data['service_item_id']);
+            $input->level_01                = $data['level_01'];
+            $input->level_02                = $data['level_02'];
+            $input->level_03                = $data['level_03'];
+            $input->identification_level    = $data['identification_level'];
+            $input->item_description        = $data['item_description'];
+            $input->item_number             = $data['item_number'];
+            $input->item_description        = $data['item_description'];
+            $input->item_cost               = $data['item_cost'];
+            $input->user_id                 = Auth::user()->id;
 
 
             $input->save();

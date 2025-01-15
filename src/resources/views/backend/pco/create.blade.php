@@ -1086,7 +1086,7 @@
                         contentServicesItem += '<tr>';
                             contentServicesItem += '<td class="sorting_1" style="background-color: #d0d0d0; text-align: right;" colspan="2">Grand Total</td>';
                             contentServicesItem += '<td class="sorting_1" style="background-color: #d0d0d0; text-align: right;"><b>'+grandTotal+'</b></td>';
-                            contentServicesItem += '<td class="sorting_1" style="background-color: #d0d0d0;"><b>&nbsp;</b></td>';
+                            contentServicesItem += '<td class="sorting_1" style="background-color: #d0d0d0;" colspan="2"><b>&nbsp;</b></td>';
                         contentServicesItem += '</tr>';
 
 
