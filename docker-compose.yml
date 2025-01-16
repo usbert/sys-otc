@@ -3,21 +3,25 @@ version: '3'
 services:
 
        web:
-              image: nginx:latest
+              # image: nginx:1.21-alpine
+              container_name: adroaldo
+              build: 
+                     context: .
+                     dockerfile: web.dockerfile
               ports:
                      - "8088:80"
                      # - "9086:443"
                      # - '${VITE_PORT:-3000}:${VITE_PORT:-3000}'
               volumes:
                      - ./src:/var/www/html
-                     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+                     # - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
               links:
                      - app
                      # - postgres
                      # - redis
 
        app:
-              image: meuphp82
+              image: meuphp8x
               volumes:
                      - ./src:/var/www/html
                      - ./app/limits.ini:/usr/local/etc/php/conf.d/limits.ini

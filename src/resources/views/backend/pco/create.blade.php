@@ -225,7 +225,9 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-2">
+                                                    <input type="hidden" name="item_cost" id="item_cost">
+
+                                                    {{-- <div class="col-sm-2">
                                                         <div class="form-group">
                                                             <label>Item Cost</label>
                                                             <input type="text" name="item_cost" id="item_cost" class="form-control form-control-sm"
@@ -241,7 +243,7 @@
                                                             value=""
                                                             >
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
 
 
                                                     <div class="col-sm-1">
@@ -534,7 +536,7 @@
 
 
         <!-- Modal -->
-        <div class="modal fade" id="myModalCost" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="myModalAttachLabel" aria-hidden="true">
+        <div class="modal fade" id="myModalCost" tabindex="-1" role="dialog" aria-labelledby="myModalAttachLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header" style="background-color: #6c757d; color: white;">
@@ -544,7 +546,7 @@
                 <div class="modal-body">
 
                     {{-- start form modal --}}
-                    <form action="{{ url('file/store/') }}" id="image-form" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url('file/store/') }}" id="form-modal-labor" class="form-horizontal" method="POST" enctype="multipart/form-data">
 
                         @csrf
 
@@ -554,7 +556,23 @@
                                     <div class="card card-secondary">
                                         <div class="card-body">
 
+                                            <input type="idden" id="modal_service_item_id">
+
                                             <div class="row">
+
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <label>Service Item</label>
+                                                        <div class="input-group input-group-sm">
+                                                            <input type="text" id="itemModalTxt" class="form-control form-control-sm" @readonly(true)>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
 
 
                                                 <div class="col-sm-6">
@@ -562,6 +580,9 @@
                                                         <label>Function</label>
                                                         <select class="form-control form-control-sm" name="" id="">
                                                             <option value="">-- {{__('messages.Select')}} --</option>
+                                                            @foreach ($result['employeeRoleCombo'] as $rule)
+                                                                <option value="{{ $rule->id }}"> {{ $rule->name }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -569,14 +590,34 @@
                                                 <div class="col-sm-2">
                                                     <label>Hours</label>
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" name="hours" id="hours" class="form-control form-control-sm" value=''>
+                                                        <input type="text" name="hours" id="hours" class="form-control form-control-sm"
+                                                            maxlength="5"
+                                                            @if("{{ Config::get('app.locale') }}" == 'pt_BR')
+                                                            {
+                                                                onkeypress="return fc_decimal(this, '.', ',', event, 5);"
+                                                            }
+                                                            @else {
+                                                                onkeypress="return fc_decimal(this,',','.',event, 5);"
+                                                            }
+                                                            @endif
+                                                        >
                                                     </div>
                                                 </div>
 
                                                 <div class="col-sm-2">
                                                     <label>Rate</label>
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" name="hours" id="hours" class="form-control form-control-sm" value=''>
+                                                        <input type="text" name="hours" id="hours" class="form-control form-control-sm"
+                                                        maxlength="9"
+                                                        @if("{{ Config::get('app.locale') }}" == 'pt_BR')
+                                                        {
+                                                            onkeypress="return fc_decimal(this, '.', ',', event, 9);"
+                                                        }
+                                                        @else {
+                                                            onkeypress="return fc_decimal(this,',','.',event, 9);"
+                                                        }
+                                                        @endif
+                                                        >
                                                     </div>
                                                 </div>
 
@@ -595,14 +636,17 @@
                                                 <table style="font-size: 14px;" class="table table-striped table-sm no-footer dataTable" id="ajax-crud-datatable" aria-describedby="ajax-crud-datatable_info">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col" aria-controls="ajax-crud-datatable" style="width: 88%;" aria-sort="ascending">Function</th>
-                                                            <th scope="col" aria-controls="ajax-crud-datatable" style="width: 10%; text-align: right;">Hour</th>
-                                                            <th scope="col" aria-controls="ajax-crud-datatable" style="width: 10%; text-align: right;">Rate</th>
-                                                            <th scope="col" aria-controls="ajax-crud-datatable" style="width: 10%; text-align: right;">Total $</th>
-                                                            <th scope="col" aria-controls="ajax-crud-datatable" style="width: 1%;" aria-sort="ascending"></th>
+                                                            <th scope="col" aria-controls="ajax-crud-datatable" style="width: 88%; color: #999;" aria-sort="ascending">Function</th>
+                                                            <th scope="col" aria-controls="ajax-crud-datatable" style="width: 10%; color: #999; text-align: right;">Hour</th>
+                                                            <th scope="col" aria-controls="ajax-crud-datatable" style="width: 10%; color: #999; text-align: right;">Rate</th>
+                                                            <th scope="col" aria-controls="ajax-crud-datatable" style="width: 10%; color: #999; text-align: right;">Total $</th>
+                                                            <th scope="col" aria-controls="ajax-crud-datatable" style="width: 1%; color: #999;" aria-sort="ascending"></th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
+                                                    <tbody id="divBodyLabor">
+
+                                                    </tbody>
+                                                    {{-- <tbody>
                                                         <tr>
                                                             <td class="sorting_1"><b>Assist. Project Manager</b></td>
                                                             <td style="text-align: right;"><b>2</b></td>
@@ -611,7 +655,7 @@
                                                             <td><a href="#" data-toggle="tooltip" onclick="" data-id="18" class="delete"><span class="fas fa-trash"></span></a></td>
                                                         </tr>
 
-                                                    </tbody>
+                                                    </tbody> --}}
                                                 </table>
 
                                             </row>
@@ -744,6 +788,27 @@
 
     <style>
         input, select { margin-bottom: 8px; }
+
+
+        /* #myModalCost .modal-dialog{
+
+            width:80%;
+
+        } */
+
+        .modal-content {
+                width: 800px;
+                margin-left: 15%;
+            }
+            .model-modal  {
+                width: 1200px;
+                margin-left: 15%;
+        }
+
+        .modal-dialog  {
+                width: 1200px;
+                margin-left: 15%;
+        }
 
         /* #ajax-datatable-service-item td:nth-of-type(1) {
             font-weight: bold;
@@ -1052,7 +1117,7 @@
                                 contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:deleteServiceItem('+id+')" data-toggle="tooltip" class="delete"><span class="fas fa-trash"></span></a></td>';
 
                                 if(identification_level == 2) {
-                                    contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:openModalCost('+id+')" data-toggle="tooltip" class="edit"><span class="fas fa-hard-hat"></span></a></td>';
+                                    contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%; font-weight: '+bold+';"><a href="javascript:openModalCost('+id+','+i+')" data-toggle="tooltip" class="edit"><span class="fas fa-hard-hat"></span></a></td>';
                                 } else {
                                     contentServicesItem += '<td id="colSI-D-'+i+'" class="sorting_1" style="width: 2%;">&nbsp;</td>';
                                 }
@@ -1278,7 +1343,18 @@
 
 
 
-        function openModalCost() {
+        function openModalCost(id, indx) {
+
+            document.getElementById("modal_service_item_id").value = id;
+            document.getElementById('itemModalTxt').value = document.getElementById("colSI-A-"+indx+"").innerText+'. '+document.getElementById("colSI-B-"+indx+"").innerText;
+
+// const str = document.getElementById("colSI-A-"+indx+"").innerText;
+// const chars = str.split('.');
+// document.getElementById("level_01").value = chars[0].trim();
+// document.getElementById("level_02").value = chars[1];
+
+// document.getElementById("item_description").value = document.getElementById("colSI-B-"+indx+"").innerText;
+
             $('#myModalCost').modal({
                 backdrop: 'static',
                 keyboard: false

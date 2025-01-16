@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\EmployeeRole;
 use App\Models\Pco;
 use App\Models\Project;
 use App\Models\ServiceItem;
@@ -40,8 +41,17 @@ class PcoRepository implements PcoRepositoryInterface
         ->orderBy('name', 'asc')
         ->get();
 
+        $employee_role = EmployeeRole::select(
+            'id',
+            'name',
+        )
+        ->where('is_activated', 1)
+        ->orderBy('name', 'asc')
+        ->get();
+
         $return = array(
-            'projectCombo' => $project,
+            'projectCombo'  => $project,
+            'employeeRoleCombo' => $employee_role,
         );
 
         return $return;
