@@ -301,7 +301,7 @@
                                                                     {{-- <td style="text-align: right;">100%</td>
                                                                     <td><span class="pull-right badge bg-green" style="font-size: 12px;">Completed</span></td> --}}
                                                                     <td><a href="#" data-toggle="tooltip" onclick="deleteReg(18)" data-id="18" class="delete"><span class="fas fa-trash"></span></a></td>
-                                                                    <td><a href="javascript:openModalCost()" data-toggle="tooltip" data-id="18" class="delete"><span class="fas fa-hard-hat"></span></a><td>
+                                                                    <td><a href="javascript:openModalLaborAppropriation()" data-toggle="tooltip" data-id="18" class="delete"><span class="fas fa-hard-hat"></span></a><td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th scope="col" aria-controls="ajax-crud-datatable" style="width: 1%;" aria-sort="ascending"><b>1.2</b></th>
@@ -1117,7 +1117,7 @@
 
 
 
-        function openModalCost() {
+        function openModalLaborAppropriation() {
             $('#myModalCost').modal({
                 backdrop: 'static',
                 keyboard: false

@@ -167,6 +167,33 @@ class PcoService
 
 
 
+    public function storeLaborAppropriation(array $data)
+    {
+        if(Config::get('app.locale') == 'en') {
+            $hours = Parse_money_database_en($data['hours']);
+        } else {
+            $hours = Parse_money_database_br($data['hours']);
+        }
+
+        if(Config::get('app.locale') == 'en') {
+            $rate = Parse_money_database_en($data['rate']);
+        } else {
+            $rate = Parse_money_database_br($data['rate']);
+        }
+
+        $laborAppropriation = array(
+            'service_item_id'   => $data['modal_service_item_id'],
+            'employee_role_id'  => $data['employee_role_id'],
+            'hours'             => $hours,
+            'rate'              => $rate,
+            'status'            => 1,
+            'user_id'           => Auth::user()->id,
+        );
+
+
+        $laborAppropriation_id = $this->pcoRepository->storeLaborAppropriation($laborAppropriation);
+    }
+
 
 
 }

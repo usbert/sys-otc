@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\EmployeeRole;
+use App\Models\LaborAppropriation;
 use App\Models\Pco;
 use App\Models\Project;
 use App\Models\ServiceItem;
@@ -203,6 +204,11 @@ class PcoRepository implements PcoRepositoryInterface
         return $return;
     }
 
+
+    public function storeLaborAppropriation($data)
+    {
+        return LaborAppropriation::create($data)->id;
+    }
 
 
 }

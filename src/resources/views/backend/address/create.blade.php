@@ -283,7 +283,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" onclick="closeModalCost()">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" onclick="closeModalLaborAppropriation()">
                         <i class="fa fa-close"></i>&nbsp;
                         {{ __('messages.Button.Close') }}
                     </button>
