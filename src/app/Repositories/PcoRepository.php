@@ -211,4 +211,25 @@ class PcoRepository implements PcoRepositoryInterface
     }
 
 
+
+    public function getLaborAppropriationByUser($user_id) {
+
+        $laborAppropriation = LaborAppropriation::select(
+            'labor_appropriations.id',
+            'employee_roles.name as employee_role_name',
+        )
+        ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(hours, 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS hours')
+        ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(rate, 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS rate')
+        ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT((hours * rate), 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS subtotal')
+        ->where('user_id', $user_id)
+        ->leftJoin('employee_roles', 'employee_roles.id', '=', 'labor_appropriations.employee_role_id')
+        ->orderBy('employee_role_name')
+        ->get();
+
+       return $laborAppropriation;
+
+    }
+
+
 }
+

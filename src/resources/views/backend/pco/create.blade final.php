@@ -1042,15 +1042,13 @@
                     processing: true,
                     serverSide: true,
                     searching: false,
-                    paging: false,
-                    info: false,
                     ajax: "{{ url('pco/get-labor-appropriation-by-user/') }}/"+user_id,
                     columns: [
-                        { data: 'employee_role_name',   name: 'employee_role_name',     orderable: false, width: '60%' },
-                        { data: 'hours',                name: 'hours',                  orderable: false, width: '10%' },
-                        { data: 'rate',                 name: 'rate',                   orderable: false, width: '10%' },
-                        { data: 'subtotal',             name: 'subtotal',               orderable: false, width: '10%' },
-                        { data: 'action',               name: 'action',                 orderable: false, width: '10%', className: "text-right" },
+                        { data: 'short_name',           name: 'short_name',     orderable: false, width: '15%' },
+                        { data: 'type_name',            name: 'type_name',      orderable: false, width: '20%' },
+                        { data: 'original_name',        name: 'original_name',  orderable: false, width: '25%' },
+                        { data: 'comment',              name: 'comment',        orderable: false, width: '30%' },
+                        { data: 'action',               name: 'action',         orderable: false, width: '10%', className: "text-right" },
                     ],
                     // dom: 'Bfrtip',
                     order: [[1, 'asc']],
@@ -1060,11 +1058,11 @@
                         visible: true
                     }],
                     // QUANTIDADE DE LINHAS NA PÁGINA
-                    // lengthMenu: [
-                    //     [6, 8, 10, 25, 50, 100, -1],
-                    //     ['6', '8', 10, '25', '50', '100', 'Todos']
-                    // ],
-                    // pageLength: '6',
+                    lengthMenu: [
+                        [6, 8, 10, 25, 50, 100, -1],
+                        ['6', '8', 10, '25', '50', '100', 'Todos']
+                    ],
+                    pageLength: '6',
                 });
 
 

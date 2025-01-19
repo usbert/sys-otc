@@ -1,6 +1,6 @@
 <script>
     // ********* SAVING SERVICE ITEM **********
-    function fcAddLabor() {
+    function fcAddLaborAppropriation() {
 
         // form-data-item-service
         document.formLaborAppropriation.employee_role_id.value = document.getElementById("employee_role_id").value;
@@ -34,6 +34,9 @@
 
                 // loadServiceItemsByUser(1);
                 $('#formLaborAppropriation')[0].reset();
+
+                loadLaborAppropriationByUser(1)
+
 
             },
             complete: function(response){

@@ -322,6 +322,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/update-service-item', 'updateServiceItem')->name('update-service-item');
         Route::post('/delete-service-item', 'deleteServiceItem')->name('delete-service-item');
         Route::post('/store-labor-appropriation', 'storeLaborAppropriation')->name('store-labor-appropriation');
+        Route::get('/get-labor-appropriation-by-user/{user_id}', 'getLaborAppropriationByUser')->name('get-labor-appropriation-by-user');
     });
 
 

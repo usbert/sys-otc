@@ -196,4 +196,9 @@ class PcoService
 
 
 
+    public function getLaborAppropriationByUser($user_id)
+    {
+        return $this->pcoRepository->getLaborAppropriationByUser($user_id);
+    }
+
 }
