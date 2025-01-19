@@ -32,10 +32,11 @@
                 },
                 toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
 
-                // loadServiceItemsByUser(1);
-                $('#formLaborAppropriation')[0].reset();
+                document.getElementById("employee_role_id").value = '';
+                document.getElementById("hours").value = '';
+                document.getElementById("rate").value = '';
 
-                loadLaborAppropriationByUser(1)
+                loadLaborAppropriationByUser({{ Auth::user()->id }});
 
 
             },
