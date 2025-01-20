@@ -204,15 +204,20 @@ class PcoRepository implements PcoRepositoryInterface
         return $return;
     }
 
-
     public function storeLaborAppropriation($data)
     {
         return LaborAppropriation::create($data)->id;
     }
 
+    public function deleteLaborAppropriation($id)
+    {
+        $return = LaborAppropriation::destroy($id);
+        return $return;
+    }
 
 
-    public function getLaborAppropriationByUser($user_id) {
+
+    public function getLaborAppropriationByUser($service_item_id, $user_id) {
 
         $laborAppropriation = LaborAppropriation::select(
             'labor_appropriations.id',
@@ -221,12 +226,36 @@ class PcoRepository implements PcoRepositoryInterface
         ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(hours, 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS hours')
         ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(rate, 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS rate')
         ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT((hours * rate), 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS subtotal')
+        ->where('service_item_id', $service_item_id)
         ->where('user_id', $user_id)
         ->leftJoin('employee_roles', 'employee_roles.id', '=', 'labor_appropriations.employee_role_id')
         ->orderBy('employee_role_name')
         ->get();
 
        return $laborAppropriation;
+
+    }
+
+
+    public function updateLaborAppropriation(array $data)
+    {
+        try {
+
+            $input                      = LaborAppropriation::find($data['labor_appropriation_id']);
+            $input->employee_role_id   = $data['employee_role_id'];
+            $input->hours              = $data['hours'];
+            $input->rate               = $data['rate'];
+            $input->status             = $data['status'];
+            $input->user_id            = Auth::user()->id;
+
+            $input->save();
+
+            return $input;
+
+        } catch (\Exception $e) {
+            // dd($e);
+            return response()->json(["error" => $e->getMessage()]);
+        }
 
     }
 

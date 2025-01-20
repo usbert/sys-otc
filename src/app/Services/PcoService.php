@@ -166,18 +166,19 @@ class PcoService
     }
 
 
+    public function deleteLaborAppropriation(array $data)
+    {
+        $del = $this->pcoRepository->deleteLaborAppropriation($data['id']);
+    }
+
 
     public function storeLaborAppropriation(array $data)
     {
         if(Config::get('app.locale') == 'en') {
             $hours = Parse_money_database_en($data['hours']);
-        } else {
-            $hours = Parse_money_database_br($data['hours']);
-        }
-
-        if(Config::get('app.locale') == 'en') {
             $rate = Parse_money_database_en($data['rate']);
         } else {
+            $hours = Parse_money_database_br($data['hours']);
             $rate = Parse_money_database_br($data['rate']);
         }
 
@@ -196,9 +197,35 @@ class PcoService
 
 
 
-    public function getLaborAppropriationByUser($user_id)
+    public function updateLaborAppropriation(array $data)
     {
-        return $this->pcoRepository->getLaborAppropriationByUser($user_id);
+
+        if(Config::get('app.locale') == 'en') {
+            $rate = Parse_money_database_en($data['rate']);
+            $hours = Parse_money_database_en($data['hours']);
+        } else {
+            $rate = Parse_money_database_br($data['rate']);
+            $hours = Parse_money_database_br($data['hours']);
+        }
+
+        $laborAppropriation = array(
+
+            'employee_role_id'  => $data['employee_role_id'],
+            'hours'             => $hours,
+            'rate'              => $rate,
+            'status'            => 1,
+            'user_id'           => Auth::user()->id
+        );
+
+        $updateLaborAppropriation = $this->pcoRepository->updateLaborAppropriation($laborAppropriation);
+
+    }
+
+
+
+    public function getLaborAppropriationByUser($service_item_id, $user_id)
+    {
+        return $this->pcoRepository->getLaborAppropriationByUser($service_item_id, $user_id);
     }
 
 }

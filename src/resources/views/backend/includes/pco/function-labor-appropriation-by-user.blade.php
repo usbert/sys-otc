@@ -1,6 +1,6 @@
 <script>
 
-function loadLaborAppropriationByUser(user_id) {
+function loadLaborAppropriationByUser(service_item_id, user_id) {
 
     $(document).ready( function () {
 
@@ -15,7 +15,7 @@ function loadLaborAppropriationByUser(user_id) {
             processing: false,
             serverSide: true,
             searching: true,
-            ajax: "{{ url('pco/get-labor-appropriation-by-user/') }}"+user_id,
+            ajax: "{{ url('pco/get-labor-appropriation-by-user/') }}/"service_item_id+'/'+user_id,
             columns: [
                 { data: 'employee_role_name',   name: 'employee_role_name', orderable: true, width: "70%" },
                 { data: 'hours',                name: 'hours', orderable: true, width: "10%" },

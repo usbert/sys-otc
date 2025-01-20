@@ -177,7 +177,6 @@ class PcoController extends Controller
 
     }
 
-
     public function storeLaborAppropriation(CreateLaborAppropriationRequest $request) {
         try {
             $result = $this->pcoService->storeLaborAppropriation( $request->all());
@@ -189,9 +188,9 @@ class PcoController extends Controller
     }
 
 
-    public function getLaborAppropriationByUser($user_id) {
+    public function getLaborAppropriationByUser(int $service_item_id, int $user_id) {
         try {
-            $result = $this->pcoService->getLaborAppropriationByUser($user_id);
+            $result = $this->pcoService->getLaborAppropriationByUser($service_item_id, $user_id);
 
             // return response()->json($result);
 
@@ -200,7 +199,7 @@ class PcoController extends Controller
                 ->addColumn('action', function($row) {
                     $idx = $row->id;
                     $btn  = "<a href='javascript:fcGetLaborAppropriationRow($idx,$row)' data-toggle='tooltip' data-id='$idx' class='edit'><span class='fas fa-pencil-alt'></a>&nbsp;";
-                    $btn .= "<a href='javascript:deleteServiceItem($idx)' data-toggle='tooltip' data-id='$idx' class='delete'><span class='fas fa-trash'></span></a>&nbsp;";
+                    $btn .= "<a href='javascript:deleteLaborAppropriation($idx)' data-toggle='tooltip' data-id='$idx' class='delete'><span class='fas fa-trash'></span></a>&nbsp;";
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -215,6 +214,17 @@ class PcoController extends Controller
         }
     }
 
+
+    public function deleteLaborAppropriation(Request $request) {
+
+        try {
+            $result = $this->pcoService->deleteLaborAppropriation( $request->all());
+            return response()->json($result);
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
+    }
 
 
 }

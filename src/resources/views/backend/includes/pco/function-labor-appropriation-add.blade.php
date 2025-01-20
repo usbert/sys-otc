@@ -3,6 +3,7 @@
     function fcAddLaborAppropriation() {
 
         // form-data-item-service
+        service_item_id = document.formLaborAppropriation.modal_service_item_id.value;
         document.formLaborAppropriation.employee_role_id.value = document.getElementById("employee_role_id").value;
         document.formLaborAppropriation.hours.value = document.getElementById("hours").value;
         document.formLaborAppropriation.rate.value = document.getElementById("rate").value;
@@ -36,7 +37,7 @@
                 document.getElementById("hours").value = '';
                 document.getElementById("rate").value = '';
 
-                loadLaborAppropriationByUser({{ Auth::user()->id }});
+                loadLaborAppropriationByUser(service_item_id, {{ Auth::user()->id }});
 
 
             },

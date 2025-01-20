@@ -12,6 +12,7 @@
 @include('backend.includes.pco.function-service-items-by-user')
 @include('backend.includes.pco.function-service-item-delete')
 @include('backend.includes.pco.function-labor-appropriation-add')
+@include('backend.includes.pco.function-labor-appropriation-delete')
 {{-- @include('backend.includes.pco.function-labor-appropriation-by-user') --}}
 
 <div class="content-wrapper">
@@ -788,6 +789,11 @@
             <input type="hidden" name="id" value="">
             @csrf
         </form>
+appo
+        <form name="form_delete_labor_appropriation" id="form_delete_labor_appropriation" method="POST">
+            <input type="hidden" name="id" value="">
+            @csrf
+        </form>
 
 
     </section>
@@ -979,8 +985,15 @@
                 backdrop: 'static',
                 keyboard: false
             });
-            }
-            function closeModalLaborAppropriation() {
+
+            setTimeout(function() {
+                loadLaborAppropriationByUser(id, {{ Auth::user()->id }})
+            }, 300);
+
+
+        }
+
+        function closeModalLaborAppropriation() {
             $('#myModalCost').modal('hide');
             return false;
         }
@@ -1027,7 +1040,7 @@
 
 
 
-        function loadLaborAppropriationByUser(user_id) {
+        function loadLaborAppropriationByUser(service_item_id, user_id) {
 
             $(document).ready( function () {
 
@@ -1044,7 +1057,7 @@
                     searching: false,
                     paging: false,
                     info: false,
-                    ajax: "{{ url('pco/get-labor-appropriation-by-user/') }}/"+user_id,
+                    ajax: "{{ url('pco/get-labor-appropriation-by-user/') }}/"+service_item_id+'/'+user_id,
                     columns: [
                         { data: 'employee_role_name',   name: 'employee_role_name',     orderable: false, width: '60%' },
                         { data: 'hours',                name: 'hours',                  orderable: false, width: '10%' },
