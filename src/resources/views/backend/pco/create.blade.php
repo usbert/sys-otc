@@ -4,16 +4,19 @@
 
 @include('backend.includes.datatables')
 
-{{-- Incluir os Itens de Seviço --}}
+{{-- SERVICE ITEMS --}}
 @include('backend.includes.pco.function-service-item-add')
-@include('backend.includes.pco.function-service-item-update')
-@include('backend.includes.pco.function-service-item-get')      {{-- Adicionar  os Itens de Seviço --}}
-@include('backend.includes.pco.function-service-item-cancel')
-@include('backend.includes.pco.function-service-items-by-user')
-@include('backend.includes.pco.function-service-item-delete')
-@include('backend.includes.pco.function-labor-appropriation-add')
-@include('backend.includes.pco.function-labor-appropriation-delete')
-{{-- @include('backend.includes.pco.function-labor-appropriation-by-user') --}}
+@include('backend.includes.pco.function-service-item-get')              {{-- Carrega nos inputs os dados do Itens de Seviço para alteração - fcGetServiceItemRow(id, indx) --}}
+@include('backend.includes.pco.function-service-item-cancel')           {{-- Cancela alteração do Itens de Seviço --}}
+@include('backend.includes.pco.function-service-item-update')           {{-- Altera o Item de Seviço selecionado --}}
+@include('backend.includes.pco.function-service-items-by-user')         {{-- Monta a tabela de Itens de Serviços por usuário --}}
+@include('backend.includes.pco.function-service-item-delete')           {{-- Deleta Itens de Serviços --}}
+{{-- LABOR APPROPRIATIONS --}}
+@include('backend.includes.pco.function-labor-appropriation-add')       {{-- Adicionar Labor Appropriation --}}
+@include('backend.includes.pco.function-labor-appropriation-delete')    {{-- Deleta Labor Appropriation --}}
+@include('backend.includes.pco.function-labor-appropriation-by-user')   {{-- Monta a DataTable de Labor Appropriation por usuário --}}
+@include('backend.includes.pco.function-labor-appropriation-get')       {{-- Carrega nos inputs os dados do Labor Appropriation para alteração - fcGetLaborAppropriationRow(id, indx) --}}
+
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -586,6 +589,9 @@
 
 
                                             <div class="col-sm-6">
+
+                                                <input type="idden" name="labor_appropriation_id" id="labor_appropriation_id" value="">
+
                                                 <div class="form-group">
                                                     <label>Function</label>
                                                     <select class="form-control form-control-sm" name="employee_role_id" id="employee_role_id">
@@ -635,9 +641,9 @@
                                                 <label>&nbsp;</label>
                                                 <div class="input-group input-group-sm">
                                                     <span class="input-group-append">
-                                                        <button type="button" class="btn btn-info btn-flat" onclick="fcAddLaborAppropriation()"    id="btnSaveLaborAppropriation" title="Add">&nbsp;<span class="fas fa-plus"></span></button>
-                                                        <button type="button" class="btn btn-info btn-flat" onclick="fcUpdateLabor()" id="btnUpdateLaborAppropriation" title="Update" style="display: none;">&nbsp;<span class="fas fa-sync"></span></button>&nbsp;
-                                                        <button type="button" class="btn btn-danger btn-flat" onclick="fcCancelLaborRow()" id="btnCancelLaborAppropriation" title="Cancel" style="display: none;">&nbsp;<span class="fas fa-ban"></span></button>
+                                                        <button type="button" class="btn btn-info btn-flat" onclick="fcAddLaborAppropriation()" id="btnSaveLaborAppropriation" title="Add">&nbsp;<span class="fas fa-plus"></span></button>
+                                                        <button type="button" class="btn btn-info btn-flat" onclick="fcUpdateLabor()"           id="btnUpdateLaborAppropriation" title="Update" style="display: none;">&nbsp;<span class="fas fa-sync"></span></button>&nbsp;
+                                                        <button type="button" class="btn btn-danger btn-flat" onclick="fcCancelLaborRow()"      id="btnCancelLaborAppropriation" title="Cancel" style="display: none;">&nbsp;<span class="fas fa-ban"></span></button>
                                                     </span>
                                                 </div>
                                             </div>
@@ -1036,57 +1042,6 @@ appo
                 }
             });
         });
-
-
-
-
-        function loadLaborAppropriationByUser(service_item_id, user_id) {
-
-            $(document).ready( function () {
-
-                $('#ajax-datatable-labor-appropriation').DataTable().clear().destroy();
-
-
-                $.ajaxSetup({
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                });
-
-                $('#ajax-datatable-labor-appropriation').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    searching: false,
-                    paging: false,
-                    info: false,
-                    ajax: "{{ url('pco/get-labor-appropriation-by-user/') }}/"+service_item_id+'/'+user_id,
-                    columns: [
-                        { data: 'employee_role_name',   name: 'employee_role_name',     orderable: false, width: '60%' },
-                        { data: 'hours',                name: 'hours',                  orderable: false, width: '10%' },
-                        { data: 'rate',                 name: 'rate',                   orderable: false, width: '10%' },
-                        { data: 'subtotal',             name: 'subtotal',               orderable: false, width: '10%' },
-                        { data: 'action',               name: 'action',                 orderable: false, width: '10%', className: "text-right" },
-                    ],
-                    // dom: 'Bfrtip',
-                    order: [[1, 'asc']],
-                        columnDefs: [{
-                        width: '5%',
-                        targets: [0],
-                        visible: true
-                    }],
-                    // QUANTIDADE DE LINHAS NA PÁGINA
-                    // lengthMenu: [
-                    //     [6, 8, 10, 25, 50, 100, -1],
-                    //     ['6', '8', 10, '25', '50', '100', 'Todos']
-                    // ],
-                    // pageLength: '6',
-                });
-
-
-
-            });
-
-        }
-
-
 
 
 

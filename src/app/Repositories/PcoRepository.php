@@ -221,6 +221,7 @@ class PcoRepository implements PcoRepositoryInterface
 
         $laborAppropriation = LaborAppropriation::select(
             'labor_appropriations.id',
+            'labor_appropriations.employee_role_id',
             'employee_roles.name as employee_role_name',
         )
         ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(hours, 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS hours')
@@ -228,6 +229,7 @@ class PcoRepository implements PcoRepositoryInterface
         ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT((hours * rate), 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS subtotal')
         ->where('service_item_id', $service_item_id)
         ->where('user_id', $user_id)
+        ->where('labor_appropriations.pco_id', '=', null)
         ->leftJoin('employee_roles', 'employee_roles.id', '=', 'labor_appropriations.employee_role_id')
         ->orderBy('employee_role_name')
         ->get();
