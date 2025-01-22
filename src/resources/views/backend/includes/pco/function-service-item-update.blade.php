@@ -1,11 +1,12 @@
 <script>
+
  function fcUpdateServiceItem() {
 
-document.formItemService.service_item_id.value = document.getElementById("service_item_id").value;
-document.formItemService.level_01.value = document.getElementById("level_01").value;
-document.formItemService.level_02.value = document.getElementById("level_02").value;
-document.formItemService.item_description.value = document.getElementById("item_description").value;
-document.formItemService.item_cost.value = document.getElementById("item_cost").value;
+    document.formItemService.service_item_id.value = document.getElementById("service_item_id").value;
+    document.formItemService.level_01.value = document.getElementById("level_01").value;
+    document.formItemService.level_02.value = document.getElementById("level_02").value;
+    document.formItemService.item_description.value = document.getElementById("item_description").value;
+    document.formItemService.item_cost.value = document.getElementById("item_cost").value;
 
 // $(".submit-form").click(function(e) {
     // e.preventDefault();

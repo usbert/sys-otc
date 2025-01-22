@@ -57,7 +57,7 @@
 
                     // var message_erro = '{{ __('messages.Error.Required field not filled') }}: ';
                     // console.log('TODOS', errors.responseJSON);
-                    console.log('PARCIAL NIVEIS', errors.responseJSON.errors);
+                    // console.log('PARCIAL NIVEIS', errors.responseJSON.errors);
 
                     if(errors.responseJSON.errors.level_01) {
                         message_erro_aux = errors.responseJSON.errors.level_01[0];

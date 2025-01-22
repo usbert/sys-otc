@@ -4,6 +4,7 @@ use App\Http\Requests\Pco\CreatePcoRequest;
 use App\Http\Requests\Pco\CreateServiceItemRequest;
 use App\Http\Requests\Pco\UpdateServiceItemRequest;
 use App\Http\Requests\Pco\CreateLaborAppropriationRequest;
+use App\Http\Requests\Pco\UpdateLaborAppropriationRequest;
 // use App\Http\Requests\Pco\UpdatePcoRequest;
 use App\Services\PcoService;
 use Illuminate\Http\Request;
@@ -178,6 +179,7 @@ class PcoController extends Controller
     }
 
     public function storeLaborAppropriation(CreateLaborAppropriationRequest $request) {
+
         try {
             $result = $this->pcoService->storeLaborAppropriation( $request->all());
             return response()->json($result);
@@ -209,7 +211,6 @@ class PcoController extends Controller
             }
 
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
     }
@@ -221,6 +222,21 @@ class PcoController extends Controller
             $result = $this->pcoService->deleteLaborAppropriation( $request->all());
             return response()->json($result);
         } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
+    }
+
+
+
+
+    public function updateLaborAppropriation(UpdateLaborAppropriationRequest $request) {
+        try {
+            $result = $this->pcoService->updateLaborAppropriation( $request->all());
+
+            return response()->json($result);
+        } catch (\Exception $e) {
+            dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
 

@@ -183,7 +183,7 @@ class PcoService
         }
 
         $laborAppropriation = array(
-            'service_item_id'   => $data['modal_service_item_id'],
+            'service_item_id'   => $data['service_item_labor'],
             'employee_role_id'  => $data['employee_role_id'],
             'hours'             => $hours,
             'rate'              => $rate,
@@ -200,24 +200,26 @@ class PcoService
     public function updateLaborAppropriation(array $data)
     {
 
-        if(Config::get('app.locale') == 'en') {
-            $rate = Parse_money_database_en($data['rate']);
-            $hours = Parse_money_database_en($data['hours']);
-        } else {
-            $rate = Parse_money_database_br($data['rate']);
-            $hours = Parse_money_database_br($data['hours']);
-        }
+        dd('chegou na alteração service', $data);
 
-        $laborAppropriation = array(
+        // if(Config::get('app.locale') == 'en') {
+        //     $rate = Parse_money_database_en($data['rate']);
+        //     $hours = Parse_money_database_en($data['hours']);
+        // } else {
+        //     $rate = Parse_money_database_br($data['rate']);
+        //     $hours = Parse_money_database_br($data['hours']);
+        // }
 
-            'employee_role_id'  => $data['employee_role_id'],
-            'hours'             => $hours,
-            'rate'              => $rate,
-            'status'            => 1,
-            'user_id'           => Auth::user()->id
-        );
+        // $laborAppropriation = array(
 
-        $updateLaborAppropriation = $this->pcoRepository->updateLaborAppropriation($laborAppropriation);
+        //     'employee_role_id'  => $data['employee_role_id'],
+        //     'hours'             => $hours,
+        //     'rate'              => $rate,
+        //     'status'            => 1,
+        //     'user_id'           => Auth::user()->id
+        // );
+
+        // $updateLaborAppropriation = $this->pcoRepository->updateLaborAppropriation($laborAppropriation);
 
     }
 
@@ -227,5 +229,9 @@ class PcoService
     {
         return $this->pcoRepository->getLaborAppropriationByUser($service_item_id, $user_id);
     }
+
+
+
+
 
 }

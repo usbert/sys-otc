@@ -8,7 +8,7 @@
 @include('backend.includes.pco.function-service-item-add')
 @include('backend.includes.pco.function-service-item-get')              {{-- Carrega nos inputs os dados do Itens de Seviço para alteração - fcGetServiceItemRow(id, indx) --}}
 @include('backend.includes.pco.function-service-item-cancel')           {{-- Cancela alteração do Itens de Seviço --}}
-@include('backend.includes.pco.function-service-item-update')           {{-- Altera o Item de Seviço selecionado --}}
+@include('backend.includes.pco.function-service-item-update')           {{-- Altera o Item de Seviço selecionado - fcUpdateServiceItem --}}
 @include('backend.includes.pco.function-service-items-by-user')         {{-- Monta a tabela de Itens de Serviços por usuário --}}
 @include('backend.includes.pco.function-service-item-delete')           {{-- Deleta Itens de Serviços --}}
 {{-- LABOR APPROPRIATIONS --}}
@@ -16,6 +16,7 @@
 @include('backend.includes.pco.function-labor-appropriation-delete')    {{-- Deleta Labor Appropriation --}}
 @include('backend.includes.pco.function-labor-appropriation-by-user')   {{-- Monta a DataTable de Labor Appropriation por usuário --}}
 @include('backend.includes.pco.function-labor-appropriation-get')       {{-- Carrega nos inputs os dados do Labor Appropriation para alteração - fcGetLaborAppropriationRow(id, indx) --}}
+@include('backend.includes.pco.function-labor-appropriation-update')    {{-- fcUpdateLaborAppropriation() --}}
 
 
 <div class="content-wrapper">
@@ -208,7 +209,7 @@
 
                                                     <div class="col-sm-1">
 
-                                                        <input type="hidden" name="service_item_id" id="service_item_id">
+                                                        {{-- <input type="hidden" name="service_item_id" id="service_item_id"> --}}
 
                                                         <div class="form-group">
                                                             <label>&nbsp;</label>
@@ -561,122 +562,123 @@
                 <div class="modal-body">
 
                     {{-- start form modal --}}
-                    {{-- <form action="{{ url('pco/store-labor/') }}" id="form-modal-labor" class="form-horizontal" method="POST" enctype="multipart/form-data">
+                    <form name="formLaborAppropriation" id="formLaborAppropriation" class="form-horizontal" method="POST">
 
-                        @csrf --}}
+                        @csrf
 
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="card card-secondary">
-                                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card card-secondary">
+                                        <div class="card-body">
 
-                                        <div class="row">
+                                            <div class="row">
 
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label>Service Item</label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <label>Service Item</label>
+                                                        <div class="input-group input-group-sm">
+                                                            <input type="text" id="itemModalTxt" class="form-control form-control-sm" @readonly(true)>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+
+
+                                                <div class="col-sm-6">
+
+                                                    <input type="idden" name="labor_appropriation_id" id="labor_appropriation_id" value="">
+                                                    <input type="idden" name="service_item_labor" id="service_item_labor" value="">
+
+                                                    <div class="form-group">
+                                                        <label>Function</label>
+                                                        <select class="form-control form-control-sm" name="employee_role_id" id="employee_role_id">
+                                                            <option value="">-- {{__('messages.Select')}} --</option>
+                                                            @foreach ($result['employeeRoleCombo'] as $rule)
+                                                                <option value="{{ $rule->id }}"> {{ $rule->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-2">
+                                                    <label>Hours</label>
                                                     <div class="input-group input-group-sm">
-                                                        <input type="text" id="itemModalTxt" class="form-control form-control-sm" @readonly(true)>
+                                                        <input type="text" name="hours" id="hours" class="form-control form-control-sm"
+                                                            maxlength="5"
+                                                            @if("{{ Config::get('app.locale') }}" == 'pt_BR')
+                                                            {
+                                                                onkeypress="return fc_decimal(this, '.', ',', event, 5);"
+                                                            }
+                                                            @else {
+                                                                onkeypress="return fc_decimal(this,',','.',event, 5);"
+                                                            }
+                                                            @endif
+                                                        >
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-2">
+                                                    <label>Rate</label>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" name="rate" id="rate" class="form-control form-control-sm"
+                                                        maxlength="9"
+                                                        @if("{{ Config::get('app.locale') }}" == 'pt_BR')
+                                                        {
+                                                            onkeypress="return fc_decimal(this, '.', ',', event, 9);"
+                                                        }
+                                                        @else {
+                                                            onkeypress="return fc_decimal(this,',','.',event, 9);"
+                                                        }
+                                                        @endif
+                                                        >
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-2">
+                                                    <label>&nbsp;</label>
+                                                    <div class="input-group input-group-sm">
+                                                        <span class="input-group-append">
+                                                            <button type="button" class="btn btn-info btn-flat" onclick="fcAddLaborAppropriation()"     id="btnSaveLaborAppropriation" title="Add">&nbsp;<span class="fas fa-plus"></span></button>
+                                                            <button type="button" class="btn btn-info btn-flat" onclick="fcUpdateLaborAppropriation()"  id="btnUpdateLaborAppropriation" title="Update" style="display: none;">&nbsp;<span class="fas fa-sync"></span></button>&nbsp;
+                                                            <button type="button" class="btn btn-danger btn-flat" onclick="fcCancelLaborRow()"          id="btnCancelLaborAppropriation" title="Cancel" style="display: none;">&nbsp;<span class="fas fa-ban"></span></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="tab-content">
+
+                                                            <table style="font-size: 14px;" class="table table-striped table-sm" id="ajax-datatable-labor-appropriation">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">{{ __('messages.Function') }}</th>
+                                                                        <th scope="col">{{ __('messages.Hour') }}</th>
+                                                                        <th scope="col">{{ __('messages.Rate') }}</th>
+                                                                        <th scope="col">{{ __('messages.Total') }}</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+
                                                     </div>
                                                 </div>
                                             </div>
 
                                         </div>
-
-                                        <div class="row">
-
-
-
-                                            <div class="col-sm-6">
-
-                                                <input type="idden" name="labor_appropriation_id" id="labor_appropriation_id" value="">
-
-                                                <div class="form-group">
-                                                    <label>Function</label>
-                                                    <select class="form-control form-control-sm" name="employee_role_id" id="employee_role_id">
-                                                        <option value="">-- {{__('messages.Select')}} --</option>
-                                                        @foreach ($result['employeeRoleCombo'] as $rule)
-                                                            <option value="{{ $rule->id }}"> {{ $rule->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-2">
-                                                <label>Hours</label>
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" name="hours" id="hours" class="form-control form-control-sm"
-                                                        maxlength="5"
-                                                        @if("{{ Config::get('app.locale') }}" == 'pt_BR')
-                                                        {
-                                                            onkeypress="return fc_decimal(this, '.', ',', event, 5);"
-                                                        }
-                                                        @else {
-                                                            onkeypress="return fc_decimal(this,',','.',event, 5);"
-                                                        }
-                                                        @endif
-                                                    >
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-2">
-                                                <label>Rate</label>
-                                                <div class="input-group input-group-sm">
-                                                    <input type="text" name="rate" id="rate" class="form-control form-control-sm"
-                                                    maxlength="9"
-                                                    @if("{{ Config::get('app.locale') }}" == 'pt_BR')
-                                                    {
-                                                        onkeypress="return fc_decimal(this, '.', ',', event, 9);"
-                                                    }
-                                                    @else {
-                                                        onkeypress="return fc_decimal(this,',','.',event, 9);"
-                                                    }
-                                                    @endif
-                                                    >
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-2">
-                                                <label>&nbsp;</label>
-                                                <div class="input-group input-group-sm">
-                                                    <span class="input-group-append">
-                                                        <button type="button" class="btn btn-info btn-flat" onclick="fcAddLaborAppropriation()" id="btnSaveLaborAppropriation" title="Add">&nbsp;<span class="fas fa-plus"></span></button>
-                                                        <button type="button" class="btn btn-info btn-flat" onclick="fcUpdateLabor()"           id="btnUpdateLaborAppropriation" title="Update" style="display: none;">&nbsp;<span class="fas fa-sync"></span></button>&nbsp;
-                                                        <button type="button" class="btn btn-danger btn-flat" onclick="fcCancelLaborRow()"      id="btnCancelLaborAppropriation" title="Cancel" style="display: none;">&nbsp;<span class="fas fa-ban"></span></button>
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <div class="tab-content">
-
-                                                        <table style="font-size: 14px;" class="table table-striped table-sm" id="ajax-datatable-labor-appropriation">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">{{ __('messages.Function') }}</th>
-                                                                    <th scope="col">{{ __('messages.Hour') }}</th>
-                                                                    <th scope="col">{{ __('messages.Rate') }}</th>
-                                                                    <th scope="col">{{ __('messages.Total') }}</th>
-                                                                    <th></th>
-                                                                </tr>
-                                                            </thead>
-                                                        </table>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {{-- </form> --}}
+                    </form>
                     {{-- end form modal --}}
 
                 </div>
@@ -777,14 +779,6 @@
             <input type="hidden" name="item_cost" value="">
         </form>
 
-        <form name="formLaborAppropriation" id="formLaborAppropriation" class="form-horizontal" method="POST">
-            @csrf
-            <input type="hidden" name="modal_service_item_id" id="modal_service_item_id">
-            <input type="hidden" name="employee_role_id" id="employee_role_id">
-            <input type="hidden" name="hours" id="hours">
-            <input type="hidden" name="rate" id="rate">
-        </form>
-
 
         <form name="form_data_delete_by_user" id="form_data_delete_by_user" method="POST">
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
@@ -795,7 +789,7 @@
             <input type="hidden" name="id" value="">
             @csrf
         </form>
-appo
+
         <form name="form_delete_labor_appropriation" id="form_delete_labor_appropriation" method="POST">
             <input type="hidden" name="id" value="">
             @csrf
@@ -984,7 +978,7 @@ appo
 
         function openModalLaborAppropriation(id, indx) {
 
-            document.getElementById("modal_service_item_id").value = id;
+            document.getElementById("service_item_labor").value = id;
             document.getElementById('itemModalTxt').value = document.getElementById("colSI-A-"+indx+"").innerText+'. '+document.getElementById("colSI-B-"+indx+"").innerText;
 
             $('#myModalCost').modal({

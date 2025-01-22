@@ -1,8 +1,6 @@
 <script>
     function fcGetLaborAppropriationRow(id, row) {
 
-        console.log(row);
-
         document.getElementById("labor_appropriation_id").value = id;
         document.getElementById("employee_role_id").value = row.employee_role_id;
         document.getElementById("hours").value = row.hours;

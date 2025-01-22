@@ -5,6 +5,7 @@ namespace App\Http\Requests\Pco;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateLaborAppropriationRequest extends FormRequest {
 
@@ -14,23 +15,25 @@ class CreateLaborAppropriationRequest extends FormRequest {
         return true;
     }
 
-// 'level_01' => [
-//                 'required',
-//                 Rule::unique('service_items')->where(function ($query)
-//                 use ($level_01, $level_02)
-//                 {
-//                     return $query->where('level_01', $level_01)
-//                                 ->where('level_02', $level_02);
-//                 }),
-//             ],
-
-
     // Regra de validação dos campos
     public function rules()
     {
+        $service_item_labor   = $this->service_item_labor;
+        $employee_role_id = $this->employee_role_id;
+
         return [
-            'modal_service_item_id'   => 'required',
-            'employee_role_id'  => 'required',
+
+            'employee_role_id' => [
+                'required',
+                Rule::unique('labor_appropriations')
+                ->where(function ($query)
+                use ($service_item_labor, $employee_role_id)
+                {
+                    return $query->where('service_item_id', $service_item_labor)
+                                ->where('employee_role_id', $employee_role_id)
+                                ;
+                })
+            ],
             'hours'             => 'required',
             'rate'              => 'required',
         ];
