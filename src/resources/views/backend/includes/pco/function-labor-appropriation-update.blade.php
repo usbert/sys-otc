@@ -32,16 +32,15 @@ function fcUpdateLaborAppropriation() {
 
                 toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
 
-                setTimeout(function() {
+                service_item_id = document.getElementById("service_item_labor").value;
+                loadLaborAppropriationByUser(service_item_id, {{ Auth::user()->id }});
 
-                    service_item_id = document.getElementById("service_item_labor").value;
-                    loadLaborAppropriationByUser(service_item_id, {{ Auth::user()->id }});
+                // LIMPAR O FORMAULÁRIO MAS RECUPERAR O VALOR DO SERVICE ITEM:
+                $('#formLaborAppropriation')[0].reset();
+                document.getElementById("service_item_labor").value = service_item_id;
 
-                    // LIMPAR O FORMAULÁRIO MAS RECUPERAR O VALOR DO SERVICE ITEM:
-                    $('#formLaborAppropriation')[0].reset();
-                    document.getElementById("service_item_labor").value = service_item_id;
+                fcCancelLaborRow();
 
-                }, 450);
 
             },
             complete: function(response){
