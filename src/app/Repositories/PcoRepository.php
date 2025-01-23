@@ -243,26 +243,7 @@ class PcoRepository implements PcoRepositoryInterface
 
     public function storeLaborAppropriation($data)
     {
-        $service_item_id = LaborAppropriation::create($data)->service_item_id;
-
-        $somaSI = LaborAppropriation::select(
-            'service_item_id',
-        )
-        ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(sum(hours * rate), 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS total')
-        ->where('service_item_id', $service_item_id)
-        ->groupBY('service_item_id')
-        ->get();
-
-        if(Config::get('app.locale') == 'en') {
-            $item_cost = Parse_money_database_en($somaSI[0]['total']);
-        } else {
-            $item_cost = Parse_money_database_br($somaSI[0]['total']);
-        }
-
-        $input = ServiceItem::find($service_item_id);
-        $input->item_cost = $item_cost;
-        $input->save();
-
+        return LaborAppropriation::create($data)->service_item_id;
     }
 
     public function updateLaborAppropriation(array $data)
@@ -288,9 +269,10 @@ class PcoRepository implements PcoRepositoryInterface
     }
 
 
+    // ATUALIZA O TOTAL NO SERVICE ITENS (SOMA DOS LABOR APPROPRIATIONS)
+
     public function updateItemCostServiceItem(array $dataItemCost)
     {
-
         try {
 
             $somaSI = LaborAppropriation::select(

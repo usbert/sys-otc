@@ -193,6 +193,17 @@ class PcoService
 
 
         $laborAppropriation_id = $this->pcoRepository->storeLaborAppropriation($laborAppropriation);
+
+
+        // For Update Service Item Item Cost
+        $dataItemCost = array(
+            'service_item_id' => $data['service_item_labor'],
+            'hours'           => $data['hours'],
+            'rate'            => $data['rate'],
+        );
+
+        $okCostServiceItem = $this->pcoRepository->updateItemCostServiceItem($dataItemCost);
+
     }
 
 
