@@ -5,6 +5,7 @@ return [
     'NO' => 'NO',
     'and' => 'and',
     'Year' => 'Year',
+    'Date' => 'Date',
     'Start Date' => 'Start Date',
     'Finish Date' => 'Finish Date',
     'End Date' => 'End Date',
@@ -48,6 +49,12 @@ return [
     'Edit' => 'Edit',
     'Additional Information' => 'Additional Information',
     'PCO Date'  => 'PCO Date',
+
+    'Request For Information' => 'Request For Information',
+    'Reference' => 'Reference',
+    'Received From' => 'Received From',
+    'Cost Impact' => 'Cost Impact',
+    'Schedule Impact' => 'Schedule Impact',
 
     'Address'           => 'Address',
     'Addresses'         => 'Addresses',

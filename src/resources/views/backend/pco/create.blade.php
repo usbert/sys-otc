@@ -147,6 +147,21 @@
                                                         </div>
                                                     </div>
 
+
+
+                                                    <div class="col-sm-1">
+                                                        <div class="form-group">
+                                                            <label>RFI</label>
+                                                            <select class="form-control form-control-sm" name="rfi_id" id="rfi_id">
+                                                                <option value="">{{__('messages.Select')}}</option>
+                                                                @foreach ($result['rfiCombo'] as $rfi)
+                                                                    <option value="{{ $rfi->id }}"> {{ $rfi->code }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
                                                 </div>
 
 

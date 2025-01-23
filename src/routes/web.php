@@ -24,6 +24,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\PcoController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RfiController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\WarehouseController;
@@ -307,6 +308,11 @@ Route::middleware('auth')->group(function() {
         Route::get('/create', 'getDataToCreate')->name('create');
     });
 
+
+    // rfi
+    Route::controller(RfiController::class)->prefix('rfi')->group(function() {
+        Route::get('/', 'getAll')->name('rfi-list');
+    });
 
     // pco
     Route::controller(PcoController::class)->prefix('pco')->group(function() {

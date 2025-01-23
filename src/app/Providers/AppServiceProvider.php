@@ -202,6 +202,13 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\PcoRepository',
         );
 
+         // RFIS
+         $this->app->bind(
+            'App\Repositories\Interfaces\RfiRepositoryInterface',
+            'App\Repositories\RfiRepository',
+        );
+
+
     }
 
     /**

@@ -220,7 +220,7 @@ class PcoService
         $updateLaborAppropriation = $this->pcoRepository->updateLaborAppropriation($laborAppropriation);
 
 
-        // FOR UPDATE ITEM COST
+        // For Update Service Item Item Cost
         $dataItemCost = array(
             'service_item_id' => $data['service_item_labor'],
             'hours'           => $data['hours'],

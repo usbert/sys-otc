@@ -6,6 +6,7 @@ use App\Models\EmployeeRole;
 use App\Models\LaborAppropriation;
 use App\Models\Pco;
 use App\Models\Project;
+use App\Models\Rfi;
 use App\Models\ServiceItem;
 use App\Repositories\Interfaces\PcoRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
@@ -51,9 +52,18 @@ class PcoRepository implements PcoRepositoryInterface
         ->orderBy('name', 'asc')
         ->get();
 
+
+
+        $rfi = Rfi::select(
+            'id',
+        )
+        ->selectRaw('lpad(id, 5, 0) as code')
+        ->get();
+
         $return = array(
-            'projectCombo'  => $project,
+            'projectCombo'      => $project,
             'employeeRoleCombo' => $employee_role,
+            'rfiCombo'          => $rfi,
         );
 
         return $return;
@@ -205,18 +215,6 @@ class PcoRepository implements PcoRepositoryInterface
         return $return;
     }
 
-    public function storeLaborAppropriation($data)
-    {
-        return LaborAppropriation::create($data)->id;
-    }
-
-    public function deleteLaborAppropriation($id)
-    {
-        $return = LaborAppropriation::destroy($id);
-        return $return;
-    }
-
-
 
     public function getLaborAppropriationByUser($service_item_id, $user_id) {
 
@@ -240,9 +238,35 @@ class PcoRepository implements PcoRepositoryInterface
     }
 
 
+
+
+
+    public function storeLaborAppropriation($data)
+    {
+        $service_item_id = LaborAppropriation::create($data)->service_item_id;
+
+        $somaSI = LaborAppropriation::select(
+            'service_item_id',
+        )
+        ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(sum(hours * rate), 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS total')
+        ->where('service_item_id', $service_item_id)
+        ->groupBY('service_item_id')
+        ->get();
+
+        if(Config::get('app.locale') == 'en') {
+            $item_cost = Parse_money_database_en($somaSI[0]['total']);
+        } else {
+            $item_cost = Parse_money_database_br($somaSI[0]['total']);
+        }
+
+        $input = ServiceItem::find($service_item_id);
+        $input->item_cost = $item_cost;
+        $input->save();
+
+    }
+
     public function updateLaborAppropriation(array $data)
     {
-
         try {
 
             $input                      = LaborAppropriation::find($data['labor_appropriation_id']);
@@ -283,7 +307,6 @@ class PcoRepository implements PcoRepositoryInterface
                 $item_cost = Parse_money_database_br($somaSI[0]['total']);
             }
 
-
             $input = ServiceItem::find($dataItemCost['service_item_id']);
             $input->item_cost = $item_cost;
             $input->save();
@@ -291,13 +314,18 @@ class PcoRepository implements PcoRepositoryInterface
             return $input;
 
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(["error" => $e->getMessage()]);
         }
 
     }
 
 
+
+    public function deleteLaborAppropriation($id)
+    {
+        $return = LaborAppropriation::destroy($id);
+        return $return;
+    }
 
 }
 
