@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\ServiceItem;
 use App\Repositories\Interfaces\PcoRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class PcoRepository implements PcoRepositoryInterface
 {
@@ -183,7 +184,7 @@ class PcoRepository implements PcoRepositoryInterface
             $input->item_description        = $data['item_description'];
             $input->item_number             = $data['item_number'];
             $input->item_description        = $data['item_description'];
-            $input->item_cost               = $data['item_cost'];
+            // $input->item_cost               = $data['item_cost'];
             $input->user_id                 = Auth::user()->id;
 
 
@@ -261,6 +262,41 @@ class PcoRepository implements PcoRepositoryInterface
         }
 
     }
+
+
+    public function updateItemCostServiceItem(array $dataItemCost)
+    {
+
+        try {
+
+            $somaSI = LaborAppropriation::select(
+                'service_item_id',
+            )
+            ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(sum(hours * rate), 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS total')
+            ->where('service_item_id', $dataItemCost['service_item_id'])
+            ->groupBY('service_item_id')
+            ->get();
+
+            if(Config::get('app.locale') == 'en') {
+                $item_cost = Parse_money_database_en($somaSI[0]['total']);
+            } else {
+                $item_cost = Parse_money_database_br($somaSI[0]['total']);
+            }
+
+
+            $input = ServiceItem::find($dataItemCost['service_item_id']);
+            $input->item_cost = $item_cost;
+            $input->save();
+
+            return $input;
+
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(["error" => $e->getMessage()]);
+        }
+
+    }
+
 
 
 }

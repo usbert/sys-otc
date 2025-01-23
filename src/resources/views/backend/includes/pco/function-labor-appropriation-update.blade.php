@@ -38,13 +38,15 @@ function fcUpdateLaborAppropriation() {
                 // LIMPAR O FORMAULÁRIO MAS RECUPERAR O VALOR DO SERVICE ITEM:
                 $('#formLaborAppropriation')[0].reset();
                 document.getElementById("service_item_labor").value = service_item_id;
-
+                // REFAZER OS BOTÕES
                 fcCancelLaborRow();
+                // ATUALIZAR A GRID DE SERVICE ITENS (PARENT)
+                loadServiceItemsByUser({{ Auth::user()->id }});
 
 
             },
             complete: function(response){
-                console.log('Updated: ', data);
+                console.log('Updated Labor Appropriation: ');
             },
             error: function(errors) {
 

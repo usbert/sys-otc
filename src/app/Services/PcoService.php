@@ -62,17 +62,17 @@ class PcoService
     public function storeServiceItem(array $data)
     {
 
-        if(empty($data['item_cost'])) {
-            $item_cost = null;
+        // if(empty($data['item_cost'])) {
+        //     $item_cost = null;
 
-        } else {
-            if(Config::get('app.locale') == 'en') {
-                $item_cost = Parse_money_database_en($data['item_cost']);
-            } else {
-                $item_cost = Parse_money_database_br($data['item_cost']);
-            }
+        // } else {
+        //     if(Config::get('app.locale') == 'en') {
+        //         $item_cost = Parse_money_database_en($data['item_cost']);
+        //     } else {
+        //         $item_cost = Parse_money_database_br($data['item_cost']);
+        //     }
 
-        }
+        // }
 
         $item_number = str_pad($data['level_01'], 3, "0", STR_PAD_LEFT).str_pad($data['level_02'], 3, "0", STR_PAD_LEFT);
 
@@ -88,7 +88,7 @@ class PcoService
             'identification_level'  => $identification_level,
             'item_number'           => $item_number,
             'item_description'      => $data['item_description'],
-            'item_cost'             => $item_cost,
+            // 'item_cost'             => $item_cost,
             'user_id'               => Auth::user()->id,
         );
         $service_item_id = $this->pcoRepository->storeServiceItem($service_item);
@@ -214,10 +214,20 @@ class PcoService
             'hours'                  => $hours,
             'rate'                   => $rate,
             'status'                 => 1,
-            'user_id'                => Auth::user()->id
+            'user_id'                => Auth::user()->id,
         );
 
         $updateLaborAppropriation = $this->pcoRepository->updateLaborAppropriation($laborAppropriation);
+
+
+        // FOR UPDATE ITEM COST
+        $dataItemCost = array(
+            'service_item_id' => $data['service_item_labor'],
+            'hours'           => $data['hours'],
+            'rate'            => $data['rate'],
+        );
+
+        $okCostServiceItem = $this->pcoRepository->updateItemCostServiceItem($dataItemCost);
 
     }
 

@@ -590,8 +590,8 @@
 
                                                 <div class="col-sm-6">
 
-                                                    <input type="idden" name="labor_appropriation_id" id="labor_appropriation_id" value="">
-                                                    <input type="idden" name="service_item_labor" id="service_item_labor" value="">
+                                                    <input type="hidden" name="labor_appropriation_id" id="labor_appropriation_id" value="">
+                                                    <input type="hidden" name="service_item_labor" id="service_item_labor" value="">
 
                                                     <div class="form-group">
                                                         <label>Function</label>
