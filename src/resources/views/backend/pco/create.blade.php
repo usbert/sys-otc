@@ -549,9 +549,8 @@
 
 
 
+        <!-- Modal Labor Appropriation -->
 
-
-        <!-- Modal -->
         <div class="modal fade" id="myModalCost" tabindex="-1" role="dialog" aria-labelledby="myModalAttachLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">

@@ -36,7 +36,8 @@ function deleteLaborAppropriation(id) {
 
             // REFRESH DATATABLE
             setTimeout(function() {
-                loadLaborAppropriationByUser({{ Auth::user()->id }});
+                service_item_id = document.getElementById("service_item_labor").value;
+                loadLaborAppropriationByUser(service_item_id, {{ Auth::user()->id }});
             }, 200);
 
         }

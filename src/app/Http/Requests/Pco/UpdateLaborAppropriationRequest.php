@@ -18,23 +18,23 @@ class UpdateLaborAppropriationRequest extends FormRequest {
     // Regra de validação dos campos
     public function rules()
     {
-        $service_item_id   = $this->service_item_id;
+        $service_item_labor   = $this->service_item_labor;
         $employee_role_id = $this->employee_role_id;
+
         return [
 
-            'level_01' => [
+            'employee_role_id' => [
                 'required',
-                Rule::unique('service_items')
+                Rule::unique('labor_appropriations')
                 ->where(function ($query)
-                use ($service_item_id, $employee_role_id)
+                use ($service_item_labor, $employee_role_id)
                 {
-                    return $query->where('service_item_id', $service_item_id)
+                    return $query->where('service_item_id', $service_item_labor)
                                 ->where('employee_role_id', $employee_role_id)
-                                ->where('service_item_id', '<>', $service_item_id)
+                                ->where('service_item_id', '<>', $service_item_labor)
                                 ;
                 })
             ],
-            'employee_role_id'  => 'required',
             'hours'             => 'required',
             'rate'              => 'required',
         ];
@@ -43,7 +43,6 @@ class UpdateLaborAppropriationRequest extends FormRequest {
     // Função responsável por retornar um json em caso de erro na request
     protected function failedValidation(Validator $validator)
     {
-
         throw new HttpResponseException(response()->json([
             'errors' => $validator->errors()
         ], 400));

@@ -200,26 +200,24 @@ class PcoService
     public function updateLaborAppropriation(array $data)
     {
 
-        dd('chegou na alteração service', $data);
+        if(Config::get('app.locale') == 'en') {
+            $rate = Parse_money_database_en($data['rate']);
+            $hours = Parse_money_database_en($data['hours']);
+        } else {
+            $rate = Parse_money_database_br($data['rate']);
+            $hours = Parse_money_database_br($data['hours']);
+        }
 
-        // if(Config::get('app.locale') == 'en') {
-        //     $rate = Parse_money_database_en($data['rate']);
-        //     $hours = Parse_money_database_en($data['hours']);
-        // } else {
-        //     $rate = Parse_money_database_br($data['rate']);
-        //     $hours = Parse_money_database_br($data['hours']);
-        // }
+        $laborAppropriation = array(
+            'labor_appropriation_id' => $data['labor_appropriation_id'],
+            'employee_role_id'       => $data['employee_role_id'],
+            'hours'                  => $hours,
+            'rate'                   => $rate,
+            'status'                 => 1,
+            'user_id'                => Auth::user()->id
+        );
 
-        // $laborAppropriation = array(
-
-        //     'employee_role_id'  => $data['employee_role_id'],
-        //     'hours'             => $hours,
-        //     'rate'              => $rate,
-        //     'status'            => 1,
-        //     'user_id'           => Auth::user()->id
-        // );
-
-        // $updateLaborAppropriation = $this->pcoRepository->updateLaborAppropriation($laborAppropriation);
+        $updateLaborAppropriation = $this->pcoRepository->updateLaborAppropriation($laborAppropriation);
 
     }
 

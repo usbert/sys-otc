@@ -228,8 +228,6 @@ class PcoController extends Controller
     }
 
 
-
-
     public function updateLaborAppropriation(UpdateLaborAppropriationRequest $request) {
         try {
             $result = $this->pcoService->updateLaborAppropriation( $request->all());

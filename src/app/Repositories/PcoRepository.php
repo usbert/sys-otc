@@ -241,24 +241,24 @@ class PcoRepository implements PcoRepositoryInterface
 
     public function updateLaborAppropriation(array $data)
     {
-        dd($data);
-        // try {
 
-        //     $input                      = LaborAppropriation::find($data['labor_appropriation_id']);
-        //     $input->employee_role_id   = $data['employee_role_id'];
-        //     $input->hours              = $data['hours'];
-        //     $input->rate               = $data['rate'];
-        //     $input->status             = $data['status'];
-        //     $input->user_id            = Auth::user()->id;
+        try {
 
-        //     $input->save();
+            $input                      = LaborAppropriation::find($data['labor_appropriation_id']);
+            $input->employee_role_id   = $data['employee_role_id'];
+            $input->hours              = $data['hours'];
+            $input->rate               = $data['rate'];
+            $input->status             = $data['status'];
+            $input->user_id            = Auth::user()->id;
 
-        //     return $input;
+            $input->save();
 
-        // } catch (\Exception $e) {
-        //     // dd($e);
-        //     return response()->json(["error" => $e->getMessage()]);
-        // }
+            return $input;
+
+        } catch (\Exception $e) {
+            // dd($e);
+            return response()->json(["error" => $e->getMessage()]);
+        }
 
     }
 

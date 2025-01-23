@@ -12,7 +12,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             beforeSend: function(){
-                console.log('....Please wait', data);
+                // console.log('....Please wait', data);
             },
             success: function(response){
 
@@ -41,7 +41,7 @@
 
                 // var message_erro = '{{ __('messages.Error.Required field not filled') }}: ';
                 // console.log('TODOS', errors.responseJSON);
-                console.log('PARCIAL ADD APPROPRIATIONS: ', errors.responseJSON.errors);
+                // console.log('PARCIAL ADD APPROPRIATIONS: ', errors.responseJSON.errors);
 
                 if(errors.responseJSON.errors.service_item_labor) {
                     message_erro_aux = errors.responseJSON.errors.service_item_labor[0];
