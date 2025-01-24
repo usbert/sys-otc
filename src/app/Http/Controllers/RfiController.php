@@ -28,6 +28,7 @@ class RfiController extends Controller
                 $idx = $row->id;
                 $btn  = "<a href='rfi/edit/$idx' data-toggle='tooltip' data-id='$idx' class='edit'><span class='fas fa-pencil-alt'></a>&nbsp;";
                 $btn .= "<a href='javascript:void(0)' data-toggle='tooltip' onClick='deleteReg($idx)' data-id='$idx' class='delete'><span class='fas fa-trash'></span></a>&nbsp;";
+                $btn .= "<a href='javascript:void(0)' data-toggle='tooltip' onClick='printReg($idx)' data-id='$idx' class='delete'><span class='fas fa-print'></span></a>";
                 return $btn;
             })
             ->rawColumns(['action'])
@@ -38,6 +39,18 @@ class RfiController extends Controller
 
         return view('backend.rfi.rfilist');
 
+    }
+
+
+    public function getDataToCreate() {
+
+        try {
+            $result = $this->rfiService->getDataToCreate();
+            return view('backend.rfi.create', compact('result'));
+
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
     }
 
 

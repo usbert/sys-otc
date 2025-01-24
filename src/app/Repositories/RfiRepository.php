@@ -33,6 +33,21 @@ class RfiRepository implements RfiRepositoryInterface
 
     }
 
+    public function getDataToCreate()
+    {
+        $projectCombo   = Project::select('id','name')->
+        where('is_activated', Project::ACTIVATED)
+        ->orderBy('name', 'asc')
+        ->get();
+
+        $return = array(
+            'projectCombo'  => $projectCombo,
+        );
+
+        return $return;
+
+    }
+
 
 }
 

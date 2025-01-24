@@ -19,4 +19,11 @@ class RfiService
         return $this->rfiRepository->getAll();
     }
 
+
+    public function getDataToCreate()
+    {
+        return $this->rfiRepository->getDataToCreate();
+    }
+
+
 }

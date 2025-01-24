@@ -228,7 +228,7 @@
             loadDatatable();
 
             // MARCAR O LINK NO SIDEBAR
-            $('#link12').addClass('active');
+            $('#link-project').addClass('active');
 
         }, 100);
 

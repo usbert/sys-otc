@@ -83,6 +83,8 @@
             border-bottom-color: black;
         }
 
+        /* style="border-bottom-color: black;" */
+
         .content-header {
              /* padding: 15px .5rem; */
              padding: 1px .5rem;

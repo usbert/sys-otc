@@ -530,7 +530,7 @@
 
 
             // MARCAR O LINK NO SIDEBAR
-            $('#link23').addClass('active');
+            $('#link-material').addClass('active');
 
 
     </script>

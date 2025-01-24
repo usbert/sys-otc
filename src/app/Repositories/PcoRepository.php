@@ -73,26 +73,36 @@ class PcoRepository implements PcoRepositoryInterface
 
     public function getAddressByProject($project_id) {
 
-        $project = Project::select(
-            'projects.name',
-            'projects.street',
-            'projects.city',
-            'projects.state',
-            'projects.client_id',
-            'projects.project_manager',
-            'clients.name as client_name',
-            'clients.email'
-        )
-        ->where('projects.id', $project_id)
-        ->leftJoin('clients', 'clients.id', '=', 'projects.client_id')
-        ->get();
+        try {
+
+            $project = Project::select(
+                'projects.name',
+                'projects.street',
+                'projects.city',
+                'projects.state',
+                'projects.client_id',
+                'projects.project_manager',
+                'projects.contract_number',
+                'clients.id as client_id',
+                'clients.name as client_name',
+                'clients.email'
+            )
+            ->where('projects.id', $project_id)
+            ->leftJoin('clients', 'clients.id', '=', 'projects.client_id')
+            ->get();
 
 
-        $return = array(
-            'project' => $project,
-        );
+            $return = array(
+                'project' => $project,
+            );
 
-        return $return;
+            return $return;
+
+
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
 
     }
 

@@ -137,25 +137,25 @@ CREATE TABLE IF NOT EXISTS `brands` (
 -- Copiando dados para a tabela toll_db.brands: ~129 rows (aproximadamente)
 /*!40000 ALTER TABLE `brands` DISABLE KEYS */;
 INSERT INTO `brands` (`id`, `cd_usuar_cad`, `name`, `is_activated`, `cd_usuar_exc`, `created_at`, `deleted_at`, `updated_at`) VALUES
-	(25, 1, 'Black & Decker', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(26, 1, 'Bosch', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(27, 1, 'Makita', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(25, 1, 'BLACK & DECKER', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(26, 1, 'BOSCH', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(27, 1, 'MAKITA', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
 	(28, 1, '3M', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(29, 1, 'DeWalt', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(30, 1, 'Irwin', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(31, 1, 'Vonder', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(32, 1, 'Schulz', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(33, 1, 'Tramontina', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(34, 1, 'Stanley', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(29, 1, 'DEWALT', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(30, 1, 'IRWIN', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(31, 1, 'VONDER', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(32, 1, 'SCHULZ', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(33, 1, 'TRAMONTINA', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(34, 1, 'STANLEY', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
 	(35, 1, 'Fibratape', 0, NULL, NULL, NULL, NULL),
-	(36, 1, 'Cortag', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(37, 1, 'Gedore', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(38, 1, 'Einhell', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(39, 1, 'Belzer', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(40, 1, 'Carbografite', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
-	(41, 1, 'Placo', 1, NULL, '2024-10-14 11:30:37', NULL, NULL),
-	(42, 1, 'Adfor', 1, NULL, '2024-10-14 11:30:43', NULL, NULL),
-	(43, 1, 'Knauf', 1, NULL, '2024-10-14 11:31:19', NULL, NULL),
+	(36, 1, 'CORTAG', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(37, 1, 'GEDORE', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(38, 1, 'EINHELL', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(39, 1, 'BELZER', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(40, 1, 'CARBOGRAFITE', 1, NULL, '2024-09-25 18:48:06', NULL, NULL),
+	(41, 1, 'PLACO', 1, NULL, '2024-10-14 11:30:37', NULL, NULL),
+	(42, 1, 'ADFOR', 1, NULL, '2024-10-14 11:30:43', NULL, NULL),
+	(43, 1, 'KNAUF', 1, NULL, '2024-10-14 11:31:19', NULL, NULL),
 	(44, 1, 'XCMG', 0, NULL, NULL, NULL, NULL),
 	(45, 1, 'JCB', 0, NULL, NULL, NULL, NULL),
 	(46, 1, 'JOHN DEERE', 0, NULL, NULL, NULL, NULL),
@@ -292,23 +292,18 @@ CREATE TABLE IF NOT EXISTS `clients` (
 -- Copiando dados para a tabela toll_db.clients: ~26 rows (aproximadamente)
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
 INSERT INTO `clients` (`id`, `code`, `name`, `address`, `city`, `state`, `country`, `zip_code`, `phone`, `email`, `responsible`, `is_activated`, `dt_datareg`, `created_at`, `deleted_at`, `updated_at`) VALUES
-	(1, NULL, 'VALE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-11-16 14:14:08', NULL, NULL, NULL),
-	(2, 'BD', 'Brookline Development', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-11-16 14:14:08', NULL, NULL, NULL),
+	(2, 'BD', 'BRROKLINE DEVELOPMENT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-11-16 14:14:08', NULL, NULL, NULL),
 	(3, 'DELL', 'DELLBROOK / JKS', NULL, NULL, NULL, NULL, NULL, '+1 508-540-6226', NULL, NULL, 1, '2022-11-16 15:17:31', NULL, '2024-12-05 01:48:26', '2024-12-05 01:48:26'),
-	(4, 'JAN', 'Janey', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-11-16 15:17:31', NULL, NULL, NULL),
-	(5, 'FC', 'Fasttel Co.', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-11-16 15:17:31', NULL, NULL, NULL),
-	(6, NULL, 'SEPCO1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2022-12-21 10:07:40', NULL, NULL, NULL),
-	(7, 'JJW', 'JJ Welch', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-12-21 10:08:52', NULL, NULL, NULL),
-	(8, 'RCS', 'Reynolds Construction Services, Inc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-12-21 10:09:19', NULL, NULL, NULL),
-	(9, 'EP', 'Emond Plumbing', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-12-21 10:09:37', NULL, NULL, NULL),
+	(4, 'JAN', 'JANEY', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-11-16 15:17:31', NULL, NULL, NULL),
+	(5, 'FC', 'FASTTEL CO.', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-11-16 15:17:31', NULL, NULL, NULL),
+	(7, 'JJW', 'JJ WELCH', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-12-21 10:08:52', NULL, NULL, NULL),
+	(8, 'RCS', 'REYNOLDS CONSTRUCTION SERVICES, INC.', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-12-21 10:09:19', NULL, NULL, NULL),
+	(9, 'EP', 'EMOND PLUMBIND', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-12-21 10:09:37', NULL, NULL, NULL),
 	(10, 'EDF', 'EDF', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2023-02-15 11:21:50', NULL, NULL, NULL),
-	(11, NULL, 'EDP TRANSMISSAO SP-MG S.A.', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2023-10-06 09:08:12', NULL, NULL, NULL),
-	(12, NULL, 'Fasttel', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-02-23 07:18:31', NULL, NULL, NULL),
 	(13, NULL, 'AMERICAN CONSTRUCTION CORP', 'RUA CAMPOS SALES', 'BARUERI', 'SP', 'BRASIL', '06401-000', '+1 617-645-0291', 'kreuschel@amconcorp.com', NULL, 1, '2024-12-11 18:44:40', NULL, NULL, '2024-12-13 13:19:38'),
 	(14, NULL, 'BALD HILL CONSTRUCTION', NULL, NULL, NULL, NULL, NULL, '+1 781-995-0746', NULL, NULL, 1, '2024-12-11 18:57:12', NULL, NULL, NULL),
 	(15, NULL, 'BENTLEY COMPANIES', NULL, NULL, NULL, NULL, NULL, '+1 617-388-6361', NULL, NULL, 1, '2024-12-11 18:59:03', NULL, NULL, NULL),
 	(16, NULL, 'BERKS CONSTRUCTION GROUP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-12-11 18:59:52', NULL, NULL, NULL),
-	(17, NULL, 'FFSDFS', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2024-12-11 20:00:33', '2024-12-11 23:00:33', '2024-12-13 13:19:10', '2024-12-13 13:19:10'),
 	(18, NULL, 'BOWDOIN CONSTRUCTION', NULL, NULL, NULL, NULL, NULL, '+1 617-435-2272', 'rcahn@bowdoinconstruction.com', NULL, 1, '2024-12-11 20:06:58', '2024-12-11 23:06:58', NULL, '2024-12-11 23:06:58'),
 	(19, NULL, 'BRANDPOINT SERVICES', NULL, NULL, NULL, NULL, NULL, '+1 774-606-3049', 'sbaumgartner@brandpointservices.com', 'JOHN', 1, '2024-12-11 20:09:00', '2024-12-11 23:09:00', NULL, '2024-12-11 23:09:00'),
 	(20, NULL, 'COMMERCIAL CONTRACTORS, INC', 'RUA CAMPOS SALES', 'BARUERI', 'SP', 'BRASIL', '06401-000', '(27) 99229-6555', 'saleteusbert@gmail.com', 'SALETE', 1, '2024-12-11 20:09:53', '2024-12-11 23:09:53', NULL, '2024-12-11 23:09:53'),
@@ -316,8 +311,7 @@ INSERT INTO `clients` (`id`, `code`, `name`, `address`, `city`, `state`, `countr
 	(22, NULL, 'CONSTRUCTION ONE', NULL, NULL, NULL, NULL, NULL, NULL, 'mmeeks@constructionone.com', NULL, 1, '2024-12-13 09:45:13', '2024-12-13 12:45:13', NULL, '2024-12-13 12:45:13'),
 	(23, NULL, 'CORCON - USA', NULL, NULL, NULL, NULL, NULL, '+1 516-505-2700', 'diannucci@corcon-usa.com', NULL, 1, '2024-12-13 09:45:34', '2024-12-13 12:45:34', NULL, '2024-12-13 12:45:34'),
 	(24, NULL, 'DAVACO', NULL, NULL, NULL, NULL, NULL, '+1 817-307-1363', 'tricia.cox@davaco.com', NULL, 1, '2024-12-13 09:45:52', '2024-12-13 12:45:52', NULL, '2024-12-13 12:45:52'),
-	(25, NULL, 'DELPHI CONSTRUCTION INC', NULL, NULL, NULL, NULL, NULL, '+1 781-893-9900', 'info@delphiconstruction.com', NULL, 1, '2024-12-13 09:46:08', '2024-12-13 12:46:08', NULL, '2024-12-13 12:46:08'),
-	(26, NULL, 'ICSK BRASIL CONSTRUCAO LTDA.', 'R ALEXANDRE DUMAS', 'SÃO PAULO', 'SP', 'BRASIL', '04.717-004', '11 315513', 'icsk@icsk.com', 'JOAO', 1, '2024-12-13 10:23:42', '2024-12-13 13:23:42', '2024-12-13 13:23:53', '2024-12-13 13:23:53');
+	(25, NULL, 'DELPHI CONSTRUCTION INC', NULL, NULL, NULL, NULL, NULL, '+1 781-893-9900', 'info@delphiconstruction.com', NULL, 1, '2024-12-13 09:46:08', '2024-12-13 12:46:08', NULL, '2024-12-13 12:46:08');
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela toll_db.companies
@@ -373,10 +367,10 @@ CREATE TABLE IF NOT EXISTS `contacts` (
 /*!40000 ALTER TABLE `contacts` DISABLE KEYS */;
 INSERT INTO `contacts` (`id`, `name`, `client_id`, `employee_role_id`, `phone`, `email`, `is_activated`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'JONNY BUTTON', 8, 2, '27 99 999 999', 'jony@gmail.com', 1, '2024-12-04 18:35:18', '2024-12-13 13:21:26', NULL),
-	(2, 'Salete Usbert', 7, 1, '+55 27 66585 6545', 'salusbert@gmail.com', 1, '2024-12-05 01:11:07', '2024-12-05 03:12:47', NULL),
-	(3, 'Carlos Antonio', 2, 2, '+01 531 53135', 'carlos@gmail.com', 1, '2024-12-05 01:14:12', '2024-12-05 03:16:20', '2024-12-05 03:16:20'),
-	(8, 'João Batista', 4, 1, '(27) 99535 3153', 'jb@gmail.com', 1, '2024-12-05 03:04:38', '2024-12-05 03:04:38', NULL),
-	(9, 'MIGUEL NETO', 13, 1, '(27) 99229-6555', 'MIG@GMAIL.COM', 1, '2024-12-13 13:22:31', '2024-12-13 13:22:31', NULL);
+	(2, 'JASON LEE JONES', 7, 1, '+55 27 66585 6545', 'jlee@gmail.com', 1, '2024-12-05 01:11:07', '2024-12-05 03:12:47', NULL),
+	(3, 'WILLIAM FRANKLIN GRAHAM', 2, 2, '+01 531 53135', 'bily@gmail.com', 1, '2024-12-05 01:14:12', '2024-12-05 03:16:20', '2024-12-05 03:16:20'),
+	(8, 'EDWIN LOUIS COLE', 4, 1, '(27) 99535 3153', 'elc@gmail.com', 1, '2024-12-05 03:04:38', '2024-12-05 03:04:38', NULL),
+	(9, 'CINDY JACOBS', 13, 1, '(27) 99229-6555', 'cindy@gmail.com', 1, '2024-12-13 13:22:31', '2024-12-13 13:22:31', NULL);
 /*!40000 ALTER TABLE `contacts` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela toll_db.contracts
@@ -729,15 +723,15 @@ CREATE TABLE IF NOT EXISTS `materials` (
 INSERT INTO `materials` (`id`, `discipline_id`, `brand_id`, `measurement_unit_id`, `name`, `is_activated`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(7, 1, 25, 6, '2" X 4" X 8\' FRT ', 1, '2024-10-14 17:00:37', NULL, NULL),
 	(8, 1, 25, 6, '1/2 FRT PLYWOOD - 4\' X 8\'', 1, '2024-10-14 17:00:37', NULL, NULL),
-	(9, 1, 26, 6, '4\' x 8\' x 3/4" FRT PLYWOOD', 1, '2024-10-14 17:00:37', NULL, NULL),
+	(9, 1, 26, 6, '4\' X 8\' X 3/4" FRT PLYWOOD', 1, '2024-10-14 17:00:37', NULL, NULL),
 	(10, 1, 30, 6, '2" X 10" X 8\' FRT', 1, '2024-10-14 17:00:37', NULL, NULL),
-	(11, 2, 30, 8, '4\' x 10\' x 5/8" TYPE X DRYWALL', 1, '2024-10-14 17:00:37', NULL, NULL),
-	(12, 2, NULL, 8, '4\' x 10\' x 5/8" TYPE MR DRYWALL', 1, '2024-10-14 17:00:37', NULL, NULL),
-	(13, 2, 30, 8, '4\' x  8\' x 1/2" Gypsum Board ULTRALIGHT PANELS', 1, '2024-10-14 17:00:37', NULL, NULL),
-	(14, 2, NULL, 8, '4\' x  8\' x 5/8" Gypsum Board Fire-Shield Type C and 5/8" (15.9 mm) Fire-Shield ', 1, '2024-10-14 17:00:37', NULL, NULL),
+	(11, 2, 30, 8, '4\' X 10\' X 5/8" TYPE X DRYWALL', 1, '2024-10-14 17:00:37', NULL, NULL),
+	(12, 2, NULL, 8, '4\' X 10\' X 5/8" TYPE MR DRYWALL', 1, '2024-10-14 17:00:37', NULL, NULL),
+	(13, 2, 30, 8, '4\' X  8\' X 1/2" GYPSUM BOARD ULTRALIGHT PANELS', 1, '2024-10-14 17:00:37', NULL, NULL),
+	(14, 2, NULL, 8, '4\' X  8\' X 5/8" GYPSUM BOARD FIRE-SHIELD TYPE C AND 5/8" (15.9 MM) FIRE-SHIELD ', 1, '2024-10-14 17:00:37', NULL, NULL),
 	(15, 2, NULL, 3, 'JOINT COMPOUND GREEN LID', 1, '2024-10-14 17:00:37', NULL, NULL),
-	(16, 2, NULL, 6, 'Finish Tape', 1, '2024-10-14 17:00:37', NULL, NULL),
-	(17, 2, 31, 6, 'Corner bead', 1, '2024-10-14 17:00:37', NULL, NULL),
+	(16, 2, NULL, 6, 'FINISH TAPE', 1, '2024-10-14 17:00:37', NULL, NULL),
+	(17, 2, 31, 6, 'CORNER BEAD', 1, '2024-10-14 17:00:37', NULL, NULL),
 	(18, 2, NULL, 4, '1-1/4" FINE THREAD SCREWS', 1, '2024-10-14 17:00:37', NULL, NULL),
 	(19, 2, 40, 4, '2" COARSE THREAD SCREWS', 1, '2024-10-14 17:00:37', NULL, NULL),
 	(20, 2, NULL, 6, '4\' x 8\' x  5/8" TYPE C GOLD BOND', 1, '2024-10-14 17:00:37', NULL, NULL),
@@ -820,7 +814,7 @@ INSERT INTO `menus` (`id`, `system_module_id`, `name`, `icon`, `route`, `comment
 	(67, 2, 'Projects', 'nav-icon fas fa-map-marked-alt', 'project', '', 2, 3, 1, 0, NULL),
 	(68, 2, 'Locations', 'nav-icon fas fa-map-signs', 'location', '', 2, 6, 0, 0, NULL),
 	(69, 2, 'Type Documents', 'nav-icon fas fa-file-code', 'type-document', '', 2, 9, 0, 0, NULL),
-	(70, 2, 'Brands', 'nav-icon fas fa-shield-alt', 'brand', NULL, 2, 4, 0, 0, NULL),
+	(70, 2, 'Brands', 'nav-icon fas fa-shield-alt', 'brand', NULL, 2, 4, 1, 0, NULL),
 	(71, 2, 'Addressses', 'nav-icon fas fa-map-marker-alt', 'address', NULL, 2, 1, 0, 0, NULL),
 	(72, 3, 'Grupos de Equipamentos', 'nav-icon fas fa-boxes', 'equipment-group', NULL, 2, 3, 0, 0, NULL),
 	(73, 2, 'Warehouse', 'nav-icon fas fa-warehouse', 'warehouse', NULL, 2, 5, 0, 0, NULL),
@@ -1530,16 +1524,16 @@ CREATE TABLE IF NOT EXISTS `projects` (
 -- Copiando dados para a tabela toll_db.projects: ~3 rows (aproximadamente)
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
 INSERT INTO `projects` (`id`, `client_id`, `trade_id`, `code`, `contract_number`, `signature_date`, `coi`, `licence`, `name`, `project_manager`, `start_date`, `contract_value`, `finish_date`, `street`, `city`, `state`, `country`, `zip_code`, `is_activated`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(40, 18, 1, '0011', '6456789', '2024-12-02', NULL, NULL, 'AFTAS RUGAS', 'JOHN BUIUD', '2024-12-03', 1000000000.00, '2026-10-15', '99 VIEW STREE', 'MIAMI', 'FLORIDA', 'EUA', '11553213', 1, '2024-12-19 18:08:44', '2024-12-23 17:13:05', NULL),
-	(41, 10, 7, '0022', '887788', '2023-12-04', NULL, NULL, 'OMEGA 3 ORAPRONOBIS', 'MIGUEL NETO', '1970-10-16', 1000000000.00, '2025-01-08', '80 ST', 'JUREIA', 'NEW YORK', 'EUA', '135', 1, '2024-12-19 19:19:12', '2024-12-23 17:13:16', NULL),
-	(42, 18, 3, 'SGE123', '999999', '2024-12-20', NULL, NULL, 'SIST FROTAS LTES XYZ', 'USBERT', '2025-01-01', 165485.00, '2026-01-01', 'RUA ERMELINDA C PENHA, 19', 'VILA VELHA', 'ES', 'BRASIL', '29105-260', 1, '2024-12-20 12:27:55', '2024-12-21 12:23:56', NULL);
+	(40, 8, 1, '0011', '6456789', '2024-12-02', NULL, NULL, 'PROJECT XXXX', 'JOHN BUIUD', '2024-12-03', 1000000000.00, '2026-10-15', '99 VIEW STREE', 'MIAMI', 'FLORIDA', 'EUA', '11553213', 1, '2024-12-19 18:08:44', '2024-12-23 17:13:05', NULL),
+	(41, 2, 7, '0022', '887788', '2023-12-04', NULL, NULL, 'PROJECT NAME YYYY', 'MICHAEL RIBS', '1970-10-16', 1000000000.00, '2025-01-08', '80 ST', 'JUREIA', 'NEW YORK', 'EUA', '135', 1, '2024-12-19 19:19:12', '2024-12-23 17:13:16', NULL),
+	(42, 13, 3, 'AMERCICA0123', '999999', '2024-12-20', NULL, NULL, 'PROJECT OMEGA TESTE', 'ANTONY FALCON', '2025-01-01', 165485.00, '2026-01-01', 'RUA ERMELINDA C PENHA, 19', 'VILA VELHA', 'ES', 'BRASIL', '29105-260', 1, '2024-12-20 12:27:55', '2024-12-21 12:23:56', NULL);
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela toll_db.rfis
 CREATE TABLE IF NOT EXISTS `rfis` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL,
-  `received_from` bigint(20) unsigned DEFAULT NULL,
+  `received_from` int(11) DEFAULT NULL,
   `reference` text,
   `rfi_date` date NOT NULL,
   `cost_impact` int(11) unsigned DEFAULT NULL,
@@ -1550,10 +1544,8 @@ CREATE TABLE IF NOT EXISTS `rfis` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `received_from_fkrfi1` (`received_from`),
   KEY `project_id_fkrfi` (`project_id`),
-  CONSTRAINT `project_id_fkrfi` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`),
-  CONSTRAINT `received_from_fkrfi1` FOREIGN KEY (`received_from`) REFERENCES `users` (`id`)
+  CONSTRAINT `project_id_fkrfi` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Copiando dados para a tabela toll_db.rfis: ~0 rows (aproximadamente)
@@ -1566,18 +1558,20 @@ INSERT INTO `rfis` (`id`, `project_id`, `received_from`, `reference`, `rfi_date`
 -- Copiando estrutura para tabela toll_db.rfi_overviews
 CREATE TABLE IF NOT EXISTS `rfi_overviews` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `rfi_id` int(11) unsigned NOT NULL,
+  `rfi_id` int(11) unsigned DEFAULT NULL,
+  `user_id` bigint(20) unsigned DEFAULT NULL,
   `question` text,
   `sugestion` text,
   `client_answear` text,
   `deadline` date DEFAULT NULL,
-  `user_create` bigint(20) unsigned DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `rfi_id` (`rfi_id`),
-  CONSTRAINT `rfi_id` FOREIGN KEY (`rfi_id`) REFERENCES `rfis` (`id`)
+  KEY `user_id_fkmotov` (`user_id`),
+  CONSTRAINT `rfi_id` FOREIGN KEY (`rfi_id`) REFERENCES `rfis` (`id`),
+  CONSTRAINT `user_id_fkmotov` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Copiando dados para a tabela toll_db.rfi_overviews: ~0 rows (aproximadamente)

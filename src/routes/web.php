@@ -312,6 +312,7 @@ Route::middleware('auth')->group(function() {
     // rfi
     Route::controller(RfiController::class)->prefix('rfi')->group(function() {
         Route::get('/', 'getAll')->name('rfi-list');
+        Route::get('/create', 'getDataToCreate')->name('create');
     });
 
     // pco
