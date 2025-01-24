@@ -120,20 +120,27 @@ class PcoRepository implements PcoRepositoryInterface
 
     public function getServiceItemByUser($user_id) {
 
-        $servicItems = ServiceItem::select(
-            'id',
-            'identification_level',
-            'item_description',
-            'item_cost',
-        )
-        ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(item_cost, 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS item_cost_en')
-        ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(item_cost, 2),\'.\',\';\'),\',\',\'.\'),\';\',\',\')) AS item_cost_br')
-        ->selectRaw('CONCAT(level_01, \'.\', level_02) AS level')
-        ->where('user_id', $user_id)
-        ->orderBy('item_number')
-        ->get();
+        try {
 
-       return $servicItems;
+            $servicItems = ServiceItem::select(
+                'id',
+                'identification_level',
+                'item_description',
+                'item_cost',
+            )
+            ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(item_cost, 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS item_cost_en')
+            ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(item_cost, 2),\'.\',\';\'),\',\',\'.\'),\';\',\',\')) AS item_cost_br')
+            ->selectRaw('CONCAT(level_01, \'.\', level_02) AS level')
+            ->where('user_id', $user_id)
+            ->orderBy('item_number')
+            ->get();
+
+            return $servicItems;
+
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
 
     }
 
@@ -269,8 +276,8 @@ class PcoRepository implements PcoRepositoryInterface
     }
 
 
-    // ATUALIZA O TOTAL NO SERVICE ITENS (SOMA DOS LABOR APPROPRIATIONS)
-
+    // ATUALIZAR O TOTAL NO SERVICE ITENS (SOMA DOS LABOR APPROPRIATIONS)
+    // ATUALIZAR EM CADA NÍVEL ABAIXO
     public function updateItemCostServiceItem(array $dataItemCost)
     {
         try {
@@ -296,10 +303,46 @@ class PcoRepository implements PcoRepositoryInterface
             return $input;
 
         } catch (\Exception $e) {
+            // dd($e);
             return response()->json(["error" => $e->getMessage()]);
         }
 
     }
+
+
+
+    // ATUALIZAR O TOTAL NO SERVICE ITEM NÍVEL 01 (SOMA DOS NÍVEIS ABAIXO)
+    // ATUALIZAR TUDO NO NÍVEL SUPERIOR
+    // public function updateItemCostServiceItemLevelOne(array $dataIServiceItem)
+    // {
+    //     try {
+    //         $somaSIn1 = ServiceItem::select(
+    //             'level_01',
+    //         )
+    //         ->selectRaw('CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(sum(item_cost * 1), 2),\',\',\';\'),\',\',\'.\'),\';\',\',\')) AS total')
+    //         ->where('level_01', '1')
+    //         ->where('level_02', '>', '0')
+    //         ->groupBY('level_01')
+    //         ->get();
+
+    //         if(Config::get('app.locale') == 'en') {
+    //             $item_cost = Parse_money_database_en($somaSIn1[0]['total']);
+    //         } else {
+    //             $item_cost = Parse_money_database_br($somaSIn1[0]['total']);
+    //         }
+
+    //     // $input = ServiceItem::find($dataIServiceItem['service_item_id']);
+    //         // $input->item_cost = $item_cost;
+    //         // $input->save();
+
+    //         // return $input;
+
+    //     } catch (\Exception $e) {
+    //         dd($e);
+    //         return response()->json(["error" => $e->getMessage()]);
+    //     }
+
+    // }
 
 
 

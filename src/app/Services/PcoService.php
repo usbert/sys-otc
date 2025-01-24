@@ -232,13 +232,16 @@ class PcoService
 
 
         // For Update Service Item Item Cost
+        // ATUALIZAR O TOTAL NO SERVICE ITENS (SOMA DOS LABOR APPROPRIATIONS)
         $dataItemCost = array(
             'service_item_id' => $data['service_item_labor'],
             'hours'           => $data['hours'],
             'rate'            => $data['rate'],
         );
+        $this->pcoRepository->updateItemCostServiceItem($dataItemCost);
 
-        $okCostServiceItem = $this->pcoRepository->updateItemCostServiceItem($dataItemCost);
+        // USANDO A MESMA ARRAY PORÉM SÓ IRÁ UTILIZAR O service_item_id
+        // $this->pcoRepository->updateItemCostServiceItemLevelOne($dataItemCost);
 
     }
 
