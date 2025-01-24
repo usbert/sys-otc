@@ -313,6 +313,44 @@ class PcoRepository implements PcoRepositoryInterface
 
     // ATUALIZAR O TOTAL NO SERVICE ITEM NÍVEL 01 (SOMA DOS NÍVEIS ABAIXO)
     // ATUALIZAR TUDO NO NÍVEL SUPERIOR
+
+    /*
+            select 	level_01,
+                    CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(sum(item_cost * 1), 2),',',';'),',','.'),';',',')) AS total
+        from service_items
+        where level_01 = 1
+        and   level_02 > 0
+        group by level_01
+        ;
+
+
+        select 	service_item_id,
+                    CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(sum(hours * rate), 2),',',';'),',','.'),';',',')) AS total
+        from labor_appropriations
+        where service_item_id = 111
+        group by service_item_id
+        ;
+        select 	id,
+			identification_level, item_description, item_cost,
+			CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(item_cost, 2),',',';'),',','.'),';',',')) AS item_cost_en,
+			CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(item_cost, 2),'.',';'),',','.'),';',',')) AS item_cost_br,
+			CONCAT(level_01, '.', level_02) AS `level`,
+			CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(sum(item_cost * 1), 2),',',';'),',','.'),';',',')) AS total
+
+			case when level_01 = 1 and level_02 > 0
+				 then
+				 item_cost
+				 -- CONCAT(REPLACE(REPLACE(REPLACE(FORMAT(sum(item_cost * 1), 2),',',';'),',','.'),';',',')) AS total
+			else
+				'n'
+			end as aqui
+
+            from service_items si where user_id = 1
+            group by id, si.level_01, si.level_02, si.item_cost
+            order by item_number asc
+    */
+
+
     // public function updateItemCostServiceItemLevelOne(array $dataIServiceItem)
     // {
     //     try {
