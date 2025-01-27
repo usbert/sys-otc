@@ -62,6 +62,46 @@ class RfiService
 
     }
 
+
+
+    public function updateRfiOverviewByUser(array $data)
+    {
+
+        if(empty($data['cost_impact'])) {
+            $cost_impact = 0;
+        } else {
+            $cost_impact = 1;
+        }
+        if(empty($data['schedule_impact'])) {
+            $schedule_impact = 0;
+        } else {
+            $schedule_impact = 1;
+        }
+        if(empty($data['solved'])) {
+            $status = 0;
+        } else {
+            $status = 1;
+        }
+
+        $rfiOverview = array(
+            'rfi_overview'      => $data['rfi_overview'],
+            'question'          => $data['question'],
+            'sugestion'         => $data['sugestion'],
+            'client_answear'    => $data['client_answear'],
+            'cost_impact'       => $cost_impact,
+            'schedule_impact'   => $schedule_impact,
+            'deadline'          => $data['deadline'],
+            'status'            => $status,
+            'user_id'           => Auth::user()->id,
+        );
+
+
+        $updateOverview_id = $this->rfiRepository->updateRfiOverviewByUser($rfiOverview);
+
+    }
+
+
+
     // Clear all temporary RFI Overviews records
     public function deleteRfiOverview(array $data)
     {

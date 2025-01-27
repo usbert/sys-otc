@@ -571,7 +571,6 @@
         }
 
 
-        // ********* SAVING FORM **********
         function saveModalOverview() {
 
             var data = $('#formRfiOverview').serialize();
@@ -648,6 +647,86 @@
             });
 
         };
+
+
+
+        function updateModalOverview() {
+
+            var data = $('#formRfiOverview').serialize();
+
+            $.ajax({
+                type: 'post',
+                url: "{{ url('rfi/update-rfi-overview-by-user/') }}",
+                data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                // beforeSend: function(){
+                //     console.log('....Please wait');
+                // },
+                success: function(response){
+
+                    // TOASTR ALERT
+                    toastr.options = timeOut = 10000;
+                    toastr.options = {
+                        "progressBar" : true,
+                        "closeButton" : true,
+                        "positionClass": "toast-bottom-full-width",
+                        "onclick": true,
+                        "fadeIn": 300,
+                        "fadeOut": 1000,
+
+                    },
+
+                    toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
+
+                    $('#formRfiOverview')[0].reset();
+
+
+                    setTimeout(function() {
+                        loadRfiOverviewByUser({{ Auth::user()->id }});
+                        closeModalOverview();
+                    }, 100);
+
+                },
+                // complete: function(response){
+                //     console.log('Created New');
+                // },
+                error: function(errors) {
+
+                    // var message_erro = '{{ __('messages.Error.Required field not filled') }}: ';
+                    // console.log('TODOS', errors.responseJSON);
+                    // console.log('PARCIAL', errors.responseJSON.errors);
+
+                    if(errors.responseJSON.errors.question) {
+                        message_erro_aux = errors.responseJSON.errors.question[0];
+                        message_erro = message_erro_aux.replace("question", "<b>{{ __('messages.Question') }}</b>")
+
+                    } else if(errors.responseJSON.errors.deadline) {
+                        message_erro_aux = errors.responseJSON.errors.deadline[0];
+                        message_erro = message_erro_aux.replace("deadline", "<b>{{ __('messages.Deadline') }}</b>")
+
+                    } else {
+                        message_erro = errors.responseJSON.errors;
+                    }
+
+                    toastr.options = timeOut = 10000;
+                    toastr.options = {
+                        "progressBar" : true,
+                        "closeButton" : true,
+                        "positionClass": "toast-bottom-full-width",
+                        "onclick": true,
+                        "fadeIn": 300,
+                        "fadeOut": 1000,
+
+                    },
+                    toastr.error(message_erro, "<b>{{ __('messages.Attention') }}</b>!");
+                }
+
+            });
+
+        };
+
 
 
         function deleteRfiOverview(id) {

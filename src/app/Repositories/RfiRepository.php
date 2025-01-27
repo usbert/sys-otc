@@ -114,8 +114,33 @@ class RfiRepository implements RfiRepositoryInterface
 
 
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
+    }
+
+
+    public function updateRfiOverviewByUser(array $data)
+    {
+        try {
+
+            $input                  = RfiOverview::find($data['rfi_overview']);
+            $input->question        = $data['question'];
+            $input->sugestion       = $data['sugestion'];
+            $input->client_answear  = $data['client_answear'];
+            $input->cost_impact     = $data['cost_impact'];
+            $input->schedule_impact = $data['schedule_impact'];
+            $input->deadline        = $data['deadline'];
+            $input->status          = $data['status'];
+            $input->user_id         = Auth::user()->id;
+
+            $input->save();
+
+            return $input;
+
+        } catch (\Exception $e) {
+            // dd($e);
+            return response()->json(["error" => $e->getMessage()]);
         }
 
     }

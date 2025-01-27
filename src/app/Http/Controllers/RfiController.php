@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Http\Requests\Rfi\CreateRfiOverviewtRequest;
+use App\Http\Requests\Rfi\UpdateRfiOverviewtRequest;
 use App\Services\RfiService;
 use Illuminate\Http\Request;
 
@@ -75,14 +76,12 @@ class RfiController extends Controller
             }
 
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
     }
 
 
     public function storeRfiOverviewByUser(CreateRfiOverviewtRequest $request) {
-
         try {
             $result = $this->rfiService->storeRfiOverviewByUser( $request->all());
             return response()->json($result);
@@ -92,8 +91,17 @@ class RfiController extends Controller
         }
     }
 
+    public function updateRfiOverviewByUser(UpdateRfiOverviewtRequest $request) {
+        try {
+            $result = $this->rfiService->updateRfiOverviewByUser( $request->all());
+            return response()->json($result);
+        } catch (\Exception $e) {
+            dd($e);
+           return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
 
- // Clear all temporary RFI Overviews records
+    // Clear all temporary RFI Overviews records
     public function deleteRfiOverview(Request $request) {
         try {
             $result = $this->rfiService->deleteRfiOverview( $request->all());

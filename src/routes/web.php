@@ -315,9 +315,10 @@ Route::middleware('auth')->group(function() {
         Route::get('/create', 'getDataToCreate')->name('create');
         Route::get('/get-rfi-overview-by-user/{user_id}', 'getRfiOverviewByUser')->name('rfi-overview-by-user');
         Route::post('/delete-rfi-overview-by-user', 'deleteRfiOverviewByUser')->name('delete-rfi-overview-by-user');
-        Route::post('/store-rfi-overview-by-user', 'storeRfiOverviewByUser')->name('store-rfi-overview-by-user');
         Route::post('/delete-rfi-overview', 'deleteRfiOverview')->name('delete-rfi-overview');
         Route::get('/get-rfi-overview/{id}', 'getRfiOverview')->name('get-rfi-overview');
+        Route::post('/store-rfi-overview-by-user', 'storeRfiOverviewByUser')->name('store-rfi-overview-by-user');
+        Route::post('/update-rfi-overview-by-user', 'updateRfiOverviewByUser')->name('update-rfi-overview-by-user');
     });
 
     // pco
