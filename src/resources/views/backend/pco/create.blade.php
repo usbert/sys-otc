@@ -707,9 +707,6 @@
                         <i class="fa fa-close"></i>&nbsp;
                         {{ __('messages.Button.Close') }}
                     </button>
-                    <button class="btn btn-sm btn-primary float-end" id="image-upload">
-                        {{ __('messages.Button.Save') }}
-                    </button>
                 </div>
                 </div>
             </div>
@@ -1054,21 +1051,28 @@
 
 
         // Clear all temporary service items records
-        // setTimeout(function() {
+        setTimeout(function() {
 
-        //     var data = $('#form_data_delete_by_user').serialize();
+            var data = $('#form_data_delete_by_user').serialize();
 
-        //     $.ajax({
-        //         type: 'post',
-        //         url: "{{ 'delete-service-item-by-user' }}",
-        //         data: data,
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
+            $.ajax({
+                type: 'post',
+                url: "{{ 'delete-service-item-by-user' }}",
+                data: data,
+                success: function(response){
+                    console.log('chegou');
+                },
+                error: function(errors) {
+                    console.log('ERRO: ', errors.responseJSON);
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
 
-        //     });
 
-        // }, 150);
+            });
+
+        }, 150);
 
 
 

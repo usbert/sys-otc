@@ -58,10 +58,11 @@ return [
     'Received From' => 'Received From',
     'Question' => 'Question',
     'Sugestion' => 'Sugestion',
-    'Customer Response' => 'Customer Response',
+    'Client Answear' => 'Client Answear',
     'Cost Impact' => 'Cost Impact',
     'Schedule Impact' => 'Schedule Impact',
     'Deadline' => 'Deadline',
+    'Solved' => 'Solved',
 
     'Address'           => 'Address',
     'Addresses'         => 'Addresses',

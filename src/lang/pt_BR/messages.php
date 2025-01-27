@@ -63,6 +63,7 @@ return [
     'Cost Impact' => 'Impacto de Custos',
     'Schedule Impact' => 'Schedule Impact',
     'Deadline' => 'Prazo',
+    'Solved' => 'resolvido',
 
     'Address'           => 'Endereço',
     'Addresses'         => 'Endereços',

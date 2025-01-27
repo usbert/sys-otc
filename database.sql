@@ -289,7 +289,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela toll_db.clients: ~26 rows (aproximadamente)
+-- Copiando dados para a tabela toll_db.clients: ~20 rows (aproximadamente)
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
 INSERT INTO `clients` (`id`, `code`, `name`, `address`, `city`, `state`, `country`, `zip_code`, `phone`, `email`, `responsible`, `is_activated`, `dt_datareg`, `created_at`, `deleted_at`, `updated_at`) VALUES
 	(2, 'BD', 'BRROKLINE DEVELOPMENT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2022-11-16 14:14:08', NULL, NULL, NULL),
@@ -685,7 +685,7 @@ CREATE TABLE IF NOT EXISTS `labor_appropriations` (
   CONSTRAINT `user_id_fkpco31` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela toll_db.labor_appropriations: ~7 rows (aproximadamente)
+-- Copiando dados para a tabela toll_db.labor_appropriations: ~9 rows (aproximadamente)
 /*!40000 ALTER TABLE `labor_appropriations` DISABLE KEYS */;
 INSERT INTO `labor_appropriations` (`id`, `service_item_id`, `user_id`, `employee_role_id`, `pco_id`, `hours`, `rate`, `status`, `is_activated`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(5, 110, 1, 2, NULL, 2.00, 120.00, 1, 1, '2025-01-17 13:19:49', '2025-01-24 00:22:30', NULL),
@@ -801,7 +801,7 @@ CREATE TABLE IF NOT EXISTS `menus` (
   CONSTRAINT `country_id_fk2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
 
--- Copiando dados para a tabela toll_db.menus: ~19 rows (aproximadamente)
+-- Copiando dados para a tabela toll_db.menus: ~20 rows (aproximadamente)
 /*!40000 ALTER TABLE `menus` DISABLE KEYS */;
 INSERT INTO `menus` (`id`, `system_module_id`, `name`, `icon`, `route`, `comment`, `level`, `order_by`, `is_activated`, `id_interno`, `country_id`) VALUES
 	(2, 1, 'Users', 'nav-icon fas fa-user', 'user', '', 2, 1, 1, 0, NULL),
@@ -859,7 +859,7 @@ CREATE TABLE IF NOT EXISTS `page_actions` (
   CONSTRAINT `menu_id_fk` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela toll_db.page_actions: ~64 rows (aproximadamente)
+-- Copiando dados para a tabela toll_db.page_actions: ~65 rows (aproximadamente)
 /*!40000 ALTER TABLE `page_actions` DISABLE KEYS */;
 INSERT INTO `page_actions` (`id`, `menu_id`, `action_id`, `is_activated`) VALUES
 	(1, 2, 1, 1),
@@ -1004,7 +1004,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   CONSTRAINT `user_id_fk10x` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=844 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela toll_db.permissions: ~33 rows (aproximadamente)
+-- Copiando dados para a tabela toll_db.permissions: ~34 rows (aproximadamente)
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
 INSERT INTO `permissions` (`id`, `user_id`, `page_action_id`, `is_activated`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(810, 1, 2, 1, '2024-12-11 18:00:24', '2024-12-11 18:00:24', NULL),
@@ -1536,8 +1536,6 @@ CREATE TABLE IF NOT EXISTS `rfis` (
   `received_from` int(11) DEFAULT NULL,
   `reference` text,
   `rfi_date` date NOT NULL,
-  `cost_impact` int(11) unsigned DEFAULT NULL,
-  `schedule_impact` int(11) unsigned DEFAULT NULL,
   `status` int(11) DEFAULT '1',
   `is_activated` int(11) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1548,11 +1546,11 @@ CREATE TABLE IF NOT EXISTS `rfis` (
   CONSTRAINT `project_id_fkrfi` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela toll_db.rfis: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela toll_db.rfis: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `rfis` DISABLE KEYS */;
-INSERT INTO `rfis` (`id`, `project_id`, `received_from`, `reference`, `rfi_date`, `cost_impact`, `schedule_impact`, `status`, `is_activated`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 40, 3, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled', '2025-01-20', NULL, NULL, 1, 1, '2025-01-23 18:16:42', NULL, NULL),
-	(2, 40, 3, 'when an unknown printer took a galley of type and scrambled', '2025-01-23', NULL, NULL, 1, 1, '2025-01-23 18:16:42', NULL, NULL);
+INSERT INTO `rfis` (`id`, `project_id`, `received_from`, `reference`, `rfi_date`, `status`, `is_activated`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 40, 3, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled', '2025-01-20', 1, 1, '2025-01-23 18:16:42', NULL, NULL),
+	(2, 40, 3, 'when an unknown printer took a galley of type and scrambled', '2025-01-23', 1, 1, '2025-01-23 18:16:42', NULL, NULL);
 /*!40000 ALTER TABLE `rfis` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela toll_db.rfi_overviews
@@ -1563,7 +1561,10 @@ CREATE TABLE IF NOT EXISTS `rfi_overviews` (
   `question` text,
   `sugestion` text,
   `client_answear` text,
+  `cost_impact` int(11) unsigned DEFAULT '0',
+  `schedule_impact` int(11) unsigned DEFAULT '0',
   `deadline` date DEFAULT NULL,
+  `status` int(11) unsigned NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -1572,10 +1573,14 @@ CREATE TABLE IF NOT EXISTS `rfi_overviews` (
   KEY `user_id_fkmotov` (`user_id`),
   CONSTRAINT `rfi_id` FOREIGN KEY (`rfi_id`) REFERENCES `rfis` (`id`),
   CONSTRAINT `user_id_fkmotov` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Copiando dados para a tabela toll_db.rfi_overviews: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela toll_db.rfi_overviews: ~3 rows (aproximadamente)
 /*!40000 ALTER TABLE `rfi_overviews` DISABLE KEYS */;
+INSERT INTO `rfi_overviews` (`id`, `rfi_id`, `user_id`, `question`, `sugestion`, `client_answear`, `cost_impact`, `schedule_impact`, `deadline`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, NULL, 1, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s ', 'e release of Letraset sheets containing Lorem Ipsum passages, and more', NULL, 0, 1, '2025-02-10', 0, '2025-01-24 15:12:44', NULL, NULL),
+	(2, NULL, 1, 'Eum dolore neque in iure obcaecati 33 similique tempora At praesentium architecto eum aliquam explicabo ea aperiam amet', 'Aut accusantium galisum eos beatae dolores qui deserunt culpa et deserunt autem in adipisci', 'Est officiis omnis eos ullam distinctio eos minima molestias 33 perspiciatis quis est dolor quia.', 1, 0, '2025-02-10', 1, '2025-01-24 15:12:44', NULL, NULL),
+	(3, NULL, 1, 'Obcaecati maxime qui tempora soluta ut voluptas cumque cum voluptatem nisi qui quas quasi. Ab minima', 'E release of Letraset sheets containing Lorem Ipsum passages, and more', NULL, 1, 1, '2025-02-10', 1, '2025-01-24 15:12:44', NULL, NULL);
 /*!40000 ALTER TABLE `rfi_overviews` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela toll_db.service_items
