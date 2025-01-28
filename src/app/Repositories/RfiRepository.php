@@ -7,7 +7,6 @@ use App\Models\Project;
 use App\Models\Rfi;
 use App\Models\RfiOverview;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 
 class RfiRepository implements RfiRepositoryInterface
 {
@@ -65,6 +64,7 @@ class RfiRepository implements RfiRepositoryInterface
         )
         ->selectRaw('lpad(rfi_overviews.id, 2, 0) as code')
         ->where('user_id', $user_id)
+        ->where('rfi_id', null)
         ->leftJoin('users', 'users.id', '=', 'rfi_overviews.user_id')
         ->orderBy('id')
         ->get();
@@ -144,6 +144,35 @@ class RfiRepository implements RfiRepositoryInterface
         }
 
     }
+
+    public function store($data)
+    {
+        return Rfi::create($data)->id;
+
+    }
+
+
+
+    public function updateOverviewFilled(array $data)
+    {
+        try {
+
+            RfiOverview::where('user_id', $data['user_id'])
+            ->whereNull('rfi_id')
+            ->update([
+                'rfi_id' => $data['rfi_id']
+              ]
+            );
+
+        } catch (\Exception $e) {
+             dd($e);
+            return response()->json(["error" => $e->getMessage()]);
+        }
+
+
+    }
+
+
 
 
     // Clear all temporary RFI Overviews records

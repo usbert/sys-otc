@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\RfiRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 
 class RfiService
 {
@@ -112,6 +111,41 @@ class RfiService
     public function getRfiOverview($rfi_overview_id) {
         return $this->rfiRepository->getRfiOverview($rfi_overview_id);
     }
+
+
+
+    // Save RFI ALL FORM
+    public function store(array $data)
+    {
+
+        $rfi = array(
+            'project_id'        => $data['project_id'],
+            'reference'         => $data['reference'],
+            'rfi_date'          => $data['rfi_date'],
+            'received_from'     => Auth::user()->id,
+            'status'            => 0,
+        );
+
+        $rfi_id = $this->rfiRepository->store($rfi);
+
+
+        // PREENCHER O CÓDIGO DO RFI NA TABELA OVERVIEWS ONDE O USUÁRIO IGUAL AO LOGADO E RFI IGUAL A rfi_id
+        try {
+            $overview = array(
+                'rfi_id'   => $rfi_id,
+                'user_id'  => Auth::user()->id,
+            );
+
+            $update = $this->rfiRepository->updateOverviewFilled($overview);
+
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()]);
+        }
+
+
+
+    }
+
 
 
     // Clear all temporary RFI Overviews records

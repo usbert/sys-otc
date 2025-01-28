@@ -22,8 +22,6 @@ class Rfi extends Model
         'reference',
         'received_from',
         'rfi_date',
-        'cost_impact',
-        'schedule_impact',
         'status',
     ];
 

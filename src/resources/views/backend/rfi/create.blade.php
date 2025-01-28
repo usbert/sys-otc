@@ -268,7 +268,7 @@
 
                         @csrf
 
-                        <input type="idden" name="rfi_overview" id="rfi_overview" value="">
+                        <input type="hidden" name="rfi_overview" id="rfi_overview" value="">
 
                         <div class="form-group">
                             <div class="row">
@@ -528,18 +528,18 @@
                         { data: 'cost_impact',      name: 'cost_impact',     orderable: false,  width: '5%',
                             render: function(data, type, row) {
                                 if(data == 1) {
-                                    return '<b>SIM</b>';
+                                    return '<b>{{ __("YES") }}</b>';
                                 }else if (data == 0) {
-                                    return 'NÃO';
+                                    return '{{ __("NO") }}';
                                 } else { return '-'; }
                             }
                         },
                         { data: 'schedule_impact',  name: 'schedule_impact', orderable: false,  width: '5%',
                             render: function(data, type, row) {
                                 if(data == 1) {
-                                    return '<b>SIM</b>';
+                                    return '<b>{{ __("YES") }}</b>';
                                 }else if (data == 0) {
-                                    return 'NÃO';
+                                    return '{{ __("NO") }}';
                                 } else { return '-'; }
                             }
                         },
@@ -547,9 +547,9 @@
                         { data: 'status',           name: 'status',          orderable: false,  width: '5%',
                             render: function(data, type, row) {
                                 if(data == 1) {
-                                    return '<span class="pull-right badge bg-gray" style="font-size: 10px;"><span style="font-size: 10px; color: #ffffff;">SOLVED</span></span>';
+                                    return '<span class="pull-right badge bg-green" style="font-size: 10px;"><span style="font-size: 10px; color: #ffffff;">SOLVED</span></span>';
                                 } else if (data == 0) {
-                                    return '<span class="pull-right badge bg-green" style="font-size: 10px;">OPENED</span>';
+                                    return '<span class="pull-right badge bg-red" style="font-size: 10px;">OPENED</span>';
                                 } else { return '-'; }
                             }
 
@@ -835,6 +835,103 @@
 
 
         }
+
+
+
+
+
+    // ********* SAVING FORM **********
+    $(".submit-form").click(function(e) {
+
+        e.preventDefault();
+        var data = $('#form-data').serialize();
+
+        $.ajax({
+            type: 'post',
+            url: "{{ url('rfi/store/') }}",
+            data: data,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            // beforeSend: function(){
+            //     console.log('....Please wait');
+            // },
+            success: function(response){
+
+                console.log(response);
+
+                if(response == 'existing data group') {
+
+                    toastr.options = timeOut = 10000;
+                    toastr.options = {
+                        "progressBar" : true,
+                        "closeButton" : true,
+                        "positionClass": "toast-bottom-full-width",
+                        "onclick": true,
+                        "fadeIn": 300,
+                        "fadeOut": 1000,
+                    },
+                    toastr.error("<b>{{ __('messages.Registration already exists') }}!</b><br>{{ __('messages.Check possible combinations of existing data') }}.", "Oops!");
+
+                } else {
+
+                    toastr.options = timeOut = 10000;
+                    toastr.options = {
+                        "progressBar" : true,
+                        "closeButton" : true,
+                        "positionClass": "toast-bottom-full-width",
+                        "onclick": true,
+                        "fadeIn": 300,
+                        "fadeOut": 1000,
+                    },
+                    toastr.success("<b>{{ __('messages.Successfully recorded') }}!</b>", "{{ __('messages.Success') }}!");
+                    $('#form-data')[0].reset();
+
+                }
+
+            },
+            complete: function(response){
+                console.log('Created New');
+            },
+            error: function(errors) {
+
+                // var message_erro = '{{ __('messages.Error.Required field not filled') }}: ';
+                // console.log('TODOS', errors.responseJSON);
+                // console.log('PARCIAL', errors.responseJSON.errors);
+
+                if(errors.responseJSON.errors.project_id) {
+                    message_erro_aux = errors.responseJSON.errors.project_id[0];
+                    message_erro = message_erro_aux.replace("project id", " <b>{{__('messages.Project')}}</b>")
+
+                } else if(errors.responseJSON.errors.reference) {
+                    message_erro_aux = errors.responseJSON.errors.reference[0];
+                    message_erro = message_erro_aux.replace("reference", "<b>{{ __('messages.Reference') }}</b>")
+
+                } else if(errors.responseJSON.errors.rfi_date) {
+                    message_erro_aux = errors.responseJSON.errors.rfi_date[0];
+                    message_erro = message_erro_aux.replace("rfi date", "<b>{{ __('messages.Date') }}</b>")
+
+
+                } else {
+                    message_erro = errors.responseJSON.errors;
+                }
+
+                toastr.options = timeOut = 10000;
+                toastr.options = {
+                    "progressBar" : true,
+                    "closeButton" : true,
+                    "positionClass": "toast-bottom-full-width",
+                    "onclick": true,
+                    "fadeIn": 300,
+                    "fadeOut": 1000,
+
+                },
+                toastr.error(message_erro, "<b>{{ __('messages.Attention') }}</b>!");
+            }
+
+        });
+
+        });
 
 
 

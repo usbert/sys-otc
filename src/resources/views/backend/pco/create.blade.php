@@ -899,7 +899,7 @@
 
                     // var message_erro = '{{ __('messages.Error.Required field not filled') }}: ';
                     // console.log('TODOS', errors.responseJSON);
-                    console.log('PARCIAL', errors.responseJSON.errors);
+                    // console.log('PARCIAL', errors.responseJSON.errors);
 
                     if(errors.responseJSON.errors.project_id) {
                         message_erro_aux = errors.responseJSON.errors.project_id[0];
