@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\FileRfi;
 use App\Repositories\Interfaces\RfiRepositoryInterface;
 use App\Models\Project;
 use App\Models\Rfi;
@@ -39,8 +40,15 @@ class RfiRepository implements RfiRepositoryInterface
         ->orderBy('name', 'asc')
         ->get();
 
+        $rfiOverviewCombo = RfiOverview::select(
+            'id',
+        )
+        ->selectRaw('CONCAT(\'OVW\', lpad(rfi_overviews.id, 3, 0)) as code')
+        ->get();
+
         $return = array(
-            'projectCombo'  => $projectCombo,
+            'projectCombo'      => $projectCombo,
+            'rfiOverviewCombo'  => $rfiOverviewCombo,
         );
 
         return $return;
@@ -62,7 +70,7 @@ class RfiRepository implements RfiRepositoryInterface
             'deadline',
             'status',
         )
-        ->selectRaw('lpad(rfi_overviews.id, 2, 0) as code')
+        ->selectRaw('CONCAT(\'OVW\', lpad(rfi_overviews.id, 3, 0)) as code')
         ->where('user_id', $user_id)
         ->where('rfi_id', null)
         ->leftJoin('users', 'users.id', '=', 'rfi_overviews.user_id')
@@ -165,7 +173,6 @@ class RfiRepository implements RfiRepositoryInterface
             );
 
         } catch (\Exception $e) {
-             dd($e);
             return response()->json(["error" => $e->getMessage()]);
         }
 
@@ -173,6 +180,10 @@ class RfiRepository implements RfiRepositoryInterface
     }
 
 
+    public function storeFile($data)
+    {
+      return FileRfi::create($data)->id;
+    }
 
 
     // Clear all temporary RFI Overviews records

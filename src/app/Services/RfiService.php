@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\RfiRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class RfiService
 {
@@ -142,7 +144,47 @@ class RfiService
             return response()->json(["error" => $e->getMessage()]);
         }
 
+    }
 
+
+    public function storeFile(array $data)
+    {
+
+        $file = $data['image'];
+        $filename = $file->getClientOriginalName(); // Retrieve the original filename
+
+        $uuid = Str::uuid();
+
+        // Get extension name to concat in file name
+        $EXT = explode('.', $filename);
+        $name = $uuid.'.'.$EXT[1];
+        $type_document_id = 17; // CÓDIGO DO type document DO RFI
+        $path = $type_document_id.'/'.substr($uuid,0,2).'/'.substr($uuid,2,2).'/'.substr($uuid,4,2).'/'.substr($uuid,6,2).'/';
+
+        // break uuid to formate path (type_document_id/aa/bb/cc/dd) four part at one
+        // example: 1/90/d8/12/84/
+        $path = $type_document_id.'/'.substr($uuid,0,2).'/'.substr($uuid,2,2).'/'.substr($uuid,4,2).'/'.substr($uuid,6,2).'/';
+
+        Storage::disk('local')->put($path.'/'.$name, file_get_contents($file));
+
+        if(empty($data['rfi_id'])) {
+            $rfi_id = null;
+        } else {
+            $rfi_id = $data['rfi_id'];
+        }
+
+        $datafile = array(
+            'uuid'              => $uuid,
+            'rfi_id'            => $rfi_id,
+            'name'              => $name,
+            'type_document_id'  => $type_document_id,
+            'original_name'     => $data['original_name'],
+            'file_comment'      => $data['file_comment'],
+            'user_id'           => Auth::user()->id,
+        );
+
+        $file_id = $this->rfiRepository->storeFile($datafile);
+        // end MAIN TABLE
 
     }
 

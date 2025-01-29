@@ -320,6 +320,8 @@ Route::middleware('auth')->group(function() {
         Route::post('/store-rfi-overview-by-user', 'storeRfiOverviewByUser')->name('store-rfi-overview-by-user');
         Route::post('/update-rfi-overview-by-user', 'updateRfiOverviewByUser')->name('update-rfi-overview-by-user');
         Route::post('/store', 'store')->name('store');
+        Route::post('/store-file', 'storeFile')->name('store-file');
+        // Route::post('/delete-file', 'deleteFile')->name('delete-file');
     });
 
     // pco

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Rfi\CreateRfiOverviewtRequest;
 use App\Http\Requests\Rfi\UpdateRfiOverviewtRequest;
 use App\Http\Requests\Rfi\CreateRfiRequest;
+use App\Http\Requests\Rfi\CreateFileRequest;
 use App\Services\RfiService;
 use Illuminate\Http\Request;
 
@@ -130,6 +131,17 @@ class RfiController extends Controller
         } catch (\Exception $e) {
             dd($e);
            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
+
+
+    public function storeFile(CreateFileRequest $request) {
+        try {
+            $result = $this->rfiService->storeFile( $request->all());
+            return response()->json($result);
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
     }
 

@@ -179,7 +179,7 @@
                                         </div>
                                     </div>
 
-
+                                    {{-- RFI OVERVIEW --}}
                                     <div class="row">
 
                                         <div class="col-sm-12">
@@ -200,6 +200,7 @@
                                                                 <table style="font-size: 14px;" class="table table-striped table-sm" id="ajax-datatable-rfi-overview">
                                                                     <thead>
                                                                         <tr>
+                                                                            <th></th>
                                                                             <th scope="col">{{ __('messages.Question') }}</th>
                                                                             <th scope="col">{{ __('messages.Sugestion') }}</th>
                                                                             <th scope="col">{{ __('messages.From') }}</th>
@@ -229,6 +230,48 @@
                                     </div>
 
 
+                                    {{-- ATTACHMENT FILES --}}
+                                    <div class="row" style="margin-top: 20px;">
+
+                                        <div class="col-sm-12">
+
+                                            <div class="panel-body">
+                                                <div class="card card-secondary">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">{{ __('messages.Document Attachment') }}</h3>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <div class="tab-content">
+                                                                <table style="font-size: 14px; width: 98%" class="table table-striped table-sm" id="ajax-datatable-files">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col">{{ __('messages.Description') }}</th>
+                                                                            <th scope="col">{{ __('messages.File Name') }}</th>
+                                                                            <th scope="col">Overview Ref.</th>
+                                                                            <th scope="col">
+                                                                                <button type="button" class="btn btn-sm btn-primary " data-bs-toggle="modal" data-bs-target="#myModalAttach" onclick="openModalAttach()">
+                                                                                    <i class="fa fa-paperclip"></i>&nbsp;
+                                                                                    {{-- {{ __('messages.Attach document') }} --}}
+                                                                                </button>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
 
                                 </div>
 
@@ -253,7 +296,7 @@
 
 
 
-
+        {{-- Modal Overview --}}
         <div class="modal fade" id="myModalOverview" tabindex="-1" role="dialog" aria-labelledby="myModalAttachLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -391,6 +434,90 @@
         </div>
 
 
+        <!-- Attachment Modal -->
+        <div class="modal fade" id="myModalAttach" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="myModalAttachLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header" style="background-color: #6c757d; color: white;">
+                    <h5 class="modal-title" id="myModalAttachLabel">{{ __('messages.Document Attachment')}}</h5>
+                    {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModalAttach()"></button> --}}
+                </div>
+                <div class="modal-body">
+
+                    {{-- start form modal --}}
+                    <form action="{{ url('file/store/') }}" id="image-form" class="form-horizontal" method="POST" enctype="multipart/form-data">
+
+                        @csrf
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card card-secondary">
+                                        <div class="card-body">
+
+                                            {{-- <input type="hidden" name="rfi_id" id="rfi_id"> --}}
+
+                                            <div class="row">
+
+                                                <div class="col-sm-2">
+                                                    <div class="form-group">
+                                                        <label>Overview Ref.</label>
+                                                        <select class="form-control form-control-sm" name="rfi_id" id="rfi_id">
+                                                            <option value="">{{__('messages.Select')}}</option>
+                                                            @foreach ($result['rfiOverviewCombo'] as $overview)
+                                                                <option value="{{ $overview->id }}"> {{ $overview->code }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label>{{__('messages.Description')}}</label>
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" name="file_comment" id="file_comment" class="form-control form-control-sm" value=''>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row" style="margin-top: 20px;">
+                                                <div class="col-sm-12">
+                                                    <input type="file" name="image" id="original_name" class="form-control form-control-sm">
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    {{-- end form modal --}}
+
+                </div>
+
+                <div id="divErrorModal" class="alert alert-danger"
+                    style="padding: 5px; margin: 10px; opacity: 0.8; text-align: center; display: none;">
+                    <span id="messageModal"></span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" onclick="closeModalAttach()">
+                        <i class="fa fa-close"></i>&nbsp;
+                        {{ __('messages.Button.Close') }}
+                    </button>
+                    <button class="btn btn-sm btn-primary float-end" id="image-upload">
+                        {{ __('messages.Attach') }}
+                    </button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
 
         <form name="form_delete_overview" id="form_delete_overview" class="form-horizontal" method="POST">
             @csrf
@@ -503,6 +630,33 @@
 
 
 
+        function openModalAttach() {
+
+            $('#myModalAttach').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            // clear modal form when opened
+            // $('#image-form')[0].reset();
+
+            // setTimeout(function() {
+
+            //     document.getElementById("vehicle_id").value = document.getElementById("id").value;
+            //     document.getElementById("project_id").value = document.getElementById("projectId").value;
+            // }, 100);
+
+
+        }
+
+        function closeModalAttach() {
+            $('#myModalAttach').modal('hide');
+            return false;
+        }
+
+
+
+
         function loadRfiOverviewByUser(user_id) {
 
             $(document).ready( function () {
@@ -521,8 +675,9 @@
                     info: false,
                     ajax: "{{ url('rfi/get-rfi-overview-by-user/') }}/"+user_id,
                     columns: [
-                        { data: 'question',         name: 'question',        orderable: false,  width: '20%' },
-                        { data: 'sugestion',        name: 'sugestion',       orderable: false,  width: '20%' },
+                        { data: 'code',             name: 'code',        orderable: false,  width: '4%' },
+                        { data: 'question',         name: 'question',        orderable: false,  width: '18%' },
+                        { data: 'sugestion',        name: 'sugestion',       orderable: false,  width: '18%' },
                         { data: 'from',             name: 'from',            orderable: false,  width: '10%' },
                         { data: 'client_answear',   name: 'client_answear',  orderable: false,  width: '20%' },
                         { data: 'cost_impact',      name: 'cost_impact',     orderable: false,  width: '5%',
@@ -931,50 +1086,110 @@
 
         });
 
+    });
+
+
+    // File upload
+    $("#image-upload").click(function (e) {
+
+        e.preventDefault();
+
+        $.ajaxSetup({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        });
+
+        const form = document.getElementById('image-form');
+
+        var productImage = $("#original_name").prop("files")[0];
+        const dados = new FormData(form);
+
+        if (typeof(productImage) != 'undefined' && productImage != null) {
+            dados.append("original_name", productImage['name']);
+            dados.append("image", productImage);
+        }
+
+        $.ajax({
+            type: "post",
+            url: "{{ url('rfi/store-file/') }}",
+            data: dados,
+            // image: productImage,
+            processData: false,
+            contentType: false,
+            success: function(response){
+                console.log('SUCESSO', response);
+                var vehicle_id = document.getElementById("id").value;
+                closeModalAttach();
+                loadFiles(vehicle_id);
+            },
+            error: function(errors) {
+
+                if(errors.responseJSON.errors.comment) {
+                    message_erro_aux = errors.responseJSON.errors.comment[0];
+                    message_erro = message_erro_aux.replace("comment", "{{ __('messages.Description') }}")
+
+                } else if(errors.responseJSON.errors.image) {
+                    message_erro_aux = errors.responseJSON.errors.image[0];
+                    message_erro = message_erro_aux.replace("image", "{{ __('messages.Attach the document') }}")
+
+                } else {
+                    message_erro = errors.responseJSON.errors;
+                }
+
+                document.getElementById("divErrorModal").style.display = "";
+                document.getElementById("messageModal").textContent = message_erro;
+                setTimeout(function() {
+                    document.getElementById("divErrorModal").style.display = "none";
+                }, 5000);
+
+
+            }
+        });
+
+
         });
 
 
 
-        setTimeout(function() {
-            // MARCAR O LINK NO SIDEBAR
-            $('#link-rfi').addClass('active');
-        }, 100);
+    setTimeout(function() {
+        // MARCAR O LINK NO SIDEBAR
+        $('#link-rfi').addClass('active');
+    }, 100);
 
 
-        $(function() {
-            $('input').keyup(function() {
-                this.value = this.value.toLocaleUpperCase();
-            });
+    $(function() {
+        $('input').keyup(function() {
+            this.value = this.value.toLocaleUpperCase();
         });
+    });
 
 
 
-        // Clear all temporary RFI Overviews records
-        // setTimeout(function() {
+    // Clear all temporary RFI Overviews records
+    // setTimeout(function() {
 
-        //     var data = $('#form_delete_overview').serialize();
+    //     var data = $('#form_delete_overview').serialize();
 
-        //     console.log('data: ', data);
+    //     console.log('data: ', data);
 
-        //     $.ajax({
-        //         type: 'post',
-        //         url: "{{ 'delete-rfi-overview-by-user' }}",
-        //         data: data,
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         success: function(response){
-        //             console.log('chegou');
-        //         },
-        //         error: function(errors) {
-        //             console.log('ERRO: ', errors.responseJSON);
-        //         },
-        //     });
+    //     $.ajax({
+    //         type: 'post',
+    //         url: "{{ 'delete-rfi-overview-by-user' }}",
+    //         data: data,
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         success: function(response){
+    //             console.log('chegou');
+    //         },
+    //         error: function(errors) {
+    //             console.log('ERRO: ', errors.responseJSON);
+    //         },
+    //     });
 
-        // }, 350);
+    // }, 350);
 
 
-    </script>
+</script>
 
 
 @endsection
