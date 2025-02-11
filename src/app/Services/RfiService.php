@@ -202,6 +202,9 @@ class RfiService
     }
 
 
+    public function getComboOverview() {
+        return $this->rfiRepository->getComboOverview();
+    }
 
     // Clear all temporary RFI Files records
     public function deleteTempFilesByUser(array $data)

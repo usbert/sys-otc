@@ -324,6 +324,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/get-file-by-user/{user_id}', 'getFileByUser')->name('get-file-by-user');
         Route::post('/delete-file', 'deleteFile')->name('delete-file');
         Route::post('/delete-temp-files-by-user', 'deleteTempFilesByUser')->name('delete-temp-files-by-user');
+        Route::get('/get-combo-overview', 'getComboOverview')->name('get-combo-overview');
     });
 
     // pco

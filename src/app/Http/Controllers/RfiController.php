@@ -193,6 +193,19 @@ class RfiController extends Controller
     }
 
 
+    public function getComboOverview() {
+        try {
+            $result = $this->rfiService->getComboOverview();
+            return response()->json($result);
+
+        } catch (\Exception $e) {
+            // dd($e);
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
+    }
+
+
     public function deleteFile(Request $request) {
         try {
             $result = $this->rfiService->deleteFile( $request->all());
@@ -210,7 +223,6 @@ class RfiController extends Controller
             $result = $this->rfiService->deleteTempFilesByUser( $request->all());
             return response()->json($result);
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
     }

@@ -40,16 +40,8 @@ class RfiRepository implements RfiRepositoryInterface
         where('is_activated', Project::ACTIVATED)
         ->orderBy('name', 'asc')
         ->get();
-
-        $rfiOverviewCombo = RfiOverview::select(
-            'id',
-        )
-        ->selectRaw('CONCAT(\'RO\', lpad(rfi_overviews.id, 3, 0)) as code')
-        ->get();
-
         $return = array(
             'projectCombo'      => $projectCombo,
-            'rfiOverviewCombo'  => $rfiOverviewCombo,
         );
 
         return $return;
@@ -246,6 +238,23 @@ class RfiRepository implements RfiRepositoryInterface
         return $return;
     }
 
+
+
+    public function getComboOverview() {
+
+        $rfiOverviewCombo = RfiOverview::select(
+            'id',
+        )
+        ->selectRaw('CONCAT(\'RO\', lpad(rfi_overviews.id, 3, 0)) as code')
+        ->get();
+
+        $return = array(
+            'rfiOverviewCombo'  => $rfiOverviewCombo,
+        );
+
+        return response()->json($return);
+
+    }
 
 
 

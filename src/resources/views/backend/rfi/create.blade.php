@@ -463,10 +463,8 @@
                                                     <div class="form-group">
                                                         <label>Overview Ref.</label>
                                                         <select class="form-control form-control-sm" name="rfi_overview_id" id="rfi_overview_id">
-                                                            <option value="">{{__('messages.Select')}}</option>
-                                                            @foreach ($result['rfiOverviewCombo'] as $overview)
-                                                                <option value="{{ $overview->id }}"> {{ $overview->code }}</option>
-                                                            @endforeach
+                                                            <option value="">-- {{__('messages.Select')}} --</option>
+                                                            {{-- INSERE OS DADOS PELO METODO DO PROJETO --}}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -657,6 +655,8 @@
             // clear modal form when opened
             $('#image-form')[0].reset();
 
+            fillComboOverviews();
+
         }
 
         function closeModalAttach() {
@@ -665,6 +665,38 @@
         }
 
 
+        function fillComboOverviews() {
+
+            $.ajaxSetup({
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            });
+
+            $.ajax({
+                url: '/rfi/get-combo-overview/',
+                type: 'get',
+                dataType: 'json',
+                success: function(response){
+
+                    var overviews = response.original.rfiOverviewCombo;
+                    console.log(overviews);
+
+                    $('#rfi_overview_id').empty();
+
+                     var option = "<option value=''>-- Selecione --</option>";
+
+                    $("#rfi_overview_id").append(option);
+
+                    overviews.forEach(function(overviews) {
+                        var option = "<option value='"+overviews.id+"'>"+overviews.code+"</option>";
+                        $("#rfi_overview_id").append(option);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+
+        }
 
 
         function loadRfiOverviewByUser(user_id) {
