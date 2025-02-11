@@ -14,6 +14,7 @@ class FileRfi extends Model
      */
     protected $fillable = [
         'id',
+        'rfi_overview_id',
         'uuid',
         'name',
         'original_name',

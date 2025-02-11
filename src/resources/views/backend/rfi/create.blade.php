@@ -200,7 +200,7 @@
                                                                 <table style="font-size: 14px;" class="table table-striped table-sm" id="ajax-datatable-rfi-overview">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th></th>
+                                                                            <th scope="col">{{ __('messages.Code') }}</th>
                                                                             <th scope="col">{{ __('messages.Question') }}</th>
                                                                             <th scope="col">{{ __('messages.Sugestion') }}</th>
                                                                             <th scope="col">{{ __('messages.From') }}</th>
@@ -249,8 +249,8 @@
                                                                 <table style="font-size: 14px; width: 98%" class="table table-striped table-sm" id="ajax-datatable-files">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th scope="col">{{ __('messages.Description') }}</th>
                                                                             <th scope="col">{{ __('messages.File Name') }}</th>
+                                                                            <th scope="col">{{ __('messages.Comment') }}</th>
                                                                             <th scope="col">Overview Ref.</th>
                                                                             <th scope="col">
                                                                                 <button type="button" class="btn btn-sm btn-primary " data-bs-toggle="modal" data-bs-target="#myModalAttach" onclick="openModalAttach()">
@@ -462,7 +462,7 @@
                                                 <div class="col-sm-2">
                                                     <div class="form-group">
                                                         <label>Overview Ref.</label>
-                                                        <select class="form-control form-control-sm" name="rfi_id" id="rfi_id">
+                                                        <select class="form-control form-control-sm" name="rfi_overview_id" id="rfi_overview_id">
                                                             <option value="">{{__('messages.Select')}}</option>
                                                             @foreach ($result['rfiOverviewCombo'] as $overview)
                                                                 <option value="{{ $overview->id }}"> {{ $overview->code }}</option>
@@ -525,6 +525,11 @@
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
         </form>
 
+        <form name="form_file_delete" id="form_file_delete" method="POST">
+            <input type="hidden" name="id" value="">
+            @csrf
+       </form>
+
     </section>
     <!-- /.content -->
 
@@ -546,6 +551,18 @@
             width: 1000px;
             margin-left: 15%;
         }
+
+        #ajax-datatable-rfi-overview td:nth-of-type(1) {
+            font-weight: bold;
+        }
+
+        #ajax-datatable-files td:nth-of-type(1) {
+            font-weight: bold;
+        }
+        #ajax-datatable-files td:nth-of-type(3) {
+            font-weight: bold;
+        }
+
 
     </style>
 
@@ -638,14 +655,7 @@
             });
 
             // clear modal form when opened
-            // $('#image-form')[0].reset();
-
-            // setTimeout(function() {
-
-            //     document.getElementById("vehicle_id").value = document.getElementById("id").value;
-            //     document.getElementById("project_id").value = document.getElementById("projectId").value;
-            // }, 100);
-
+            $('#image-form')[0].reset();
 
         }
 
@@ -710,6 +720,46 @@
 
                             },
                         { data: 'action', name: 'action', orderable: false,  width: '5%', className: "text-right" },
+                        ],
+                        // dom: 'Bfrtip',
+                        order: [[1, 'asc']],
+                            columnDefs: [{
+                            width: '5%',
+                            targets: [0],
+                            visible: true
+                        },
+                    ],
+                });
+
+            });
+
+        }
+
+
+
+        function loadFilesByUser(id) {
+
+            $(document).ready( function () {
+
+                // LIMPAR TUDO ANTES DE CRIAR NOVA DATATABLE
+                $('#ajax-datatable-files').DataTable().clear().destroy();
+
+                $.ajaxSetup({
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                });
+
+                $('#ajax-datatable-files').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    searching: false,
+                    paging: false,
+                    info: false,
+                    ajax: "{{ url('rfi/get-file-by-user/') }}/"+id,
+                    columns: [
+                        { data: 'original_name',    name: 'original_name', orderable: false, width: '35%' },
+                        { data: 'file_comment',     name: 'file_comment',  orderable: false, width: '35%' },
+                        { data: 'rfi_overview',     name: 'rfi_overview',  orderable: false, width: '20%' },
+                        { data: 'action',           name: 'action',        orderable: false, width: '10%', className: "text-right" },
                     ],
                     // dom: 'Bfrtip',
                     order: [[1, 'asc']],
@@ -717,14 +767,25 @@
                         width: '5%',
                         targets: [0],
                         visible: true
-                    },
-                ],
+                    }],
+                    // QUANTIDADE DE LINHAS NA PÁGINA
+                    lengthMenu: [
+                        [6, 8, 10, 25, 50, 100, -1],
+                        ['6', '8', 10, '25', '50', '100', 'Todos']
+                    ],
+                    pageLength: '6',
                 });
+
 
             });
 
-        }
+            // Retirar opção combobox com quantidades de linhas na grid
+            // setTimeout(function() {
+            //     document.getElementById("ajax-datatable-files_length").style.display = "none";
+            // }, 360);
 
+
+        }
 
         function saveModalOverview() {
 
@@ -1117,9 +1178,10 @@
             contentType: false,
             success: function(response){
                 console.log('SUCESSO', response);
-                var vehicle_id = document.getElementById("id").value;
                 closeModalAttach();
-                loadFiles(vehicle_id);
+                loadFilesByUser({{ Auth::user()->id }});
+
+                $('#image-form')[0].reset();
             },
             error: function(errors) {
 
@@ -1146,7 +1208,51 @@
         });
 
 
+    });
+
+
+    function deleteReg(id) {
+
+        Swal.fire({
+            title: "{{ __('messages.Confirm record deletion') }}",
+            text: "{{ __('messages.You wont be able to reverse this') }}!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "{{ __('messages.Yes delete') }}!"
+            }).then((result) => {
+            if (result.isConfirmed) {
+
+                document.form_file_delete.id.value = id;
+
+                var data = $('#form_file_delete').serialize();
+
+                $.ajax({
+                    type: 'post',
+                    url: "{{ '/rfi/delete-file' }}",
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+
+                });
+
+                Swal.fire({
+                    title: "{{ __('messages.Deleted') }}!",
+                    text: "{{ __('messages.Successfully deleted record') }}!",
+                    icon: "success"
+                });
+
+                // REFRESH DATATABLE
+                setTimeout(function() {
+                    loadFilesByUser({{ Auth::user()->id }})
+                }, 200);
+
+            }
         });
+
+    }
 
 
 
@@ -1164,29 +1270,45 @@
 
 
 
-    // Clear all temporary RFI Overviews records
-    // setTimeout(function() {
+    // Clear all temporary RFI Overviews and Files records
+    setTimeout(function() {
 
-    //     var data = $('#form_delete_overview').serialize();
+        var data = $('#form_delete_overview').serialize();
 
-    //     console.log('data: ', data);
+        // EXCLUIR OS RFI OVERVIEWS TEMPORÁRIOS
+        $.ajax({
+            type: 'post',
+            url: "{{ 'delete-rfi-overview-by-user' }}",
+            data: data,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response){
+                // console.log('chegou');
+            },
+            error: function(errors) {
+                console.log('ERRO: ', errors.responseJSON);
+            },
+        });
 
-    //     $.ajax({
-    //         type: 'post',
-    //         url: "{{ 'delete-rfi-overview-by-user' }}",
-    //         data: data,
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-    //         success: function(response){
-    //             console.log('chegou');
-    //         },
-    //         error: function(errors) {
-    //             console.log('ERRO: ', errors.responseJSON);
-    //         },
-    //     });
 
-    // }, 350);
+        // EXCLUIR OS ARQUIVOS ANEXOS TEMPORÁRIOS
+        $.ajax({
+            type: 'post',
+            url: "{{ 'delete-temp-files-by-user' }}",
+            data: data,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response){
+                // console.log('chegou');
+            },
+            error: function(errors) {
+                console.log('ERRO: ', errors.responseJSON);
+            },
+        });
+
+    }, 350);
 
 
 </script>

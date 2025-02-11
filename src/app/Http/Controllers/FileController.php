@@ -21,7 +21,6 @@ class FileController extends Controller
             $result = $this->fileService->store( $request->all());
             return response()->json($result);
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
     }

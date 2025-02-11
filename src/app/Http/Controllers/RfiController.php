@@ -6,6 +6,7 @@ use App\Http\Requests\Rfi\CreateRfiRequest;
 use App\Http\Requests\Rfi\CreateFileRequest;
 use App\Services\RfiService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RfiController extends Controller
 {
@@ -147,6 +148,40 @@ class RfiController extends Controller
 
 
 
+    public function getFileByUser(int $user_id) {
+        try {
+
+            $result = $this->rfiService->getFileByUser($user_id);
+
+            // return response()->json($result);
+
+            if(request()->ajax()) {
+                return datatables()->of($result)
+                ->addColumn('action', function($row) {
+                    $idx = $row->id;
+                    $uuidx = $row->uuid;
+
+                    $path = $row->type_document_id.'/'.substr($uuidx,0,2).'/'.substr($uuidx,2,2).'/'.substr($uuidx,4,2).'/'.substr($uuidx,6,2);
+                    $fileUrl = Storage::disk('local')->url($path.'/'.$row->file_name);
+
+
+                    $btn  = "<a href='$fileUrl' data-toggle='tooltip' data-id='$idx' class='edit'><span class='fas fa-download'></a>&nbsp;";
+                    $btn .= "<a href='javascript:void(0)' data-toggle='tooltip' onClick='deleteReg($idx)' data-id='$idx' class='delete'><span class='fas fa-trash'></span></a>";
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+
+            }
+
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
+
+
     // Clear all temporary RFI Overviews records
     public function deleteRfiOverviewByUser(Request $request) {
         try {
@@ -157,6 +192,28 @@ class RfiController extends Controller
         }
     }
 
+
+    public function deleteFile(Request $request) {
+        try {
+            $result = $this->rfiService->deleteFile( $request->all());
+            return response()->json($result);
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
+    }
+
+
+    // Clear all temporary RFI Files
+    public function deleteTempFilesByUser(Request $request) {
+        try {
+            $result = $this->rfiService->deleteTempFilesByUser( $request->all());
+            return response()->json($result);
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
 
 
 }

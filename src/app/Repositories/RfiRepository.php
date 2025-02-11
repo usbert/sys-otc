@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\Rfi;
 use App\Models\RfiOverview;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class RfiRepository implements RfiRepositoryInterface
 {
@@ -43,7 +44,7 @@ class RfiRepository implements RfiRepositoryInterface
         $rfiOverviewCombo = RfiOverview::select(
             'id',
         )
-        ->selectRaw('CONCAT(\'OVW\', lpad(rfi_overviews.id, 3, 0)) as code')
+        ->selectRaw('CONCAT(\'RO\', lpad(rfi_overviews.id, 3, 0)) as code')
         ->get();
 
         $return = array(
@@ -70,7 +71,7 @@ class RfiRepository implements RfiRepositoryInterface
             'deadline',
             'status',
         )
-        ->selectRaw('CONCAT(\'OVW\', lpad(rfi_overviews.id, 3, 0)) as code')
+        ->selectRaw('CONCAT(\'RO\', lpad(rfi_overviews.id, 3, 0)) as code')
         ->where('user_id', $user_id)
         ->where('rfi_id', null)
         ->leftJoin('users', 'users.id', '=', 'rfi_overviews.user_id')
@@ -193,9 +194,90 @@ class RfiRepository implements RfiRepositoryInterface
             ->delete();
             return $return;
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
+
+    }
+
+    public function getFileByUser($user_id) {
+
+        $fileRfi = FileRfi::select(
+            'file_rfis.id',
+            'file_rfis.uuid',
+            'file_rfis.name as file_name',
+            'file_rfis.original_name',
+            'file_rfis.file_comment',
+        )
+        ->selectRaw('CONCAT(\'RO\', lpad(file_rfis.rfi_overview_id, 3, 0)) as rfi_overview')
+        ->where('file_rfis.user_id', $user_id)
+        ->whereNull('file_rfis.rfi_id')
+        ->leftJoin('rfi_overviews', 'rfi_overviews.id', '=', 'file_rfis.rfi_overview_id')
+        ->orderBy('file_rfis.original_name')
+        ->get();
+
+       return $fileRfi;
+
+    }
+
+
+    public function deleteFile($id)
+    {
+        $file = FileRfi::select(
+            'file_rfis.type_document_id',
+            'name',
+        )
+        ->where('file_rfis.id', $id)
+        ->get();
+        $data = json_decode($file);
+
+
+        // main folder
+        $type_document_id = $data[0]->type_document_id;
+        // others folders and file name
+        $name = $data[0]->name;
+
+        // Restore folders path
+        $path = $type_document_id.'/'.substr($name,0,2).'/'.substr($name,2,2).'/'.substr($name,4,2).'/'.substr($name,6,2).'/';
+        // remove file
+        Storage::disk('local')->delete($path.'/'.$name);
+
+        // delete register
+        $return = FileRfi::destroy($id);
+        return $return;
+    }
+
+
+
+
+    // Clear all temporary RFI Files records
+    public function deleteTempFilesByUser($user_id)
+    {
+        $file = FileRfi::select(
+            'file_rfis.id',
+            'file_rfis.type_document_id',
+            'name',
+        )
+        ->where('file_rfis.user_id', $user_id)
+        ->whereNull('file_rfis.rfi_id')
+        ->get();
+        $data = json_decode($file);
+
+        for($i = 0; $i<count($data); $i++) {
+
+            $id                 = $data[$i]->id;
+            $type_document_id   = $data[$i]->type_document_id;
+            $name               = $data[$i]->name;
+
+            // Restore folders path
+            $path = $type_document_id.'/'.substr($name,0,2).'/'.substr($name,2,2).'/'.substr($name,4,2).'/'.substr($name,6,2).'/';
+            // remove file
+            Storage::disk('local')->delete($path.'/'.$name);
+
+            // delete register
+            FileRfi::destroy($id);
+
+        }
+
 
     }
 

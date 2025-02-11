@@ -167,15 +167,15 @@ class RfiService
 
         Storage::disk('local')->put($path.'/'.$name, file_get_contents($file));
 
-        if(empty($data['rfi_id'])) {
-            $rfi_id = null;
+        if(empty($data['rfi_overview_id'])) {
+            $rfi_overview_id = null;
         } else {
-            $rfi_id = $data['rfi_id'];
+            $rfi_overview_id = $data['rfi_overview_id'];
         }
 
         $datafile = array(
             'uuid'              => $uuid,
-            'rfi_id'            => $rfi_id,
+            'rfi_overview_id'   => $rfi_overview_id,
             'name'              => $name,
             'type_document_id'  => $type_document_id,
             'original_name'     => $data['original_name'],
@@ -183,9 +183,14 @@ class RfiService
             'user_id'           => Auth::user()->id,
         );
 
+
         $file_id = $this->rfiRepository->storeFile($datafile);
         // end MAIN TABLE
 
+    }
+
+    public function getFileByUser($user_id) {
+        return $this->rfiRepository->getFileByUser($user_id);
     }
 
 
@@ -197,5 +202,11 @@ class RfiService
     }
 
 
+
+    // Clear all temporary RFI Files records
+    public function deleteTempFilesByUser(array $data)
+    {
+        $del = $this->rfiRepository->deleteTempFilesByUser($data['user_id']);
+    }
 
 }
