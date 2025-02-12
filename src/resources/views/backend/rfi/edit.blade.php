@@ -41,143 +41,148 @@
 
                                 <div class="form-group">
 
-                                    <div class="row">
+                                    @foreach ($result['rfis'] as $row => $r)
 
-                                        <div class="col-sm-12">
+                                        <div class="row">
 
-                                            <div class="card card-secondary">
+                                            <div class="col-sm-12">
 
-                                                <div class="card-header">
-                                                    <h3 class="card-title">{{ __('messages.Project Description')}} </h3>
+                                                <div class="card card-secondary">
+
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">{{ __('messages.Project Description')}} </h3>
+                                                    </div>
+
+                                                    <div class="card-body">
+
+                                                        <input type="hidden" name="id" id="id" value="{{ $r->id }}">
+                                                        <input type="hidden" name="client_id" id="client_id">
+
+                                                        <div class="row">
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>{{__('messages.Project')}}</label>
+                                                                    <select class="form-control form-control-sm" name="project_id" id="project_id" onclick="fillAddress()">
+                                                                        <option value="">{{__('messages.Select')}}</option>
+                                                                        @foreach ($result['projectCombo'] as $prj)
+                                                                            <option value="{{ $prj->id }}"
+                                                                                {{ $prj->id == $r->project_id ? 'selected' : '' }}
+                                                                                > {{ $prj->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group">
+                                                                    <label>{{__('messages.Address')}}</label>
+                                                                    <input type="text" name="address" id="address" class="form-control form-control-sm" value="" readonly="readonly">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="row">
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Client (GC)</label>
+                                                                    <input type="text" name="client_name" id="client_name" class="form-control form-control-sm" value="" readonly="readonly">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group">
+                                                                    <label>{{__('messages.City')}}</label>
+                                                                    <input type="text" name="city" id="city" class="form-control form-control-sm" value="" readonly="readonly">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="row">
+
+                                                            <div class="col-sm-2">
+                                                                <div class="form-group">
+                                                                    <label>{{__('messages.Contract')}}</label>
+                                                                    <input type="text" name="contract_number" id="contract_number" class="form-control form-control-sm" value="" readonly="readonly">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group">
+                                                                    <label>{{__('messages.Responsible')}}</label>
+                                                                    <input type="text" name="project_manager" id="project_manager" class="form-control form-control-sm" value="" @readonly(true)>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group">
+                                                                    <label>{{__('messages.State')}}</label>
+                                                                    <input type="text" name="state" id="state" class="form-control form-control-sm" value="" readonly="readonly">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+
+
                                                 </div>
-
-                                                <div class="card-body">
-
-                                                    <input type="hidden" name="client_id" id="client_id">
-
-                                                    <div class="row">
-
-                                                        <div class="col-sm-6">
-                                                            <div class="form-group">
-                                                                <label>{{__('messages.Project')}}</label>
-                                                                <select class="form-control form-control-sm" name="project_id" id="project_id" onclick="fillAddress()">
-                                                                    <option value="">{{__('messages.Select')}}</option>
-                                                                    @foreach ($result['projectCombo'] as $prj)
-                                                                        <option value="{{ $prj->id }}"> {{ $prj->name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-sm-4">
-                                                            <div class="form-group">
-                                                                <label>{{__('messages.Address')}}</label>
-                                                                <input type="text" name="address" id="address" class="form-control form-control-sm" value="" readonly="readonly">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="row">
-
-                                                        <div class="col-sm-6">
-                                                            <div class="form-group">
-                                                                <label>Client (GC)</label>
-                                                                <input type="text" name="client_name" id="client_name" class="form-control form-control-sm" value="" readonly="readonly">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-sm-4">
-                                                            <div class="form-group">
-                                                                <label>{{__('messages.City')}}</label>
-                                                                <input type="text" name="city" id="city" class="form-control form-control-sm" value="" readonly="readonly">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-
-                                                    <div class="row">
-
-                                                        <div class="col-sm-2">
-                                                            <div class="form-group">
-                                                                <label>{{__('messages.Contract')}}</label>
-                                                                <input type="text" name="contract_number" id="contract_number" class="form-control form-control-sm" value="" readonly="readonly">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-sm-4">
-                                                            <div class="form-group">
-                                                                <label>{{__('messages.Responsible')}}</label>
-                                                                <input type="text" name="project_manager" id="project_manager" class="form-control form-control-sm" value="" @readonly(true)>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-sm-4">
-                                                            <div class="form-group">
-                                                                <label>{{__('messages.State')}}</label>
-                                                                <input type="text" name="state" id="state" class="form-control form-control-sm" value="" readonly="readonly">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-
 
                                             </div>
-
                                         </div>
 
-                                    </div>
+                                        <div class="row">
 
+                                            <div class="col-sm-12">
 
-                                    <div class="row">
+                                                <div class="card card-secondary">
 
-                                        <div class="col-sm-12">
-
-                                            <div class="card card-secondary">
-
-                                                <div class="card-header">
-                                                    <h3 class="card-title">{{__('messages.General Information')}}</h3>
-                                                </div>
-
-                                                <div class="card-body">
-
-                                                    <div class="row">
-
-                                                        <div class="col-sm-2">
-                                                            <div class="form-group">
-                                                                <label>{{__('messages.Received From')}}</label>
-                                                                <input type="text" name="user_name" id="user_name" class="form-control form-control-sm" value="{{ strtoupper(Auth::user()->name) }}" readonly>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-2">
-                                                            <div class="form-group">
-                                                                <label>{{__('messages.Date')}}</label>
-                                                                <input type="date" name="rfi_date" id="rfi_date" class="form-control form-control-sm">
-                                                            </div>
-                                                        </div>
-
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">{{__('messages.General Information')}}</h3>
                                                     </div>
 
-                                                    <div class="row">
+                                                    <div class="card-body">
 
-                                                        <div class="col-sm-10">
-                                                            <div class="form-group">
-                                                                <label>{{__('messages.Reference')}}</label>
-                                                                <textarea class="form-control" name="reference" id="reference" rows="2"
-                                                                style="border-bottom-color: black;"
-                                                                ></textarea>
+                                                        <div class="row">
+
+                                                            <div class="col-sm-2">
+                                                                <div class="form-group">
+                                                                    <label>{{__('messages.Received From')}}</label>
+                                                                    <input type="text" name="user_name" id="user_name" class="form-control form-control-sm" value="{{ $r->received_from }}" readonly>
+                                                                </div>
                                                             </div>
+                                                            <div class="col-sm-2">
+                                                                <div class="form-group">
+                                                                    <label>{{__('messages.Date')}}</label>
+                                                                    <input type="date" name="rfi_date" id="rfi_date" class="form-control form-control-sm" value="{{ $r->rfi_date }}">
+                                                                </div>
+                                                            </div>
+
                                                         </div>
 
+                                                        <div class="row">
+
+                                                            <div class="col-sm-10">
+                                                                <div class="form-group">
+                                                                    <label>{{__('messages.Reference')}}</label>
+                                                                    <textarea class="form-control" name="reference" id="reference" rows="2"
+                                                                    style="border-bottom-color: black;"
+                                                                    >{{ $r->reference }}</textarea>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+
+                                    @endforeach
 
                                     {{-- RFI OVERVIEW --}}
                                     <div class="row">
@@ -277,7 +282,7 @@
 
                                 <button type="submit" class="btn btn-sm btn-primary submit-form" id="create_new">
                                     <i class="fa fa-save"></i>&nbsp;
-                                    {{ __('messages.Button.Save') }}
+                                    {{ __('messages.Button.Update') }}
                                 </button>
 
                                 {{-- <button type="submit" class="btn btn-primary align-right" style="float:right;" id="btn-salve">
@@ -692,7 +697,9 @@
         }
 
 
-        function loadRfiOverviewByUser(user_id) {
+        function loadRfiOverviewById() {
+
+            var id = document.getElementById("id").value;
 
             $(document).ready( function () {
 
@@ -708,7 +715,7 @@
                     searching: false,
                     paging: false,
                     info: false,
-                    ajax: "{{ url('rfi/get-rfi-overview-by-user/') }}/"+user_id,
+                    ajax: "{{ url('rfi/get-rfi-overview-by-id/') }}/"+id,
                     columns: [
                         { data: 'code',             name: 'code',        orderable: false,  width: '4%' },
                         { data: 'question',         name: 'question',        orderable: false,  width: '18%' },
@@ -762,7 +769,9 @@
 
 
 
-        function loadFilesByUser(id) {
+        function loadFilesById(id) {
+
+            var id = document.getElementById("id").value;
 
             $(document).ready( function () {
 
@@ -779,7 +788,7 @@
                     searching: false,
                     paging: false,
                     info: false,
-                    ajax: "{{ url('rfi/get-file-by-user/') }}/"+id,
+                    ajax: "{{ url('rfi/get-file-by-id/') }}/"+id,
                     columns: [
                         { data: 'original_name',    name: 'original_name', orderable: false, width: '35%' },
                         { data: 'file_comment',     name: 'file_comment',  orderable: false, width: '35%' },
@@ -846,7 +855,7 @@
 
 
                     setTimeout(function() {
-                        loadRfiOverviewByUser({{ Auth::user()->id }});
+                        loadRfiOverviewById({{ Auth::user()->id }});
                         closeModalOverview();
                     }, 100);
 
@@ -925,7 +934,7 @@
 
 
                     setTimeout(function() {
-                        loadRfiOverviewByUser({{ Auth::user()->id }});
+                        loadRfiOverviewById({{ Auth::user()->id }});
                         closeModalOverview();
                     }, 100);
 
@@ -1005,7 +1014,7 @@
 
                     // REFRESH DATATABLE
                     setTimeout(function() {
-                        loadRfiOverviewByUser({{ Auth::user()->id }});
+                        loadRfiOverviewById({{ Auth::user()->id }});
                     }, 100);
 
                 }
@@ -1208,7 +1217,7 @@
             success: function(response){
                 console.log('SUCESSO', response);
                 closeModalAttach();
-                loadFilesByUser({{ Auth::user()->id }});
+                loadFilesById({{ Auth::user()->id }});
 
                 $('#image-form')[0].reset();
             },
@@ -1275,7 +1284,7 @@
 
                 // REFRESH DATATABLE
                 setTimeout(function() {
-                    loadFilesByUser({{ Auth::user()->id }})
+                    loadFilesById({{ Auth::user()->id }})
                 }, 200);
 
             }
@@ -1288,7 +1297,12 @@
     setTimeout(function() {
         // MARCAR O LINK NO SIDEBAR
         $('#link-rfi').addClass('active');
-    }, 100);
+
+        fillAddress();
+        loadRfiOverviewById();
+        loadFilesById();
+
+    }, 200);
 
 
     $(function() {
@@ -1296,48 +1310,6 @@
             this.value = this.value.toLocaleUpperCase();
         });
     });
-
-
-
-    // Clear all temporary RFI Overviews and Files records
-    setTimeout(function() {
-
-        var data = $('#form_delete_overview').serialize();
-
-        // EXCLUIR OS RFI OVERVIEWS TEMPORÁRIOS
-        $.ajax({
-            type: 'post',
-            url: "{{ 'delete-rfi-overview-by-user' }}",
-            data: data,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response){
-                // console.log('chegou');
-            },
-            error: function(errors) {
-                console.log('ERRO: ', errors.responseJSON);
-            },
-        });
-
-
-        // EXCLUIR OS ARQUIVOS ANEXOS TEMPORÁRIOS
-        $.ajax({
-            type: 'post',
-            url: "{{ 'delete-temp-files-by-user' }}",
-            data: data,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response){
-                // console.log('chegou');
-            },
-            error: function(errors) {
-                console.log('ERRO: ', errors.responseJSON);
-            },
-        });
-
-    }, 350);
 
 
 </script>

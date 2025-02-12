@@ -325,6 +325,11 @@ Route::middleware('auth')->group(function() {
         Route::post('/delete-file', 'deleteFile')->name('delete-file');
         Route::post('/delete-temp-files-by-user', 'deleteTempFilesByUser')->name('delete-temp-files-by-user');
         Route::get('/get-combo-overview', 'getComboOverview')->name('get-combo-overview');
+        Route::post('/softdelete', 'delete')->name('delete');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::get('/get-rfi-overview-by-id/{id}', 'getRfiOverviewById')->name('rfi-overview-by-id');
+        Route::get('/get-file-by-id/{id}', 'getFileById')->name('get-file-by-id');
+        Route::get('/sheet/{id}', 'sheet')->name('sheet');
     });
 
     // pco

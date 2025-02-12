@@ -31,7 +31,7 @@ class RfiController extends Controller
                 $idx = $row->id;
                 $btn  = "<a href='rfi/edit/$idx' data-toggle='tooltip' data-id='$idx' class='edit'><span class='fas fa-pencil-alt'></a>&nbsp;";
                 $btn .= "<a href='javascript:void(0)' data-toggle='tooltip' onClick='deleteReg($idx)' data-id='$idx' class='delete'><span class='fas fa-trash'></span></a>&nbsp;";
-                $btn .= "<a href='javascript:void(0)' data-toggle='tooltip' onClick='printReg($idx)' data-id='$idx' class='delete'><span class='fas fa-print'></span></a>";
+                $btn .= "<a href='rfi/sheet/$idx' data-toggle='tooltip' data-id='$idx' class='print' target='_blank'><span class='fas fa-print'></span></a>";
                 return $btn;
             })
             ->rawColumns(['action'])
@@ -129,8 +129,9 @@ class RfiController extends Controller
         try {
             $result = $this->rfiService->store( $request->all());
             return response()->json($result);
+
         } catch (\Exception $e) {
-            dd($e);
+           // dd($e);
            return response()->json(["error" => $e->getMessage()], $e->getCode());
         }
     }
@@ -227,5 +228,96 @@ class RfiController extends Controller
         }
     }
 
+
+    // SOFTDELETE RFI
+    public function delete(Request $request) {
+
+        try {
+            $result = $this->rfiService->delete( $request->all());
+            return response()->json($result);
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+
+    }
+
+
+    public function edit($id) {
+        try {
+            $result = $this->rfiService->edit($id);
+            return view('backend.rfi.edit', compact('result'));
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
+
+    public function sheet($id) {
+        try {
+            $result = $this->rfiService->sheet($id);
+            return view('backend.rfi.sheet', compact('result'));
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
+
+
+    public function getRfiOverviewById(int $id) {
+        try {
+
+            $result = $this->rfiService->getRfiOverviewById($id);
+
+            if(request()->ajax()) {
+                return datatables()->of($result)
+                ->addColumn('action', function($row) {
+                    $idx = $row->id;
+                    $btn  = "<a href='javascript:fcGetRfiOverviewRow($idx)' data-toggle='tooltip' data-id='$idx' class='edit'><span class='fas fa-pencil-alt'></a>&nbsp;";
+                    $btn .= "<a href='javascript:deleteRfiOverview($idx)' data-toggle='tooltip' data-id='$idx' class='delete'><span class='fas fa-trash'></span></a>&nbsp;";
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+
+            }
+
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
+
+
+    public function getFileById(int $id) {
+        try {
+
+            $result = $this->rfiService->getFileById($id);
+
+            // return response()->json($result);
+
+            if(request()->ajax()) {
+                return datatables()->of($result)
+                ->addColumn('action', function($row) {
+                    $idx = $row->id;
+                    $uuidx = $row->uuid;
+
+                    $path = $row->type_document_id.'/'.substr($uuidx,0,2).'/'.substr($uuidx,2,2).'/'.substr($uuidx,4,2).'/'.substr($uuidx,6,2);
+                    $fileUrl = Storage::disk('local')->url($path.'/'.$row->file_name);
+
+
+                    $btn  = "<a href='$fileUrl' data-toggle='tooltip' data-id='$idx' class='edit'><span class='fas fa-download'></a>&nbsp;";
+                    $btn .= "<a href='javascript:void(0)' data-toggle='tooltip' onClick='deleteReg($idx)' data-id='$idx' class='delete'><span class='fas fa-trash'></span></a>";
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+
+            }
+
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
 
 }

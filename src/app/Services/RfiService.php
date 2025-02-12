@@ -144,6 +144,19 @@ class RfiService
             return response()->json(["error" => $e->getMessage()]);
         }
 
+        // PREENCHER O CÓDIGO DO RFI NA TABELA FILES RFI ONDE O USUÁRIO IGUAL AO LOGADO E RFI IGUAL A rfi_id
+        try {
+            $overview = array(
+                'rfi_id'   => $rfi_id,
+                'user_id'  => Auth::user()->id,
+            );
+
+            $update = $this->rfiRepository->updateFileRfiFilled($overview);
+
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()]);
+        }
+
     }
 
 
@@ -189,6 +202,13 @@ class RfiService
 
     }
 
+    // SOFTDELETE RFI
+    public function delete(array $data)
+    {
+        $project = $this->rfiRepository->delete($data['id']);
+
+    }
+
     public function getFileByUser($user_id) {
         return $this->rfiRepository->getFileByUser($user_id);
     }
@@ -210,6 +230,24 @@ class RfiService
     public function deleteTempFilesByUser(array $data)
     {
         $del = $this->rfiRepository->deleteTempFilesByUser($data['user_id']);
+    }
+
+
+    public function edit($id) {
+        return $this->rfiRepository->edit($id);
+    }
+
+     public function sheet($id) {
+        return $this->rfiRepository->sheet($id);
+    }
+
+    public function getRfiOverviewById($id)
+    {
+        return $this->rfiRepository->getRfiOverviewById($id);
+    }
+
+    public function getFileById($id) {
+        return $this->rfiRepository->getFileById($id);
     }
 
 }

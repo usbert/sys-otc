@@ -15,7 +15,7 @@ class RfiRepository implements RfiRepositoryInterface
 
     public function getAll()
     {
-        $addresses = Rfi::select(
+        $rfis = Rfi::select(
             'rfis.id',
             'rfis.reference',
             'users.name as received_from',
@@ -30,7 +30,7 @@ class RfiRepository implements RfiRepositoryInterface
         ->where('rfis.is_activated', Rfi::ACTIVATED)
         ->get();
 
-        return $addresses;
+        return $rfis;
 
     }
 
@@ -169,6 +169,22 @@ class RfiRepository implements RfiRepositoryInterface
             return response()->json(["error" => $e->getMessage()]);
         }
 
+    }
+    public function updateFileRfiFilled(array $data)
+    {
+        try {
+
+            FileRfi::where('user_id', $data['user_id'])
+            ->whereNull('rfi_id')
+            ->update([
+                'rfi_id' => $data['rfi_id']
+              ]
+            );
+
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()]);
+        }
+
 
     }
 
@@ -178,6 +194,12 @@ class RfiRepository implements RfiRepositoryInterface
       return FileRfi::create($data)->id;
     }
 
+
+    public function delete($id)
+    {
+        $return = Rfi::destroy($id);
+        return $return;
+    }
 
     // Clear all temporary RFI Overviews records
     public function deleteRfiOverviewByUser($user_id) {
@@ -289,6 +311,138 @@ class RfiRepository implements RfiRepositoryInterface
 
 
     }
+
+
+
+    public function edit($id)
+    {
+        $rfis = Rfi::select(
+            'rfis.id',
+            'rfis.project_id',
+            'rfis.reference',
+            'users.name as received_from',
+            'rfis.rfi_date',
+            'projects.contract_number',
+            'projects.name as contract_name',
+            'status',
+        )
+        ->where('rfis.id', $id)
+        ->selectRaw('lpad(rfis.id, 5, 0) as code')
+        ->leftJoin('users', 'users.id', '=', 'rfis.received_from')
+        ->leftJoin('projects', 'projects.id', '=', 'rfis.project_id')
+        ->get();
+
+        $projectCombo   = Project::select('id','name')->
+        where('is_activated', Project::ACTIVATED)
+        ->orderBy('name', 'asc')
+        ->get();
+
+
+    //   $FamilyMeasurePower = FamilyMeasure::where('equipment_family_id', '=', $id)
+    //   ->where('type', '=', 3)
+    //   ->get();
+
+      // dd($FamilyMeasureWeight );
+
+       $result = array(
+          // TABELA PRINCIPAL
+           'rfis'           => $rfis,
+           'projectCombo'   => $projectCombo,
+            // OVERVIEWS
+        //   'familyMeasurePower' => $FamilyMeasurePower,
+
+      );
+
+      return $result;
+
+    }
+
+    public function sheet($id)
+    {
+        $rfis = Rfi::select(
+            'clients.name as client_name',
+            'projects.id as project_id',
+            'projects.street',
+            'projects.state',
+			'projects.city',
+            'projects.zip_code',
+            'rfis.project_id',
+            'rfis.reference',
+            'users.name as received_from',
+            'rfis.rfi_date',
+            'projects.contract_number',
+            'projects.name as contract_name',
+            'status',
+        )
+        ->where('rfis.id', $id)
+        ->selectRaw('lpad(rfis.id, 5, 0) as code')
+        ->leftJoin('users', 'users.id', '=', 'rfis.received_from')
+        ->leftJoin('projects', 'projects.id', '=', 'rfis.project_id')
+        ->leftJoin('clients','clients.id', '=', 'projects.client_id')
+        ->get();
+
+        $projectCombo   = Project::select('id','name')->
+        where('is_activated', Project::ACTIVATED)
+        ->orderBy('name', 'asc')
+        ->get();
+
+       $result = array(
+          // TABELA PRINCIPAL
+           'rfis'           => $rfis,
+           'projectCombo'   => $projectCombo,
+            // OVERVIEWS
+        //   'familyMeasurePower' => $FamilyMeasurePower,
+
+      );
+
+      return $result;
+
+    }
+
+
+    public function getRfiOverviewById($id) {
+
+        $rfiOverview = RfiOverview::select(
+            'rfi_overviews.id',
+            'question',
+            'sugestion',
+            'client_answear',
+            'users.name as from',
+            'cost_impact',
+            'schedule_impact',
+            'deadline',
+            'status',
+        )
+        ->selectRaw('CONCAT(\'RO\', lpad(rfi_overviews.id, 3, 0)) as code')
+        ->where('rfi_id', $id)
+        ->leftJoin('users', 'users.id', '=', 'rfi_overviews.user_id')
+        ->orderBy('id')
+        ->get();
+
+       return $rfiOverview;
+
+    }
+
+
+    public function getFileById($id) {
+
+        $fileRfi = FileRfi::select(
+            'file_rfis.id',
+            'file_rfis.uuid',
+            'file_rfis.name as file_name',
+            'file_rfis.original_name',
+            'file_rfis.file_comment',
+        )
+        ->selectRaw('CONCAT(\'RO\', lpad(file_rfis.rfi_overview_id, 3, 0)) as rfi_overview')
+        ->where('file_rfis.rfi_id', $id)
+        ->leftJoin('rfi_overviews', 'rfi_overviews.id', '=', 'file_rfis.rfi_overview_id')
+        ->orderBy('file_rfis.original_name')
+        ->get();
+
+       return $fileRfi;
+
+    }
+
 
 
 }

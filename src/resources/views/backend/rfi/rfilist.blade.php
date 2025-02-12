@@ -178,7 +178,7 @@
 
                     $.ajax({
                         type: 'post',
-                        url: "{{ 'pco/softdelete' }}",
+                        url: "{{ 'rfi/softdelete' }}",
                         data: data,
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
