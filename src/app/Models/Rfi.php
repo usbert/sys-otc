@@ -19,6 +19,8 @@ class Rfi extends Model
     protected $fillable = [
         'id',
         'project_id',
+        'name',
+        'assignee',
         'reference',
         'received_from',
         'rfi_date',

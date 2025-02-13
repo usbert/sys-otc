@@ -17,6 +17,8 @@ class RfiRepository implements RfiRepositoryInterface
     {
         $rfis = Rfi::select(
             'rfis.id',
+            'rfis.name',
+            'assignee',
             'rfis.reference',
             'users.name as received_from',
             'rfis.rfi_date',
@@ -80,6 +82,10 @@ class RfiRepository implements RfiRepositoryInterface
         return RfiOverview::create($data)->rfi_overview_id;
     }
 
+    public function storeRfiOverviewByRfiId($data)
+    {
+        return RfiOverview::create($data)->rfi_overview_id;
+    }
 
     public function deleteRfiOverview($rfi_overview_id) {
         try {
@@ -318,6 +324,8 @@ class RfiRepository implements RfiRepositoryInterface
     {
         $rfis = Rfi::select(
             'rfis.id',
+            'rfis.name',
+            'assignee',
             'rfis.project_id',
             'rfis.reference',
             'users.name as received_from',
@@ -360,6 +368,8 @@ class RfiRepository implements RfiRepositoryInterface
     public function sheet($id)
     {
         $rfis = Rfi::select(
+            'rfis.name',
+            'assignee',
             'clients.name as client_name',
             'projects.id as project_id',
             'projects.street',
@@ -375,7 +385,7 @@ class RfiRepository implements RfiRepositoryInterface
             'status',
         )
         ->where('rfis.id', $id)
-        ->selectRaw('lpad(rfis.id, 5, 0) as code')
+        ->selectRaw('lpad(rfis.id, 3, 0) as code')
         ->leftJoin('users', 'users.id', '=', 'rfis.received_from')
         ->leftJoin('projects', 'projects.id', '=', 'rfis.project_id')
         ->leftJoin('clients','clients.id', '=', 'projects.client_id')

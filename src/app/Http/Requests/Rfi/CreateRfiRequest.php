@@ -19,8 +19,10 @@ class CreateRfiRequest extends FormRequest {
     {
         return [
             'project_id' => 'required',
-            'reference'  => 'required',
+            'name'       => 'required',
+            'assignee'   => 'required',
             'rfi_date'   => 'required',
+            'reference'  => 'required',
         ];
     }
 

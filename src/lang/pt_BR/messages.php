@@ -53,6 +53,7 @@ return [
     'PCO Date' => 'Data do PCO',
 
     'Request For Information' => 'Solicitação de informações',
+    'Assignee' => 'Cessionário',
     'RFI Overview' => 'Visão geral da RFI',
     'General Information' => 'Informações Gerais',
     'Reference' => 'Referencia',

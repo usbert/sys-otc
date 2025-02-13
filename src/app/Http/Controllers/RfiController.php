@@ -93,6 +93,15 @@ class RfiController extends Controller
         }
     }
 
+    public function storeRfiOverviewByRfiId(CreateRfiOverviewtRequest $request) {
+        try {
+            $result = $this->rfiService->storeRfiOverviewByRfiId( $request->all());
+            return response()->json($result);
+        } catch (\Exception $e) {
+           return response()->json(["error" => $e->getMessage()], $e->getCode());
+        }
+    }
+
     public function updateRfiOverviewByUser(UpdateRfiOverviewtRequest $request) {
         try {
             $result = $this->rfiService->updateRfiOverviewByUser( $request->all());

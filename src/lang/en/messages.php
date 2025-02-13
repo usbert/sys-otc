@@ -52,6 +52,7 @@ return [
     'PCO Date'  => 'PCO Date',
 
     'Request For Information' => 'Request For Information',
+    'Assignee' => 'Assignee',
     'RFI Overview' => 'RFI Overview',
     'General Information' => 'General Information',
     'Reference' => 'Reference',

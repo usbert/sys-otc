@@ -136,51 +136,88 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        {{-- REQUEST FOR INFORMATION --}}
+                                    <div class="row">
 
-                                            <div class="col-sm-12">
+                                        <div class="col-sm-12">
 
-                                                <div class="card card-secondary">
+                                            <div class="card card-secondary">
 
-                                                    <div class="card-header">
-                                                        <h3 class="card-title">{{__('messages.General Information')}}</h3>
-                                                    </div>
+                                                <div class="card-header">
+                                                    <h3 class="card-title">{{__('messages.Request For Information')}}</h3>
+                                                </div>
 
-                                                    <div class="card-body">
+                                                <div class="card-body">
 
-                                                        <div class="row">
+                                                    <div class="row">
 
-                                                            <div class="col-sm-2">
-                                                                <div class="form-group">
-                                                                    <label>{{__('messages.Received From')}}</label>
-                                                                    <input type="text" name="user_name" id="user_name" class="form-control form-control-sm" value="{{ $r->received_from }}" readonly>
-                                                                </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>{{__('messages.Name')}}</label>
+                                                                <input type="text" name="name" id="name" class="form-control form-control-sm" maxlength="120" value="{{ $r->name }}">
                                                             </div>
-                                                            <div class="col-sm-2">
-                                                                <div class="form-group">
-                                                                    <label>{{__('messages.Date')}}</label>
-                                                                    <input type="date" name="rfi_date" id="rfi_date" class="form-control form-control-sm" value="{{ $r->rfi_date }}">
-                                                                </div>
-                                                            </div>
-
                                                         </div>
 
-                                                        <div class="row">
-
-                                                            <div class="col-sm-10">
-                                                                <div class="form-group">
-                                                                    <label>{{__('messages.Reference')}}</label>
-                                                                    <textarea class="form-control" name="reference" id="reference" rows="2"
-                                                                    style="border-bottom-color: black;"
-                                                                    >{{ $r->reference }}</textarea>
-                                                                </div>
+                                                        <div class="col-sm-2">
+                                                            <div class="form-group">
+                                                                <label>{{__('messages.Assignee')}}</label>
+                                                                <input type="text" name="assignee" id="assignee" class="form-control form-control-sm" maxlength="80" value="{{ $r->assignee }}">
                                                             </div>
-
                                                         </div>
+
+                                                        <div class="col-sm-2">
+                                                            <div class="form-group">
+                                                                <label>{{__('messages.Date')}}</label>
+                                                                <input type="date" name="rfi_date" id="rfi_date" class="form-control form-control-sm" value="{{ $r->rfi_date }}">
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    {{-- GENERAL INFORMATION --}}
+                                    <div class="row">
+
+                                        <div class="col-sm-12">
+
+                                            <div class="card card-secondary">
+
+                                                <div class="card-header">
+                                                    <h3 class="card-title">{{__('messages.General Information')}}</h3>
+                                                </div>
+
+                                                <div class="card-body">
+
+                                                    <div class="row">
+
+                                                        <div class="col-sm-2">
+                                                            <div class="form-group">
+                                                                <label>{{__('messages.Received From')}}</label>
+                                                                <input type="text" name="user_name" id="user_name" class="form-control form-control-sm" value="{{ strtoupper(Auth::user()->name) }}" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-sm-10">
+                                                            <div class="form-group">
+                                                                <label>{{__('messages.Reference')}}</label>
+                                                                <textarea class="form-control" name="reference" id="reference" rows="2"
+                                                                style="border-bottom-color: black;"
+                                                                >{{ $r->reference }}</textarea>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     @endforeach
 
@@ -316,6 +353,7 @@
 
                         @csrf
 
+                        <input type="idden" name="rfi_id" id="rfi_id" value="">
                         <input type="hidden" name="rfi_overview" id="rfi_overview" value="">
 
                         <div class="form-group">
@@ -460,7 +498,6 @@
                                     <div class="card card-secondary">
                                         <div class="card-body">
 
-                                            {{-- <input type="hidden" name="rfi_id" id="rfi_id"> --}}
 
                                             <div class="row">
 
@@ -617,7 +654,6 @@
 
         function openModalOverview(id, indx) {
 
-
             $('#formRfiOverview')[0].reset();
 
             document.getElementById("divClientAswear").style.display = "none";
@@ -630,9 +666,9 @@
                 keyboard: false
             });
 
-            // setTimeout(function() {
-            //     loadLaborAppropriationByUser(id, {{ Auth::user()->id }})
-            // }, 300);
+            setTimeout(function() {
+                document.getElementById("rfi_id").value = document.getElementById("id").value;
+            }, 200);
 
 
         }
@@ -827,7 +863,7 @@
 
             $.ajax({
                 type: 'post',
-                url: "{{ url('rfi/store-rfi-overview-by-user/') }}",
+                url: "{{ url('rfi/store-rfi-overview-by-rfiid/') }}",
                 data: data,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

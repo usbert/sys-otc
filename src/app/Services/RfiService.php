@@ -63,6 +63,36 @@ class RfiService
 
     }
 
+    public function storeRfiOverviewByRfiId(array $data)
+    {
+        if(empty($data['cost_impact'])) {
+            $cost_impact = 0;
+        } else {
+            $cost_impact = 1;
+        }
+        if(empty($data['schedule_impact'])) {
+            $schedule_impact = 0;
+        } else {
+            $schedule_impact = 1;
+        }
+
+
+        $rfiOverview = array(
+            'rfi_id'            => $data['rfi_id'],
+            'question'          => $data['question'],
+            'sugestion'         => $data['sugestion'],
+            'cost_impact'       => $cost_impact,
+            'schedule_impact'   => $schedule_impact,
+            'deadline'          => $data['deadline'],
+            'status'            => 1,
+            'user_id'           => Auth::user()->id,
+        );
+
+        $rfiOverview_id = $this->rfiRepository->storeRfiOverviewByRfiId($rfiOverview);
+
+
+    }
+
 
 
     public function updateRfiOverviewByUser(array $data)
@@ -122,6 +152,8 @@ class RfiService
 
         $rfi = array(
             'project_id'        => $data['project_id'],
+            'name'              => $data['name'],
+            'assignee'          => $data['assignee'],
             'reference'         => $data['reference'],
             'rfi_date'          => $data['rfi_date'],
             'received_from'     => Auth::user()->id,

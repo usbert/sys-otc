@@ -36,12 +36,51 @@
                                                                 <section class="sheet padding-5mm">
                                                                     <table style="font-size: 14px; width: 1458px;" class="table table-striped table-sm no-footer dataTable"
                                                                         id="table-print" aria-describedby="ajax-datatable-rfi-overview_info">
+
                                                                         <tr>
-                                                                            <td><span style="font-size: 20px; font-weight: bold">{{ $r->client_name }}</span> - CONTRACT</td>
-                                                                            <td rowspan="2">LOGO</td>
+                                                                            <td style="width: 70%;"><span style="font-size: 20px; font-weight: bold">
+                                                                                {{ $r->client_name }}</span> - CONTRACT<br>
+                                                                                {{ $r->street }}, {{ $r->city }}, {{ $r->state }} - {{ $r->zip_code }}
+                                                                            </td>
+                                                                            <td style="width: 30%; text-align: right;">LOGO</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td>{{ $r->street }}, {{ $r->city }}, {{ $r->state }} - {{ $r->zip_code }}</td>
+                                                                            <td colspan="2">
+                                                                                <hr id="hr1">
+                                                                                <span style="font-size: 16px; font-weight: bold">
+                                                                                    Request For Information (RFI) #{{ $r->code }}
+                                                                                </span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+
+                                                                    <table style="font-size: 14px; width: 1458px;" class="table table-striped table-sm no-footer dataTable"
+                                                                        aria-describedby="ajax-datatable-rfi-overview_info">
+
+                                                                        <tr>
+                                                                            <td style="width: 20%;">Name</td>
+                                                                            <td style="width: 80%;">{{ $r->name }}</td>
+                                                                        </tr>
+                                                                         <tr>
+                                                                            <td style="width: 20%;">Received From</td>
+                                                                            <td style="width: 80%;">{{ $r->received_from }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="width: 20%;">Status</td>
+                                                                            <td style="width: 80%;">FSFD</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="width: 20%;">Data</td>
+                                                                            <td style="width: 80%;">{{ $r->rfi_date }}</td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td colspan="2">
+                                                                                <span style="font-size: 16px; font-weight: bold">
+                                                                                    General Information
+                                                                                </span>
+                                                                                <hr id="hr2">
+                                                                            </td>
                                                                         </tr>
 
                                                                     </table>
@@ -80,60 +119,23 @@
 
 
     <style>
-        .table-print {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0px;
-            border: 1px solid #999 !important;
-        }
+            #hr1 {
+                width: 100%;
+                height: 3px;
+                border-bottom: 2px solid #FFA500;
+                background: #FFA500;
 
-        .table-print tr td {
-            padding: 2px;
-            font-size: 11px;
-            border: 1px solid #999 !important;
-        }
-
-        body { margin: 0 }
-            .sheet-outer {
-                margin: 0;
-            }
-            .sheet {
-                margin: 0;
-                overflow: hidden;
-                position: relative;
-                box-sizing: border-box;
-                page-break-after: always;
+                /* box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5); */
             }
 
-            @media screen {
-                body {
-                    background: #e0e0e0
-                }
+            #hr2 {
+                height: 1px;
+                border-bottom: 2px solid gray;
 
-                .sheet {
-                    background: white;
-                    box-shadow: 0 .5mm 2mm rgba(0,0,0,.3);
-                    margin: 5mm auto;
-                }
+                /* box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5); */
             }
-            /* Add the page size for A4 in mm. */
 
-            .sheet-outer.A4 .sheet {
-                width: 210mm;
-                height: 296mm
-            }
-            .sheet.padding-5mm { padding: 5mm }
-
-
-            @page {
-                size: A4;
-                margin: 0
-            }
-            @media print {
-                .sheet-outer.A4, .sheet-outer.A5.landscape {
-                    width: 210mm
-                }
-            }
+            td { font-size: 16px;}
 
     </style>
 

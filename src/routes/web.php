@@ -318,6 +318,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/delete-rfi-overview', 'deleteRfiOverview')->name('delete-rfi-overview');
         Route::get('/get-rfi-overview/{id}', 'getRfiOverview')->name('get-rfi-overview');
         Route::post('/store-rfi-overview-by-user', 'storeRfiOverviewByUser')->name('store-rfi-overview-by-user');
+        Route::post('/store-rfi-overview-by-rfiid', 'storeRfiOverviewByRfiId')->name('store-rfi-overview-by-rfiid');
         Route::post('/update-rfi-overview-by-user', 'updateRfiOverviewByUser')->name('update-rfi-overview-by-user');
         Route::post('/store', 'store')->name('store');
         Route::post('/store-file', 'storeFile')->name('store-file');

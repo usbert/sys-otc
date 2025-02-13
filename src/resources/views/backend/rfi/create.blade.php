@@ -132,7 +132,49 @@
 
                                     </div>
 
+                                    {{-- REQUEST FOR INFORMATION --}}
+                                    <div class="row">
 
+                                        <div class="col-sm-12">
+
+                                            <div class="card card-secondary">
+
+                                                <div class="card-header">
+                                                    <h3 class="card-title">{{__('messages.Request For Information')}}</h3>
+                                                </div>
+
+                                                <div class="card-body">
+
+                                                    <div class="row">
+
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>{{__('messages.Name')}}</label>
+                                                                <input type="text" name="name" id="name" class="form-control form-control-sm" maxlength="120">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-2">
+                                                            <div class="form-group">
+                                                                <label>{{__('messages.Assignee')}}</label>
+                                                                <input type="text" name="assignee" id="assignee" class="form-control form-control-sm" maxlength="80">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-2">
+                                                            <div class="form-group">
+                                                                <label>{{__('messages.Date')}}</label>
+                                                                <input type="date" name="rfi_date" id="rfi_date" class="form-control form-control-sm">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- GENERAL INFORMATION --}}
                                     <div class="row">
 
                                         <div class="col-sm-12">
@@ -151,12 +193,6 @@
                                                             <div class="form-group">
                                                                 <label>{{__('messages.Received From')}}</label>
                                                                 <input type="text" name="user_name" id="user_name" class="form-control form-control-sm" value="{{ strtoupper(Auth::user()->name) }}" readonly>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-2">
-                                                            <div class="form-group">
-                                                                <label>{{__('messages.Date')}}</label>
-                                                                <input type="date" name="rfi_date" id="rfi_date" class="form-control form-control-sm">
                                                             </div>
                                                         </div>
 
@@ -1148,14 +1184,21 @@
                     message_erro_aux = errors.responseJSON.errors.project_id[0];
                     message_erro = message_erro_aux.replace("project id", " <b>{{__('messages.Project')}}</b>")
 
-                } else if(errors.responseJSON.errors.reference) {
-                    message_erro_aux = errors.responseJSON.errors.reference[0];
-                    message_erro = message_erro_aux.replace("reference", "<b>{{ __('messages.Reference') }}</b>")
+                } else if(errors.responseJSON.errors.name) {
+                    message_erro_aux = errors.responseJSON.errors.name[0];
+                    message_erro = message_erro_aux.replace("name", " <b>{{__('messages.Name')}}</b>")
+
+                } else if(errors.responseJSON.errors.assignee) {
+                    message_erro_aux = errors.responseJSON.errors.assignee[0];
+                    message_erro = message_erro_aux.replace("assignee", " <b>{{__('messages.Assignee')}}</b>")
 
                 } else if(errors.responseJSON.errors.rfi_date) {
                     message_erro_aux = errors.responseJSON.errors.rfi_date[0];
                     message_erro = message_erro_aux.replace("rfi date", "<b>{{ __('messages.Date') }}</b>")
 
+                } else if(errors.responseJSON.errors.reference) {
+                    message_erro_aux = errors.responseJSON.errors.reference[0];
+                    message_erro = message_erro_aux.replace("reference", "<b>{{ __('messages.Reference') }}</b>")
 
                 } else {
                     message_erro = errors.responseJSON.errors;
