@@ -353,7 +353,7 @@
 
                         @csrf
 
-                        <input type="idden" name="rfi_id" id="rfi_id" value="">
+                        <input type="hidden" name="rfi_id" id="rfi_id" value="">
                         <input type="hidden" name="rfi_overview" id="rfi_overview" value="">
 
                         <div class="form-group">
@@ -491,6 +491,8 @@
                     <form action="{{ url('file/store/') }}" id="image-form" class="form-horizontal" method="POST" enctype="multipart/form-data">
 
                         @csrf
+
+                        <input type="idden" name="rfi_id_file" id="rfi_id_file" value="">
 
                         <div class="form-group">
                             <div class="row">
@@ -680,6 +682,11 @@
 
 
         function openModalAttach() {
+
+
+            setTimeout(function() {
+                document.getElementById("rfi_id_file").value = document.getElementById("id").value;
+            }, 200);
 
             $('#myModalAttach').modal({
                 backdrop: 'static',
@@ -1245,7 +1252,7 @@
 
         $.ajax({
             type: "post",
-            url: "{{ url('rfi/store-file/') }}",
+            url: "{{ url('rfi/store-file-byrfi/') }}",
             data: dados,
             // image: productImage,
             processData: false,
@@ -1321,6 +1328,50 @@
                 // REFRESH DATATABLE
                 setTimeout(function() {
                     loadFilesById({{ Auth::user()->id }})
+                }, 200);
+
+            }
+        });
+
+    }
+
+
+    function deleteReg(id) {
+
+        Swal.fire({
+            title: "{{ __('messages.Confirm record deletion') }}",
+            text: "{{ __('messages.You wont be able to reverse this') }}!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "{{ __('messages.Yes delete') }}!"
+            }).then((result) => {
+            if (result.isConfirmed) {
+
+                document.form_file_delete.id.value = id;
+
+                var data = $('#form_file_delete').serialize();
+
+                $.ajax({
+                    type: 'post',
+                    url: "{{ '/rfi/delete-file' }}",
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+
+                });
+
+                Swal.fire({
+                    title: "{{ __('messages.Deleted') }}!",
+                    text: "{{ __('messages.Successfully deleted record') }}!",
+                    icon: "success"
+                });
+
+                // REFRESH DATATABLE
+                setTimeout(function() {
+                    loadFilesById();
                 }, 200);
 
             }

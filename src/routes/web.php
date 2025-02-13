@@ -322,6 +322,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/update-rfi-overview-by-user', 'updateRfiOverviewByUser')->name('update-rfi-overview-by-user');
         Route::post('/store', 'store')->name('store');
         Route::post('/store-file', 'storeFile')->name('store-file');
+        Route::post('/store-file-byrfi', 'storeFileByRfi')->name('store-file-byrfi');
         Route::get('/get-file-by-user/{user_id}', 'getFileByUser')->name('get-file-by-user');
         Route::post('/delete-file', 'deleteFile')->name('delete-file');
         Route::post('/delete-temp-files-by-user', 'deleteTempFilesByUser')->name('delete-temp-files-by-user');

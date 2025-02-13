@@ -200,6 +200,11 @@ class RfiRepository implements RfiRepositoryInterface
       return FileRfi::create($data)->id;
     }
 
+    public function storeFileByRfi($data)
+    {
+      return FileRfi::create($data)->id;
+    }
+
 
     public function delete($id)
     {
@@ -249,7 +254,6 @@ class RfiRepository implements RfiRepositoryInterface
         ->where('file_rfis.id', $id)
         ->get();
         $data = json_decode($file);
-
 
         // main folder
         $type_document_id = $data[0]->type_document_id;

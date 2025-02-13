@@ -234,6 +234,52 @@ class RfiService
 
     }
 
+
+
+    public function storeFileByRfi(array $data)
+    {
+
+        $file = $data['image'];
+        $filename = $file->getClientOriginalName(); // Retrieve the original filename
+
+        $uuid = Str::uuid();
+
+        // Get extension name to concat in file name
+        $EXT = explode('.', $filename);
+        $name = $uuid.'.'.$EXT[1];
+        $type_document_id = 17; // CÓDIGO DO type document DO RFI
+        $path = $type_document_id.'/'.substr($uuid,0,2).'/'.substr($uuid,2,2).'/'.substr($uuid,4,2).'/'.substr($uuid,6,2).'/';
+
+        // break uuid to formate path (type_document_id/aa/bb/cc/dd) four part at one
+        // example: 1/90/d8/12/84/
+        $path = $type_document_id.'/'.substr($uuid,0,2).'/'.substr($uuid,2,2).'/'.substr($uuid,4,2).'/'.substr($uuid,6,2).'/';
+
+        Storage::disk('local')->put($path.'/'.$name, file_get_contents($file));
+
+        if(empty($data['rfi_overview_id'])) {
+            $rfi_overview_id = null;
+        } else {
+            $rfi_overview_id = $data['rfi_overview_id'];
+        }
+
+        $datafile = array(
+            'rfi_id'            => $data['rfi_id_file'],
+            'uuid'              => $uuid,
+            'rfi_overview_id'   => $rfi_overview_id,
+            'name'              => $name,
+            'type_document_id'  => $type_document_id,
+            'original_name'     => $data['original_name'],
+            'file_comment'      => $data['file_comment'],
+            'user_id'           => Auth::user()->id,
+        );
+
+
+        $file_id = $this->rfiRepository->storeFileByRfi($datafile);
+        // end MAIN TABLE
+
+    }
+
+
     // SOFTDELETE RFI
     public function delete(array $data)
     {
@@ -280,6 +326,12 @@ class RfiService
 
     public function getFileById($id) {
         return $this->rfiRepository->getFileById($id);
+    }
+
+    // Clear all temporary RFI Overviews records
+    public function deleteFile(array $data)
+    {
+        $del = $this->rfiRepository->deleteFile($data['id']);
     }
 
 }
